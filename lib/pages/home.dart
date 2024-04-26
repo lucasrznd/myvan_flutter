@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myvan_flutter/components/bottom_menu.dart';
 import 'package:myvan_flutter/components/card_menor.dart';
 import 'package:myvan_flutter/components/custom_app_bar.dart';
 import 'package:myvan_flutter/components/card_chamada.dart';
@@ -32,21 +31,20 @@ class _HomeState extends State<Home> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CardPequeno(),
+                CardPequeno(titulo: 'Motorista',),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12),
                 ),
-                CardPequeno(),
+                CardPequeno(titulo: 'Passageiros',),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12),
                 ),
-                CardPequeno()
+                CardPequeno(titulo: 'Viagens',)
               ],
             ),
           ),
         ],
       ),
-      bottomNavigationBar: BottomMenu(),
     );
   }
 }

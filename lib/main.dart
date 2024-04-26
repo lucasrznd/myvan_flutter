@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myvan_flutter/pages/home.dart';
+import 'package:myvan_flutter/pages/navegacao_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,12 +11,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'myVAN',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'myVAN'),
     );
   }
 }
@@ -34,7 +34,15 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Home(),
+      theme: ThemeData(
+          inputDecorationTheme: InputDecorationTheme(
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue),
+          borderRadius: BorderRadius.circular(10),
+        ),
+      )),
+      debugShowCheckedModeBanner: false,
+      home: NavegacaoPage(),
     );
   }
 }
