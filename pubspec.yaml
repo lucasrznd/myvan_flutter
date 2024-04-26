@@ -37,6 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_native_splash: ^2.3.9
   google_nav_bar: ^5.0.6
+  intl: ^0.19.0
+  mask_text_input_formatter: ^2.9.0
 
 dev_dependencies:
   flutter_test:
