@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:myvan_flutter/pages/home.dart';
+import 'package:myvan_flutter/pages/motorista.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class NavegacaoPage extends StatefulWidget {
+  const NavegacaoPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<NavegacaoPage> createState() => _NavegacaoPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _NavegacaoPageState extends State<NavegacaoPage> {
   int _selectedIndex = 0;
 
   final PageController _pageController = PageController();
@@ -32,9 +33,9 @@ class _HomePageState extends State<HomePage> {
         controller: _pageController,
         children: [
           Home(),
-          Container(color: Colors.green, child: Center(child: Text('Viagens'))),
+          TelaMotorista(),
           Container(
-              color: Colors.orange, child: Center(child: Text('Passageiros'))),
+              color: Colors.orange, child: Center(child: Text('Viagens'))),
           Container(
               color: Colors.purple,
               child: Center(child: Text('Configurações'))),
@@ -69,12 +70,12 @@ class _HomePageState extends State<HomePage> {
                 text: 'Home',
               ),
               GButton(
-                icon: Icons.add_location_alt_outlined,
-                text: 'Viagens',
+                icon: Icons.people_alt_outlined,
+                text: 'Motoristas',
               ),
               GButton(
-                icon: Icons.people_alt_outlined,
-                text: 'Passageiros',
+                icon: Icons.add_location_alt_outlined,
+                text: 'Viagens',
               ),
               GButton(
                 icon: Icons.settings,
