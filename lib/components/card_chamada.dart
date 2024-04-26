@@ -21,23 +21,28 @@ class CardExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 400,
-      height: 100,
-      child: Card(
-        color: const Color(0xff79cbfd),
-        child: Column(
-          children: <Widget>[
-            const ListTile(
+    return Center(
+      child: SizedBox(
+        width: 350,
+        height: 100,
+        child: Card(
+          color: const Color(0xff79cbfd),
+          child: Center(
+            child: ListTile(
               title: Text(
-                'Chamada Ida',
-                style: TextStyle(
-                  color: Colors.white,
+                'CHAMADA IDA',
+                style: TextStyle(color: Colors.white, fontSize: 30),
+              ),
+              leading: SizedBox(
+                width: 60, // Defina o tamanho desejado para o ícone
+                height: 60, // Defina o tamanho desejado para o ícone
+                child: Image.asset(
+                  'assets/app/icone_chamada_branco.png',
+                  fit: BoxFit.cover,
                 ),
               ),
-              leading: Icon(Icons.album),
             ),
-          ],
+          ),
         ),
       ),
     );
