@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myvan_flutter/pages/home.dart';
+import 'package:myvan_flutter/pages/home_page.dart';
+import 'package:myvan_flutter/pages/motorista.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,11 +32,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Home(),
+      home: HomePage(),
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myvan_flutter/components/bottom_menu.dart';
 import 'package:myvan_flutter/components/custom_app_bar.dart';
 
 class Home extends StatefulWidget {
@@ -14,7 +13,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return const Scaffold(
       appBar: CustomAppBar(title: 'Home'),
-      bottomNavigationBar: BottomMenu(),
     );
   }
 }
