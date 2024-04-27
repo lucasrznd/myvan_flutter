@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'myVAN',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue.shade300),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'myVAN'),
@@ -35,12 +35,20 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          inputDecorationTheme: InputDecorationTheme(
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue),
-          borderRadius: BorderRadius.circular(10),
+        inputDecorationTheme: InputDecorationTheme(
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.blue),
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
-      )),
+        appBarTheme: AppBarTheme(
+          titleTextStyle: TextStyle(
+            fontFamily: 'Poppins',
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ),
       debugShowCheckedModeBanner: false,
       home: NavegacaoPage(),
     );
