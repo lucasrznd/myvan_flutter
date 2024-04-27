@@ -11,6 +11,7 @@ class MotoristaForm extends StatefulWidget {
 }
 
 class _MotoristaFormState extends State<MotoristaForm> {
+  final _formKey = GlobalKey<FormState>();
   final _nomeController = TextEditingController();
   final _telefoneController = TextEditingController();
 
@@ -34,57 +35,74 @@ class _MotoristaFormState extends State<MotoristaForm> {
       elevation: 5,
       child: Padding(
         padding: const EdgeInsets.all(10),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              controller: _nomeController,
-              onSubmitted: (_) => _submitForm(),
-              decoration: InputDecoration(
-                labelText: 'Nome',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                controller: _nomeController,
+                decoration: InputDecoration(
+                  labelText: 'Nome',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                validator: (nome) {
+                  if (nome == null || nome.isEmpty || nome == '') {
+                    return 'Nome é obrigatório.';
+                  }
+                  return null;
+                },
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 5),
-            ),
-            TextField(
-              controller: _telefoneController,
-              onSubmitted: (_) => _submitForm(),
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [maskFormatter],
-              decoration: InputDecoration(
-                labelText: 'Telefone',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 5),
               ),
-            ),
-            Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateColor.resolveWith((states) => Colors.blue),
-                    shape: MaterialStateProperty.resolveWith(
-                      (states) => RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+              TextFormField(
+                controller: _telefoneController,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [maskFormatter],
+                decoration: InputDecoration(
+                  labelText: 'Telefone',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                validator: (telefone) {
+                  if (telefone == null || telefone.isEmpty || telefone == '') {
+                    return 'Telefone é obrigatório.';
+                  }
+                  return null;
+                },
+              ),
+              Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => Colors.blue),
+                      shape: MaterialStateProperty.resolveWith(
+                        (states) => RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
                     ),
-                  ),
-                  child: Text(
-                    'Salvar',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Poppins'
+                    child: Text(
+                      'Salvar',
+                      style:
+                          TextStyle(color: Colors.white, fontFamily: 'Poppins'),
                     ),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _submitForm();
+                      }
+                    },
                   ),
-                  onPressed: _submitForm,
-                ),
-              ],
-            )
-          ],
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
