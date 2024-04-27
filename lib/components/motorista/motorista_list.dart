@@ -49,7 +49,7 @@ class MotoristaList extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(6),
                       child: FittedBox(
-                        child: Text(tr.codigo.toString()),
+                        child: Text(tr.nome[0]),
                       ),
                     ),
                   ),

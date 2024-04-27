@@ -67,6 +67,11 @@ class _MotoristaFormState extends State<MotoristaForm> {
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateColor.resolveWith((states) => Colors.blue),
+                    shape: MaterialStateProperty.resolveWith(
+                      (states) => RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
                   ),
                   child: Text(
                     'Salvar',

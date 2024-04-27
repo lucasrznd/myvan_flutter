@@ -30,7 +30,7 @@ class CardPequeno extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(padding: EdgeInsets.symmetric(vertical: 2)),
+            Padding(padding: EdgeInsets.symmetric(vertical: 3)),
             Column(
               children: [
                 Text(

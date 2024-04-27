@@ -35,7 +35,7 @@ class _TelaMotoristaState extends State<TelaMotorista> {
     print(novoMotorista);
   }
 
-  _openTransactionFormModal(BuildContext context) {
+  _openFormModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
       builder: (_) {
@@ -46,7 +46,18 @@ class _TelaMotoristaState extends State<TelaMotorista> {
 
   @override
   Widget build(BuildContext context) {
-    final appBar = CustomAppBar(title: 'Motoristas');
+    final appBar = AppBar(
+      title: Text('Motoristas'),
+      foregroundColor: Colors.white,
+      backgroundColor: Colors.blue.shade300,
+      centerTitle: true,
+      actions: [
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _openFormModal(context),
+        ),
+      ],
+    );
 
     final availableHeight = MediaQuery.of(context).size.height -
         appBar.preferredSize.height -
@@ -61,16 +72,21 @@ class _TelaMotoristaState extends State<TelaMotorista> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: () => _openTransactionFormModal(context),
-                  child: Icon(Icons.add),
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => Colors.blue.shade300,
-                      ),
-                      foregroundColor: MaterialStateColor.resolveWith(
-                          (states) => Colors.white)),
-                ),
+                // ElevatedButton(
+                //   onPressed: () => _openFormModal(context),
+                //   child: Icon(Icons.add),
+                //   style: ButtonStyle(
+                //       backgroundColor: MaterialStateColor.resolveWith(
+                //         (states) => Colors.blue.shade300,
+                //       ),
+                //       shape: MaterialStateProperty.resolveWith(
+                //         (states) => RoundedRectangleBorder(
+                //           borderRadius: BorderRadius.circular(10),
+                //         ),
+                //       ),
+                //       foregroundColor: MaterialStateColor.resolveWith(
+                //           (states) => Colors.white)),
+                // ),
               ],
             ),
             Container(
@@ -83,6 +99,13 @@ class _TelaMotoristaState extends State<TelaMotorista> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => _openFormModal(context),
+        backgroundColor: Colors.blue.shade300,
+        foregroundColor: Colors.white,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
