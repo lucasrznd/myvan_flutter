@@ -15,7 +15,11 @@ class MotoristaList extends StatelessWidget {
                 SizedBox(height: 20),
                 Text(
                   'Nenhum motorista encontrado.',
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
                 SizedBox(height: 20),
                 Container(

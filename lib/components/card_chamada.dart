@@ -31,7 +31,11 @@ class CardExample extends StatelessWidget {
             child: ListTile(
               title: Text(
                 'CHAMADA IDA',
-                style: TextStyle(color: Colors.white, fontSize: 30),
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  color: Colors.white,
+                  fontSize: 30,
+                ),
               ),
               leading: SizedBox(
                 width: 60, // Defina o tamanho desejado para o ícone

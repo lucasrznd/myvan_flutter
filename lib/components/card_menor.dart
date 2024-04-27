@@ -37,6 +37,8 @@ class CardPequeno extends StatelessWidget {
                   titulo,
                   style: TextStyle(
                     color: Colors.white,
+                    fontFamily: 'Poppins',
+                    fontSize: 12,
                   ),
                 )
               ],

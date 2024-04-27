@@ -70,7 +70,10 @@ class _MotoristaFormState extends State<MotoristaForm> {
                   ),
                   child: Text(
                     'Salvar',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Poppins'
+                    ),
                   ),
                   onPressed: _submitForm,
                 ),
