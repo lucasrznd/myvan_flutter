@@ -21,7 +21,7 @@ class MotoristaList extends StatelessWidget {
                 Container(
                   height: constraints.maxHeight * 0.6,
                   child: Image.asset(
-                    'assets/app/waiting.png',
+                    'assets/app/warning.png',
                     fit: BoxFit.cover,
                   ),
                 ),
