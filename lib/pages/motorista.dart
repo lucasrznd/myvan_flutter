@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:myvan_flutter/components/custom_app_bar.dart';
 import 'package:myvan_flutter/components/motorista/motorista_form.dart';
@@ -69,26 +68,6 @@ class _TelaMotoristaState extends State<TelaMotorista> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // ElevatedButton(
-                //   onPressed: () => _openFormModal(context),
-                //   child: Icon(Icons.add),
-                //   style: ButtonStyle(
-                //       backgroundColor: MaterialStateColor.resolveWith(
-                //         (states) => Colors.blue.shade300,
-                //       ),
-                //       shape: MaterialStateProperty.resolveWith(
-                //         (states) => RoundedRectangleBorder(
-                //           borderRadius: BorderRadius.circular(10),
-                //         ),
-                //       ),
-                //       foregroundColor: MaterialStateColor.resolveWith(
-                //           (states) => Colors.white)),
-                // ),
-              ],
-            ),
             Container(
               height: availableHeight * 0.75,
               child: MotoristaList(

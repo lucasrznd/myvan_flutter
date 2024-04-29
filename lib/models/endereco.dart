@@ -5,10 +5,11 @@ class Endereco {
   final int numero;
   final String cidade;
 
-  Endereco(
-      {required this.codigo,
-      required this.rua,
-      required this.bairro,
-      required this.numero,
-      required this.cidade});
+  Endereco({
+    required this.codigo,
+    required this.rua,
+    required this.bairro,
+    required this.numero,
+    required this.cidade,
+  });
 }

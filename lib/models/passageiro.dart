@@ -6,9 +6,10 @@ class Passageiro {
   final String telefone;
   final Endereco endereco;
 
-  Passageiro(
-      {required this.codigo,
-      required this.nome,
-      required this.telefone,
-      required this.endereco});
+  Passageiro({
+    required this.codigo,
+    required this.nome,
+    required this.telefone,
+    required this.endereco,
+  });
 }
