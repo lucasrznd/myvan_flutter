@@ -1,31 +1,32 @@
 import 'dart:math';
-import 'package:flutter/material.dart';
-import 'package:myvan_flutter/components/motorista/motorista_form.dart';
-import 'package:myvan_flutter/components/motorista/motorista_list.dart';
-import 'package:myvan_flutter/models/motorista.dart';
 
-class TelaMotorista extends StatefulWidget {
-  const TelaMotorista({super.key});
+import 'package:flutter/material.dart';
+import 'package:myvan_flutter/components/tipo_veiculo/tp_veiculo_form.dart';
+import 'package:myvan_flutter/components/tipo_veiculo/tp_veiculo_list.dart';
+import 'package:myvan_flutter/models/tipo_veiculo.dart';
+
+class TipoVeiculoPage extends StatefulWidget {
+  const TipoVeiculoPage({super.key});
 
   @override
-  State<TelaMotorista> createState() => _TelaMotoristaState();
+  State<TipoVeiculoPage> createState() => _TipoVeiculoPageState();
 }
 
-class _TelaMotoristaState extends State<TelaMotorista> {
-  List<Motorista> motoristas = [];
+class _TipoVeiculoPageState extends State<TipoVeiculoPage> {
+  final List<TipoVeiculo> _tiposVeiculos = [];
 
-  deleteMotorista(int codigo) {
+  void deleteTipoVeiculo(int codigo) {
     setState(() {
-      motoristas.removeWhere((mt) => mt.codigo == codigo);
+      _tiposVeiculos.removeWhere((mt) => mt.codigo == codigo);
     });
   }
 
-  _salvarMotorista(String nome, String telefone) {
-    final novoMotorista = Motorista(
-        codigo: Random().nextInt(150), nome: nome, telefone: telefone);
+  _salvarTipoVeiculo(String descricao) {
+    final novoTipoVeiculo =
+        TipoVeiculo(codigo: Random().nextInt(150), descricao: descricao);
 
     setState(() {
-      motoristas.add(novoMotorista);
+      _tiposVeiculos.add(novoTipoVeiculo);
     });
 
     Navigator.of(context).pop();
@@ -35,7 +36,7 @@ class _TelaMotoristaState extends State<TelaMotorista> {
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return MotoristaForm(_salvarMotorista);
+        return TipoVeiculoForm(_salvarTipoVeiculo);
       },
     );
   }
@@ -43,7 +44,7 @@ class _TelaMotoristaState extends State<TelaMotorista> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: const Text('Motoristas'),
+      title: const Text('Tipos de Veiculos'),
       foregroundColor: Colors.white,
       backgroundColor: Colors.blue.shade300,
       centerTitle: true,
@@ -65,11 +66,11 @@ class _TelaMotoristaState extends State<TelaMotorista> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            SizedBox(
+            Container(
               height: availableHeight * 0.75,
-              child: MotoristaList(
-                motoristas,
-                deleteMotorista,
+              child: TipoVeiculoList(
+                _tiposVeiculos,
+                deleteTipoVeiculo,
               ),
             ),
           ],
