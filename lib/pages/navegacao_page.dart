@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:myvan_flutter/pages/home.dart';
 import 'package:myvan_flutter/pages/motorista.dart';
+import 'package:myvan_flutter/pages/tipo_veiculo.dart';
 
 class NavegacaoPage extends StatefulWidget {
   const NavegacaoPage({super.key});
@@ -34,8 +35,7 @@ class _NavegacaoPageState extends State<NavegacaoPage> {
         children: [
           Home(),
           TelaMotorista(),
-          Container(
-              color: Colors.orange, child: Center(child: Text('Viagens'))),
+          TipoVeiculoPage(),
           Container(
               color: Colors.purple,
               child: Center(child: Text('Configurações'))),
@@ -74,8 +74,8 @@ class _NavegacaoPageState extends State<NavegacaoPage> {
                 text: 'Motoristas',
               ),
               GButton(
-                icon: Icons.add_location_alt_outlined,
-                text: 'Viagens',
+                icon: Icons.car_repair,
+                text: 'Tipo Veiculo',
               ),
               GButton(
                 icon: Icons.settings,
