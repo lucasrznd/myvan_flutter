@@ -13,19 +13,25 @@ class VeiculoForm extends StatefulWidget {
 
 class _VeiculoFormState extends State<VeiculoForm> {
   final _formKey = GlobalKey<FormState>();
-  final _tipoVeiculoController = TextEditingController();
+  String _tipoVeiculoSelecionado = "Van";
   final _placaController = TextEditingController();
   final _corController = TextEditingController();
   final _capacidadePassageirosController = TextEditingController();
 
   _submitForm() {
-    final tipoVeiculo = _tipoVeiculoController.text;
+    final tipoVeiculo = _tipoVeiculoSelecionado;
 
     if (tipoVeiculo.isEmpty || tipoVeiculo.isEmpty) {
       return;
     }
 
     widget.onSubmit(tipoVeiculo);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _tipoVeiculoSelecionado = "Van";
   }
 
   @override
@@ -38,10 +44,20 @@ class _VeiculoFormState extends State<VeiculoForm> {
           key: _formKey,
           child: Column(
             children: <Widget>[
-              const Row(
+              Row(
                 children: [
                   Expanded(
-                    child: DropDownCustom(),
+                    child: DropdownPersonalizado(
+                      items: const ["Van", "Carro"],
+                      hint: "Selecione uma opção",
+                      initialValue:
+                          _tipoVeiculoSelecionado, // Always use initial value
+                      onChanged: (newValue) {
+                        setState(() {
+                          _tipoVeiculoSelecionado = newValue!;
+                        });
+                      },
+                    ),
                   ),
                 ],
               ),

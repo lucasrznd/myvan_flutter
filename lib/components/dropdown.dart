@@ -1,38 +1,57 @@
 import 'package:flutter/material.dart';
 
-const List<String> list = <String>['Van', 'Carro'];
+class DropdownPersonalizado extends StatefulWidget {
+  final List<String> items; // Lista de itens do menu suspenso
+  final String hint; // Texto de sugestão
+  final String? value; // Valor selecionado atualmente (nullable)
+  final Function(String?)
+      onChanged; // Função de callback para lidar com a mudança de seleção
+  final String initialValue; // Initial value for the dropdown
 
-class DropDownCustom extends StatefulWidget {
-  const DropDownCustom({super.key});
+  const DropdownPersonalizado({
+    Key? key,
+    required this.items,
+    required this.hint,
+    this.value,
+    required this.onChanged,
+    required this.initialValue,
+  }) : super(key: key);
 
   @override
-  State<DropDownCustom> createState() => _DropDownCustomState();
+  State<DropdownPersonalizado> createState() => _DropdownPersonalizadoState();
 }
 
-class _DropDownCustomState extends State<DropDownCustom> {
-  String dropdownValue = list.first;
+class _DropdownPersonalizadoState extends State<DropdownPersonalizado> {
+  String? _selectedValue;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedValue = widget.initialValue; // Use only initialValue
+  }
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      value: dropdownValue,
-      onChanged: (String? newValue) {
-        setState(() {
-          dropdownValue = newValue!;
-          print(dropdownValue);
-        });
-      },
-      items: list.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
+      value: _selectedValue,
+      hint: Text(widget.hint),
+      items: widget.items
+          .map((item) => DropdownMenuItem<String>(
+                value: item,
+                child: Text(item),
+              ))
+          .toList(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
       ),
+      onChanged: (newValue) {
+        setState(() {
+          _selectedValue = newValue;
+          widget.onChanged(newValue);
+        });
+      },
     );
   }
 }
