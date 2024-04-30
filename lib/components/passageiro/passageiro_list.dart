@@ -5,7 +5,7 @@ class PassageiroList extends StatelessWidget {
   final List<Passageiro> passageiros;
   final void Function(int) onRemove;
 
-  PassageiroList(this.passageiros, this.onRemove);
+  const PassageiroList(this.passageiros, this.onRemove, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +13,8 @@ class PassageiroList extends StatelessWidget {
         ? LayoutBuilder(builder: (ctx, constraints) {
             return Column(
               children: <Widget>[
-                SizedBox(height: 20),
-                Text(
+                const SizedBox(height: 20),
+                const Text(
                   'Nenhum Passageiro encontrado.',
                   style: TextStyle(
                     fontFamily: 'Poppins',
@@ -22,8 +22,7 @@ class PassageiroList extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(height: 20),
-                Container(
+                SizedBox(
                   height: constraints.maxHeight * 0.6,
                   child: Image.asset(
                     'assets/app/warning.png',
@@ -40,7 +39,7 @@ class PassageiroList extends StatelessWidget {
 
               return Card(
                 elevation: 5,
-                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
                 child: ListTile(
                   leading: CircleAvatar(
                     radius: 30,
@@ -57,7 +56,7 @@ class PassageiroList extends StatelessWidget {
                   ),
                   subtitle: Text(tr.telefone),
                   trailing: IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: const Icon(Icons.delete),
                     onPressed: () => onRemove(tr.codigo),
                     color: Theme.of(context).errorColor,
                   ),
