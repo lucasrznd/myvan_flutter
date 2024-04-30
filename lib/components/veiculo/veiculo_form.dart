@@ -1,4 +1,6 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:myvan_flutter/components/dropdown.dart';
 
 class VeiculoForm extends StatefulWidget {
   final void Function(String) onSubmit;
@@ -12,11 +14,12 @@ class VeiculoForm extends StatefulWidget {
 class _VeiculoFormState extends State<VeiculoForm> {
   final _formKey = GlobalKey<FormState>();
   final _tipoVeiculoController = TextEditingController();
-  final _telefoneController = TextEditingController();
+  final _placaController = TextEditingController();
+  final _corController = TextEditingController();
+  final _capacidadePassageirosController = TextEditingController();
 
   _submitForm() {
     final tipoVeiculo = _tipoVeiculoController.text;
-    final telefone = _telefoneController.text;
 
     if (tipoVeiculo.isEmpty || tipoVeiculo.isEmpty) {
       return;
@@ -35,19 +38,60 @@ class _VeiculoFormState extends State<VeiculoForm> {
           key: _formKey,
           child: Column(
             children: <Widget>[
+              const Row(
+                children: [
+                  Expanded(
+                    child: DropDownCustom(),
+                  ),
+                ],
+              ),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
               TextFormField(
-                controller: _tipoVeiculoController,
+                controller: _placaController,
                 decoration: InputDecoration(
-                  labelText: 'Tipo do Veículo',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  label: const Text('Placa Veículo'),
+                ),
+                inputFormatters: [PlacaVeiculoInputFormatter()],
+                validator: (placa) {
+                  if (placa == null || placa.isEmpty || placa == '') {
+                    return 'Placa é obrigatória.';
+                  }
+                  return null;
+                },
+              ),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+              TextFormField(
+                controller: _corController,
+                decoration: InputDecoration(
+                  labelText: 'Cor',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                validator: (tipoVeiculo) {
-                  if (tipoVeiculo == null ||
-                      tipoVeiculo.isEmpty ||
-                      tipoVeiculo == '') {
-                    return 'Tipo do Veículo é obrigatório.';
+                validator: (cor) {
+                  if (cor == null || cor.isEmpty || cor == '') {
+                    return 'Cor é obrigatória.';
+                  }
+                  return null;
+                },
+              ),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+              TextFormField(
+                controller: _capacidadePassageirosController,
+                decoration: InputDecoration(
+                  labelText: 'Capacidade de Passageiros',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                validator: (capacidadePassageiros) {
+                  if (capacidadePassageiros == null ||
+                      capacidadePassageiros.isEmpty ||
+                      capacidadePassageiros == '') {
+                    return 'Capacidade de Passageiros é obrigatório.';
                   }
                   return null;
                 },
