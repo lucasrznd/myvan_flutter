@@ -5,15 +5,16 @@ class MotoristaList extends StatelessWidget {
   final List<Motorista> motoristas;
   final void Function(int) onRemove;
 
-  MotoristaList(this.motoristas, this.onRemove);
+  const MotoristaList(this.motoristas, this.onRemove, {super.key});
 
+  @override
   Widget build(BuildContext context) {
     return motoristas.isEmpty
         ? LayoutBuilder(builder: (ctx, constraints) {
             return Column(
               children: <Widget>[
-                SizedBox(height: 20),
-                Text(
+                const SizedBox(height: 20),
+                const Text(
                   'Nenhum motorista encontrado.',
                   style: TextStyle(
                     fontFamily: 'Poppins',
@@ -21,8 +22,8 @@ class MotoristaList extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(height: 20),
-                Container(
+                const SizedBox(height: 20),
+                SizedBox(
                   height: constraints.maxHeight * 0.6,
                   child: Image.asset(
                     'assets/app/warning.png',
@@ -39,7 +40,7 @@ class MotoristaList extends StatelessWidget {
 
               return Card(
                 elevation: 5,
-                margin: EdgeInsets.symmetric(
+                margin: const EdgeInsets.symmetric(
                   vertical: 8,
                   horizontal: 5,
                 ),
@@ -61,7 +62,7 @@ class MotoristaList extends StatelessWidget {
                     tr.telefone,
                   ),
                   trailing: IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: const Icon(Icons.delete),
                     onPressed: () => onRemove(tr.codigo),
                     color: Theme.of(context).colorScheme.error,
                   ),

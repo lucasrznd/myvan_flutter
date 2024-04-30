@@ -4,14 +4,14 @@ import 'package:myvan_flutter/components/motorista/motorista_form.dart';
 import 'package:myvan_flutter/components/motorista/motorista_list.dart';
 import 'package:myvan_flutter/models/motorista.dart';
 
-class TelaMotorista extends StatefulWidget {
-  const TelaMotorista({super.key});
+class MotoristaPage extends StatefulWidget {
+  const MotoristaPage({super.key});
 
   @override
-  State<TelaMotorista> createState() => _TelaMotoristaState();
+  State<MotoristaPage> createState() => _MotoristaPageState();
 }
 
-class _TelaMotoristaState extends State<TelaMotorista> {
+class _MotoristaPageState extends State<MotoristaPage> {
   List<Motorista> motoristas = [];
 
   deleteMotorista(int codigo) {

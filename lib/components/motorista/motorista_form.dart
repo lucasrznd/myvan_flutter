@@ -4,7 +4,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 class MotoristaForm extends StatefulWidget {
   final void Function(String, String) onSubmit;
 
-  MotoristaForm(this.onSubmit);
+  const MotoristaForm(this.onSubmit, {super.key});
 
   @override
   State<MotoristaForm> createState() => _MotoristaFormState();
@@ -26,7 +26,7 @@ class _MotoristaFormState extends State<MotoristaForm> {
     widget.onSubmit(nome, telefone);
   }
 
-  var maskFormatter = new MaskTextInputFormatter(
+  var maskFormatter = MaskTextInputFormatter(
       mask: '(##) # ####-####', type: MaskAutoCompletionType.lazy);
 
   @override
@@ -54,12 +54,13 @@ class _MotoristaFormState extends State<MotoristaForm> {
                   return null;
                 },
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.symmetric(vertical: 5),
               ),
               TextFormField(
                 controller: _telefoneController,
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 inputFormatters: [maskFormatter],
                 decoration: InputDecoration(
                   labelText: 'Telefone',
@@ -74,7 +75,7 @@ class _MotoristaFormState extends State<MotoristaForm> {
                   return null;
                 },
               ),
-              Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -88,7 +89,7 @@ class _MotoristaFormState extends State<MotoristaForm> {
                         ),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Salvar',
                       style:
                           TextStyle(color: Colors.white, fontFamily: 'Poppins'),
