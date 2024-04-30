@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:myvan_flutter/components/motorista/motorista_form.dart';
 import 'package:myvan_flutter/components/motorista/motorista_list.dart';
