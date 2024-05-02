@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:myvan_flutter/models/passageiro.dart';
+import 'package:myvan_flutter/models/veiculo.dart';
 
-class PassageiroList extends StatelessWidget {
-  final List<Passageiro> passageiros;
+class VeiculoList extends StatelessWidget {
+  final List<Veiculo> veiculos;
   final void Function(int) onRemove;
 
-  PassageiroList(this.passageiros, this.onRemove);
+  const VeiculoList(this.veiculos, this.onRemove, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return passageiros.isEmpty
+    return veiculos.isEmpty
         ? LayoutBuilder(builder: (ctx, constraints) {
             return Column(
               children: <Widget>[
-                SizedBox(height: 20),
-                Text(
-                  'Nenhum Passageiro encontrado.',
+                const SizedBox(height: 20),
+                const Text(
+                  'Nenhum veículo encontrado.',
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.bold,
@@ -34,32 +34,37 @@ class PassageiroList extends StatelessWidget {
             );
           })
         : ListView.builder(
-            itemCount: passageiros.length,
+            itemCount: veiculos.length,
             itemBuilder: ((context, index) {
-              final tr = passageiros[index];
+              final tr = veiculos[index];
 
               return Card(
                 elevation: 5,
-                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                margin: const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 5,
+                ),
                 child: ListTile(
                   leading: CircleAvatar(
                     radius: 30,
                     child: Padding(
                       padding: const EdgeInsets.all(6),
                       child: FittedBox(
-                        child: Text(tr.nome[0]),
+                        child: Text(tr.tipoVeiculo.descricao[0]),
                       ),
                     ),
                   ),
                   title: Text(
-                    tr.nome,
-                    style: Theme.of(context).textTheme.subtitle1,
+                    tr.tipoVeiculo.descricao,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  subtitle: Text(tr.telefone),
+                  subtitle: Text(
+                    tr.cor,
+                  ),
                   trailing: IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: const Icon(Icons.delete),
                     onPressed: () => onRemove(tr.codigo),
-                    color: Theme.of(context).errorColor,
+                    color: Theme.of(context).colorScheme.error,
                   ),
                 ),
               );

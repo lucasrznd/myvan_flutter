@@ -4,7 +4,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 class PassageiroForm extends StatefulWidget {
   final void Function(String, String, String, String, String, String) onSubmit;
 
-  PassageiroForm(this.onSubmit);
+  const PassageiroForm(this.onSubmit, {super.key});
 
   @override
   State<PassageiroForm> createState() => _PassageiroFormState();
@@ -69,7 +69,7 @@ class _PassageiroFormState extends State<PassageiroForm> {
                     return null;
                   },
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 TextFormField(
                   controller: _telefoneController,
                   keyboardType: TextInputType.phone,
@@ -89,7 +89,7 @@ class _PassageiroFormState extends State<PassageiroForm> {
                     return null;
                   },
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 TextFormField(
                   controller: _ruaController,
                   decoration: InputDecoration(
@@ -105,7 +105,7 @@ class _PassageiroFormState extends State<PassageiroForm> {
                     return null;
                   },
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 TextFormField(
                   controller: _numeroController,
                   keyboardType: TextInputType.number,
@@ -124,7 +124,7 @@ class _PassageiroFormState extends State<PassageiroForm> {
                     return null;
                   },
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 TextFormField(
                   controller: _bairroController,
                   decoration: InputDecoration(
@@ -142,7 +142,7 @@ class _PassageiroFormState extends State<PassageiroForm> {
                     return null;
                   },
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 TextFormField(
                   controller: _cidadeController,
                   decoration: InputDecoration(
@@ -160,7 +160,7 @@ class _PassageiroFormState extends State<PassageiroForm> {
                     return null;
                   },
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
@@ -171,7 +171,7 @@ class _PassageiroFormState extends State<PassageiroForm> {
                       ),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Salvar',
                     style:
                         TextStyle(color: Colors.white, fontFamily: 'Poppins'),

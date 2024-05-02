@@ -6,7 +6,7 @@ import 'package:myvan_flutter/pages/motorista.dart';
 import 'package:myvan_flutter/pages/tela_passageiro.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -16,7 +16,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Home'),
+      appBar: const CustomAppBar(title: 'Home'),
       body: ListView(
         children: [
           SizedBox(

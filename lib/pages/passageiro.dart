@@ -1,18 +1,18 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:myvan_flutter/components/passageiro/passageiro_form.dart';
-import 'package:myvan_flutter/components/passageiro/passageiro_lits.dart';
+import 'package:myvan_flutter/components/passageiro/passageiro_list.dart';
 import 'package:myvan_flutter/models/endereco.dart';
 import 'package:myvan_flutter/models/passageiro.dart';
 
-class TelaPassageiro extends StatefulWidget {
-  const TelaPassageiro({Key? key}) : super(key: key);
+class PassageiroPage extends StatefulWidget {
+  const PassageiroPage({super.key});
 
   @override
-  State<TelaPassageiro> createState() => _TelaPassageiroState();
+  State<PassageiroPage> createState() => _PassageiroPageState();
 }
 
-class _TelaPassageiroState extends State<TelaPassageiro> {
+class _PassageiroPageState extends State<PassageiroPage> {
   List<Passageiro> passageiros = [];
 
   void deletePassageiro(int codigo) {
@@ -41,8 +41,6 @@ class _TelaPassageiroState extends State<TelaPassageiro> {
     });
 
     Navigator.of(context).pop();
-
-    print(novoPassageiro);
   }
 
   void openFormModal(BuildContext context) {
@@ -59,13 +57,13 @@ class _TelaPassageiroState extends State<TelaPassageiro> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Passageiros'),
+      title: const Text('Passageiros'),
       foregroundColor: Colors.white,
       backgroundColor: Colors.blue.shade300,
       centerTitle: true,
       actions: [
         IconButton(
-          icon: Icon(Icons.add),
+          icon: const Icon(Icons.add),
           onPressed: () => openFormModal(context),
         ),
       ],
@@ -81,7 +79,7 @@ class _TelaPassageiroState extends State<TelaPassageiro> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
+            SizedBox(
               height: availableHeight * 0.75,
               child: PassageiroList(
                 passageiros,
@@ -92,10 +90,10 @@ class _TelaPassageiroState extends State<TelaPassageiro> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
         onPressed: () => openFormModal(context),
         backgroundColor: Colors.blue.shade300,
         foregroundColor: Colors.white,
+        child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

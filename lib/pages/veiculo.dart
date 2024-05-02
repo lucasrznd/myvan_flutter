@@ -1,31 +1,37 @@
 import 'dart:math';
-import 'package:flutter/material.dart';
-import 'package:myvan_flutter/components/motorista/motorista_form.dart';
-import 'package:myvan_flutter/components/motorista/motorista_list.dart';
-import 'package:myvan_flutter/models/motorista.dart';
 
-class MotoristaPage extends StatefulWidget {
-  const MotoristaPage({super.key});
+import 'package:flutter/material.dart';
+import 'package:myvan_flutter/components/veiculo/veiculo_form.dart';
+import 'package:myvan_flutter/components/veiculo/veiculo_list.dart';
+import 'package:myvan_flutter/models/tipo_veiculo.dart';
+import 'package:myvan_flutter/models/veiculo.dart';
+
+class VeiculoPage extends StatefulWidget {
+  const VeiculoPage({super.key});
 
   @override
-  State<MotoristaPage> createState() => _MotoristaPageState();
+  State<VeiculoPage> createState() => _VeiculoPageState();
 }
 
-class _MotoristaPageState extends State<MotoristaPage> {
-  List<Motorista> motoristas = [];
+class _VeiculoPageState extends State<VeiculoPage> {
+  final List<Veiculo> _veiculos = [];
 
-  deleteMotorista(int codigo) {
+  void deleteVeiculo(int codigo) {
     setState(() {
-      motoristas.removeWhere((mt) => mt.codigo == codigo);
+      _veiculos.removeWhere((v) => v.codigo == codigo);
     });
   }
 
-  _salvarMotorista(String nome, String telefone) {
-    final novoMotorista = Motorista(
-        codigo: Random().nextInt(150), nome: nome, telefone: telefone);
+  _salvarVeiculo(String descricao) {
+    final novoVeiculo = Veiculo(
+        codigo: Random().nextInt(150),
+        tipoVeiculo: TipoVeiculo(codigo: 1, descricao: 'tst'),
+        cor: 'Branca',
+        placa: 'SJG-121',
+        capacidadePassageiros: 16);
 
     setState(() {
-      motoristas.add(novoMotorista);
+      _veiculos.add(novoVeiculo);
     });
 
     Navigator.of(context).pop();
@@ -35,7 +41,7 @@ class _MotoristaPageState extends State<MotoristaPage> {
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return MotoristaForm(_salvarMotorista);
+        return VeiculoForm(_salvarVeiculo);
       },
     );
   }
@@ -43,7 +49,7 @@ class _MotoristaPageState extends State<MotoristaPage> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: const Text('Motoristas'),
+      title: const Text('Veiculos'),
       foregroundColor: Colors.white,
       backgroundColor: Colors.blue.shade300,
       centerTitle: true,
@@ -67,9 +73,9 @@ class _MotoristaPageState extends State<MotoristaPage> {
           children: <Widget>[
             SizedBox(
               height: availableHeight * 0.75,
-              child: MotoristaList(
-                motoristas,
-                deleteMotorista,
+              child: VeiculoList(
+                _veiculos,
+                deleteVeiculo,
               ),
             ),
           ],
