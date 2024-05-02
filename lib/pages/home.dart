@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:myvan_flutter/components/card_menor.dart';
+import 'package:myvan_flutter/components/pagina_inicial/card_menor.dart';
 import 'package:myvan_flutter/components/custom_app_bar.dart';
-import 'package:myvan_flutter/components/card_chamada.dart';
-import 'package:myvan_flutter/pages/passageiro.dart'; // Importe a página para a qual você quer navegar
+import 'package:myvan_flutter/components/pagina_inicial/card_chamada.dart';
+import 'package:myvan_flutter/pages/motorista.dart';
+import 'package:myvan_flutter/pages/tela_passageiro.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -22,43 +23,57 @@ class _HomeState extends State<Home> {
             height: 200,
             child: Image.asset('assets/app/icon.png'),
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        PassageiroPage()), // Substitua OutraPagina() pela sua página de destino
-              );
-            },
-            child: const CardExample(),
+          CardExample(
+            texto: 'CHAMADA IDA',
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 15),
+          const SizedBox(
+            height: 15,
           ),
-          const CardExample(),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CardPequeno(
-                  titulo: 'Motorista',
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                ),
-                CardPequeno(
-                  titulo: 'Passageiros',
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                ),
-                CardPequeno(
-                  titulo: 'Viagens',
-                )
-              ],
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: CardExample(
+              texto: 'CHAMADA VOLTA',
             ),
+          ),
+          const SizedBox(height: 30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TelaMotorista(),
+                    ),
+                  );
+                },
+                child: CardPequeno(
+                  titulo: 'Motorista',
+                  imagem: 'assets/app/icone_motorista.png',
+                ),
+              ),
+              const SizedBox(width: 20),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TelaPassageiro(),
+                    ),
+                  );
+                },
+                child: CardPequeno(
+                  titulo: 'Passageiros',
+                  imagem: 'assets/app/icone_passageiro.png',
+                ),
+              ),
+              const SizedBox(width: 20),
+              CardPequeno(
+                titulo: 'Viagens',
+                imagem: 'assets/app/icone_viagens.png',
+              ),
+            ],
           ),
         ],
       ),
