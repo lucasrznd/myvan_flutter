@@ -3,7 +3,7 @@ import 'package:myvan_flutter/components/pagina_inicial/card_menor.dart';
 import 'package:myvan_flutter/components/custom_app_bar.dart';
 import 'package:myvan_flutter/components/pagina_inicial/card_chamada.dart';
 import 'package:myvan_flutter/pages/motorista.dart';
-import 'package:myvan_flutter/pages/tela_passageiro.dart';
+import 'package:myvan_flutter/pages/passageiro.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -23,14 +23,14 @@ class _HomeState extends State<Home> {
             height: 200,
             child: Image.asset('assets/app/icon.png'),
           ),
-          CardExample(
+          const CardExample(
             texto: 'CHAMADA IDA',
           ),
           const SizedBox(
             height: 15,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12),
             child: CardExample(
               texto: 'CHAMADA VOLTA',
             ),
@@ -44,7 +44,7 @@ class _HomeState extends State<Home> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => TelaMotorista(),
+                      builder: (context) => const MotoristaPage(),
                     ),
                   );
                 },
@@ -59,7 +59,7 @@ class _HomeState extends State<Home> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => TelaPassageiro(),
+                      builder: (context) => const PassageiroPage(),
                     ),
                   );
                 },
