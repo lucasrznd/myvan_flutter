@@ -37,11 +37,11 @@ class _MyHomePageState extends State<MyHomePage> {
       theme: ThemeData(
         inputDecorationTheme: InputDecorationTheme(
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.blue),
+            borderSide: const BorderSide(color: Colors.blue),
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           titleTextStyle: TextStyle(
             fontFamily: 'Poppins',
             fontSize: 20,
@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: NavegacaoPage(),
+      home: const NavegacaoPage(),
     );
   }
 }

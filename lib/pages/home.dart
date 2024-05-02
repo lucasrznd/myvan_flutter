@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:myvan_flutter/components/card_chamada.dart';
 import 'package:myvan_flutter/components/card_menor.dart';
 import 'package:myvan_flutter/components/custom_app_bar.dart';
-import 'package:myvan_flutter/components/card_chamada.dart';
-import 'package:myvan_flutter/pages/passageiro.dart'; // Importe a página para a qual você quer navegar
+import 'package:myvan_flutter/pages/passageiro.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   const Home({super.key});
 
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,9 +21,7 @@ class _HomeState extends State<Home> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        PassageiroPage()), // Substitua OutraPagina() pela sua página de destino
+                MaterialPageRoute(builder: (context) => const PassageiroPage()),
               );
             },
             child: const CardExample(),
@@ -56,7 +49,7 @@ class _HomeState extends State<Home> {
                 ),
                 CardPequeno(
                   titulo: 'Viagens',
-                )
+                ),
               ],
             ),
           ),

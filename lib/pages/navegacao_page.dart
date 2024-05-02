@@ -13,7 +13,6 @@ class NavegacaoPage extends StatefulWidget {
 
 class _NavegacaoPageState extends State<NavegacaoPage> {
   int _selectedIndex = 0;
-
   final PageController _pageController = PageController();
 
   void _onItemTapped(int index) {
@@ -22,7 +21,7 @@ class _NavegacaoPageState extends State<NavegacaoPage> {
     });
     _pageController.animateToPage(
       index,
-      duration: Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 400),
       curve: Curves.ease,
     );
   }
