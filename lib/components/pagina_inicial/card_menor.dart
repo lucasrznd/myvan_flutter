@@ -4,7 +4,7 @@ class CardPequeno extends StatelessWidget {
   final String titulo;
   final String imagem;
 
-  CardPequeno({required this.titulo, required this.imagem});
+  const CardPequeno({required this.titulo, required this.imagem, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +20,10 @@ class CardPequeno extends StatelessWidget {
               imagem,
               height: 50, // Defina a altura desejada para a imagem
             ),
-            Padding(padding: EdgeInsets.symmetric(vertical: 3)),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 3)),
             Text(
               titulo,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontFamily: 'Poppins',
                 fontSize: 12,
