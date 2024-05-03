@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myvan_flutter/pages/navegacao_page.dart';
+import 'package:myvan_flutter/components/bottom_navigation/fab_tabs.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,29 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'myVAN',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue.shade300),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'myVAN'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+      showSemanticsDebugger: false,
       theme: ThemeData(
         inputDecorationTheme: InputDecorationTheme(
           focusedBorder: OutlineInputBorder(
@@ -48,9 +26,9 @@ class _MyHomePageState extends State<MyHomePage> {
             fontWeight: FontWeight.w400,
           ),
         ),
+        primaryColor: Colors.blue.shade300,
       ),
-      debugShowCheckedModeBanner: false,
-      home: const NavegacaoPage(),
+      home: FabTabs(selectedIndex: 0),
     );
   }
 }
