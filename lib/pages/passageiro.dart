@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:myvan_flutter/components/drawer/sidemenu.dart';
 import 'package:myvan_flutter/components/passageiro/passageiro_form.dart';
 import 'package:myvan_flutter/components/passageiro/passageiro_list.dart';
 import 'package:myvan_flutter/models/endereco.dart';
@@ -74,6 +75,7 @@ class _PassageiroPageState extends State<PassageiroPage> {
         MediaQuery.of(context).padding.top;
 
     return Scaffold(
+      drawer: const SideMenu(),
       appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
