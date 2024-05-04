@@ -109,6 +109,7 @@ class _PassageiroFormState extends State<PassageiroForm> {
                 TextFormField(
                   controller: _numeroController,
                   keyboardType: TextInputType.number,
+                  maxLength: 5,
                   decoration: InputDecoration(
                     labelText: 'Número',
                     border: OutlineInputBorder(

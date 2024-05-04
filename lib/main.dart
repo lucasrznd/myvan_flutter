@@ -11,12 +11,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      showSemanticsDebugger: false,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         inputDecorationTheme: InputDecorationTheme(
           focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.blue),
+            borderSide: BorderSide(color: Colors.blue.shade300),
             borderRadius: BorderRadius.circular(10),
+          ),
+          floatingLabelStyle: const TextStyle(
+            color: Color.fromARGB(255, 46, 46, 46),
           ),
         ),
         appBarTheme: const AppBarTheme(
