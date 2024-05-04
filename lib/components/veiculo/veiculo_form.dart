@@ -1,5 +1,6 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:myvan_flutter/components/dropdown.dart';
 
 class VeiculoForm extends StatefulWidget {
@@ -103,6 +104,11 @@ class _VeiculoFormState extends State<VeiculoForm> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
+                keyboardType: TextInputType.number,
+                maxLength: 2,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ], // Only numbers can be entered
                 validator: (capacidadePassageiros) {
                   if (capacidadePassageiros == null ||
                       capacidadePassageiros.isEmpty ||

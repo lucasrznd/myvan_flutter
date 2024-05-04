@@ -22,6 +22,7 @@ class PassageiroList extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
+                const SizedBox(height: 20),
                 SizedBox(
                   height: constraints.maxHeight * 0.6,
                   child: Image.asset(

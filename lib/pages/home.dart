@@ -43,7 +43,7 @@ class Home extends StatelessWidget {
                           builder: (context) => FabTabs(selectedIndex: 2)))
                 },
                 child: const CardPequeno(
-                  titulo: 'Motorista',
+                  titulo: 'Motoristas',
                   imagem: 'assets/app/icone_motorista.png',
                 ),
               ),

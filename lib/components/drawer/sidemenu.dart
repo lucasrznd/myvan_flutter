@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:myvan_flutter/components/bottom_navigation/fab_tabs.dart';
-import 'package:myvan_flutter/pages/tipo_veiculo.dart';
 
 class SideMenu extends StatefulWidget {
   const SideMenu({super.key});
@@ -13,12 +12,11 @@ class _SideMenuState extends State<SideMenu> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Colors.white,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           SizedBox(
-            height: 90,
+            height: 100,
             child: DrawerHeader(
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
@@ -26,11 +24,11 @@ class _SideMenuState extends State<SideMenu> {
                   bottomRight: Radius.circular(1.0),
                 ),
                 color: Colors.blue.shade300,
-                image: const DecorationImage(
-                  image: AssetImage('assets/app/icon_negativo.png'),
-                ),
               ),
-              child: null,
+              child: Image.asset(
+                'assets/app/icon_negativo.png',
+                alignment: Alignment.centerLeft,
+              ),
             ),
           ),
           ListTile(
