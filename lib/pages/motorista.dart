@@ -1,9 +1,9 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:myvan_flutter/components/drawer/sidemenu.dart';
 import 'package:myvan_flutter/components/motorista/motorista_form.dart';
 import 'package:myvan_flutter/components/motorista/motorista_list.dart';
 import 'package:myvan_flutter/models/motorista.dart';
+import 'package:myvan_flutter/repositories/motorista_repository.dart';
 
 class MotoristaPage extends StatefulWidget {
   const MotoristaPage({super.key});
@@ -13,36 +13,56 @@ class MotoristaPage extends StatefulWidget {
 }
 
 class _MotoristaPageState extends State<MotoristaPage> {
-  List<Motorista> motoristas = [];
+  late Future<List<Motorista>> motoristas;
+  late Motorista motorista;
+  late MotoristaRepository repository = MotoristaRepository();
 
-  deleteMotorista(int codigo) {
-    setState(() {
-      motoristas.removeWhere((mt) => mt.codigo == codigo);
-    });
+  @override
+  void initState() {
+    super.initState();
+    motoristas = selectAll();
   }
 
-  _salvarMotorista(String nome, String telefone) {
-    final novoMotorista = Motorista(
-        codigo: Random().nextInt(150), nome: nome, telefone: telefone);
+  Future<List<Motorista>> selectAll() async {
+    return await repository.selectAll();
+  }
+
+  _salvarMotorista(Motorista motorista) {
+    repository.insert(motorista);
 
     setState(() {
-      motoristas.add(novoMotorista);
+      motoristas = selectAll();
     });
 
     Navigator.of(context).pop();
   }
 
-  _openFormModal(BuildContext context) {
+  _editarMotorista(Motorista motorista) {
+    setState(() {
+      _openFormModal(context, motorista);
+    });
+  }
+
+  _deleteMotorista(int codigo) async {
+    await repository.delete(codigo);
+    setState(() {
+      motoristas = selectAll();
+    });
+  }
+
+  _openFormModal(BuildContext context, Motorista motorista) {
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return MotoristaForm(_salvarMotorista);
+        return MotoristaForm(_salvarMotorista, motorista);
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    motorista = Motorista();
+
     final appBar = AppBar(
       title: const Text('Motoristas'),
       foregroundColor: Colors.white,
@@ -51,7 +71,7 @@ class _MotoristaPageState extends State<MotoristaPage> {
       actions: [
         IconButton(
           icon: const Icon(Icons.add),
-          onPressed: () => _openFormModal(context),
+          onPressed: () => _openFormModal(context, motorista),
         ),
       ],
     );
@@ -68,17 +88,18 @@ class _MotoristaPageState extends State<MotoristaPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             SizedBox(
-              height: availableHeight * 0.75,
+              height: availableHeight * 0.6,
               child: MotoristaList(
                 motoristas,
-                deleteMotorista,
+                _editarMotorista,
+                _deleteMotorista,
               ),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _openFormModal(context),
+        onPressed: () => _openFormModal(context, motorista),
         backgroundColor: Colors.blue.shade300,
         foregroundColor: Colors.white,
         child: const Icon(Icons.add),

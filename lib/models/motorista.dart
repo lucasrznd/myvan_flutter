@@ -1,13 +1,15 @@
 class Motorista {
+  int? codigo;
+  String nome;
+  String telefone;
 
-  final int codigo;
-  final String nome;
-  final String telefone;
+  Motorista({this.codigo, this.nome = '', this.telefone = ''});
 
-  Motorista({
-    required this.codigo,
-    required this.nome,
-    required this.telefone
-  });
-
+  Map<String, dynamic> toMap() {
+    return {
+      'codigo': codigo,
+      'nome': nome,
+      'telefone': telefone,
+    };
+  }
 }
