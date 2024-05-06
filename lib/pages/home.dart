@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:myvan_flutter/components/bottom_navigation/fab_tabs.dart';
 import 'package:myvan_flutter/components/drawer/sidemenu.dart';
-import 'package:myvan_flutter/components/pagina_inicial/card_menor.dart';
 import 'package:myvan_flutter/components/custom_app_bar.dart';
+import 'package:myvan_flutter/components/pagina_inicial/card_menor.dart';
 import 'package:myvan_flutter/components/pagina_inicial/card_chamada.dart';
+import 'package:myvan_flutter/models/passageiro.dart';
+import 'package:myvan_flutter/pages/viagem.dart';
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+  const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +21,36 @@ class Home extends StatelessWidget {
             height: 200,
             child: Image.asset('assets/app/icon.png'),
           ),
-          const CardExample(
-            texto: 'CHAMADA IDA',
+          InkWell(
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FabTabs(selectedIndex: 5),
+                ),
+              );
+            },
+            child: const CardExample(
+              texto: 'CHAMADA IDA',
+            ),
           ),
           const SizedBox(
             height: 15,
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: CardExample(
-              texto: 'CHAMADA VOLTA',
+          InkWell(
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ViagemPage(),
+                ),
+              );
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              child: const CardExample(
+                texto: 'CHAMADA VOLTA',
+              ),
             ),
           ),
           const SizedBox(height: 30),
@@ -36,11 +58,13 @@ class Home extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               InkWell(
-                onTap: () => {
+                onTap: () {
                   Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => FabTabs(selectedIndex: 2)))
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FabTabs(selectedIndex: 2),
+                    ),
+                  );
                 },
                 child: const CardPequeno(
                   titulo: 'Motoristas',
@@ -49,11 +73,13 @@ class Home extends StatelessWidget {
               ),
               const SizedBox(width: 20),
               InkWell(
-                onTap: () => {
+                onTap: () {
                   Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => FabTabs(selectedIndex: 1)))
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FabTabs(selectedIndex: 1),
+                    ),
+                  );
                 },
                 child: const CardPequeno(
                   titulo: 'Passageiros',
