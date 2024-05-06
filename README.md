@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="300" height="300" src="https://raw.githubusercontent.com/lucasrznd/myvan_flutter/main/assets/app/icon.png">
+  <img width="350" height="150" src="https://raw.githubusercontent.com/lucasrznd/myvan_flutter/main/assets/app/logo_myvan.png">
 </p>
 
 O myVAN é um aplicativo desenvolvido com o objetivo de auxiliar motoristas de van que transportam alunos diariamente para a faculdade. Ele permite que os motoristas controlem a presença dos passageiros em suas viagens, facilitando o gerenciamento das rotas e garantindo uma comunicação eficiente com os alunos.
