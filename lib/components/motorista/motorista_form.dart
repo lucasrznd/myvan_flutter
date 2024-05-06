@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:myvan_flutter/models/motorista.dart';
 
 class MotoristaForm extends StatefulWidget {
-  final void Function(String, String) onSubmit;
+  final Motorista motorista;
+  final void Function(Motorista) onSubmit;
 
-  const MotoristaForm(this.onSubmit, {super.key});
+  const MotoristaForm(this.onSubmit, this.motorista, {super.key});
 
   @override
   State<MotoristaForm> createState() => _MotoristaFormState();
@@ -12,18 +14,9 @@ class MotoristaForm extends StatefulWidget {
 
 class _MotoristaFormState extends State<MotoristaForm> {
   final _formKey = GlobalKey<FormState>();
-  final _nomeController = TextEditingController();
-  final _telefoneController = TextEditingController();
 
   _submitForm() {
-    final nome = _nomeController.text;
-    final telefone = _telefoneController.text;
-
-    if (nome.isEmpty || telefone.isEmpty) {
-      return;
-    }
-
-    widget.onSubmit(nome, telefone);
+    widget.onSubmit(widget.motorista);
   }
 
   var maskFormatter = MaskTextInputFormatter(
@@ -40,7 +33,8 @@ class _MotoristaFormState extends State<MotoristaForm> {
           child: Column(
             children: <Widget>[
               TextFormField(
-                controller: _nomeController,
+                initialValue: widget.motorista.nome,
+                onChanged: (value) => widget.motorista.nome = value,
                 decoration: InputDecoration(
                   labelText: 'Nome',
                   border: OutlineInputBorder(
@@ -58,7 +52,8 @@ class _MotoristaFormState extends State<MotoristaForm> {
                 padding: EdgeInsets.symmetric(vertical: 5),
               ),
               TextFormField(
-                controller: _telefoneController,
+                initialValue: widget.motorista.telefone,
+                onChanged: (value) => widget.motorista.telefone = value,
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: true),
                 inputFormatters: [maskFormatter],
