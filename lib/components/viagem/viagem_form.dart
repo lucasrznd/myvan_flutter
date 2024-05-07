@@ -7,8 +7,13 @@ import 'package:myvan_flutter/models/tipo_veiculo.dart';
 import 'package:myvan_flutter/models/veiculo.dart';
 
 class ViagemForm extends StatefulWidget {
-  final void Function(Veiculo veiculo, Motorista motorista, DateTime data,
-      TipoViagem tipoViagem, String nomeViagem) onSubmit;
+  final void Function(
+    Veiculo veiculo,
+    Motorista motorista,
+    DateTime data,
+    TipoViagem tipoViagem,
+    String nomeViagem,
+  ) onSubmit;
 
   const ViagemForm(this.onSubmit, {Key? key}) : super(key: key);
 
@@ -33,14 +38,15 @@ class _ViagemFormState extends State<ViagemForm> {
 
       widget.onSubmit(
         Veiculo(
-            codigo: 01,
-            capacidadePassageiros: 23,
-            cor: 'Preta',
-            placa: 'BRA19A2',
-            tipoVeiculo: TipoVeiculo(codigo: 02, descricao: 'descricao')),
+          codigo: 01,
+          capacidadePassageiros: 23,
+          cor: 'Preta',
+          placa: 'BRA19A2',
+          tipoVeiculo: TipoVeiculo(codigo: 02, descricao: 'descricao'),
+        ),
         Motorista(codigo: 03, nome: 'Sergio', telefone: '43999990000'),
         _selectedDate!,
-        TipoViagem.IDA, // Aqui você usa uma constante do enum
+        TipoViagem.IDA,
         nomeViagem,
       );
 
@@ -51,9 +57,9 @@ class _ViagemFormState extends State<ViagemForm> {
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(), // Data inicial
-      firstDate: DateTime(2000), // Data mínima
-      lastDate: DateTime(2101), // Data máxima
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
     );
 
     if (pickedDate != null) {
@@ -76,16 +82,57 @@ class _ViagemFormState extends State<ViagemForm> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 TextFormField(
-                  controller: _veiculoController,
+                  controller: _nomeviagemController,
                   decoration: InputDecoration(
-                    labelText: 'Veículo',
+                    labelText: 'Nome da Viagem',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Veículo é obrigatório.';
+                      return 'Nome da Viagem é obrigatório.';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _tipoviagemController,
+                  decoration: InputDecoration(
+                    labelText: 'Tipo de Viagem',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Tipo de Viagem é obrigatório.';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  readOnly: true,
+                  controller: TextEditingController(
+                    text: _selectedDate == null
+                        ? ''
+                        : DateFormat('dd/MM/yyyy').format(_selectedDate!),
+                  ),
+                  decoration: InputDecoration(
+                    labelText: 'Data',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.calendar_today),
+                      onPressed: () => _selectDate(context),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (_selectedDate == null) {
+                      return 'Data é obrigatória.';
                     }
                     return null;
                   },
@@ -107,48 +154,17 @@ class _ViagemFormState extends State<ViagemForm> {
                   },
                 ),
                 const SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () => _selectDate(context),
-                        child: Text(
-                          _selectedDate == null
-                              ? 'Selecionar Data'
-                              : DateFormat('dd/MM/yyyy').format(_selectedDate!),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
                 TextFormField(
-                  controller: _tipoviagemController,
+                  controller: _veiculoController,
                   decoration: InputDecoration(
-                    labelText: 'Tipo de Viagem',
+                    labelText: 'Veículo',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Tipo de Viagem é obrigatório.';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  controller: _nomeviagemController,
-                  decoration: InputDecoration(
-                    labelText: 'Nome da Viagem',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Nome da Viagem é obrigatório.';
+                      return 'Veículo é obrigatório.';
                     }
                     return null;
                   },
