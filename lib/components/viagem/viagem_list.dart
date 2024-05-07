@@ -55,28 +55,15 @@ class ViagemList extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Veículo: ${viagem.veiculo}',
-                        style: Theme.of(context).textTheme.subtitle1,
-                      ),
-                      Text(
-                        'Motorista: ${viagem.motorista}',
-                        style: Theme.of(context).textTheme.subtitle1,
-                      ),
-                      Text(
-                        'Data: ${viagem.data}',
+                        'Nome da Viagem: ${viagem.nomeViagem}',
                         style: Theme.of(context).textTheme.subtitle1,
                       ),
                       Text(
                         'Tipo de Viagem: ${viagem.tipoViagem}',
                         style: Theme.of(context).textTheme.subtitle1,
                       ),
-                      Text(
-                        'Nome da Viagem: ${viagem.nomeViagem}',
-                        style: Theme.of(context).textTheme.subtitle1,
-                      ),
                     ],
                   ),
-                  subtitle: Text(viagem.nomeViagem),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete),
                     onPressed: () => onRemove(viagem.codigo),
