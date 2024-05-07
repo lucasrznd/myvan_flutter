@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:myvan_flutter/models/tipo_veiculo.dart';
 
 class TipoVeiculoForm extends StatefulWidget {
-  final void Function(String) onSubmit;
+  final void Function(TipoVeiculo) onSubmit;
+  final TipoVeiculo tipoVeiculo;
 
-  const TipoVeiculoForm(this.onSubmit, {super.key});
+  const TipoVeiculoForm(this.onSubmit, this.tipoVeiculo, {super.key});
 
   @override
   State<TipoVeiculoForm> createState() => _TipoVeiculoFormState();
@@ -11,16 +13,9 @@ class TipoVeiculoForm extends StatefulWidget {
 
 class _TipoVeiculoFormState extends State<TipoVeiculoForm> {
   final _formKey = GlobalKey<FormState>();
-  final _descricaoController = TextEditingController();
 
   _submitForm() {
-    final descricao = _descricaoController.text;
-
-    if (descricao.isEmpty) {
-      return;
-    }
-
-    widget.onSubmit(descricao);
+    widget.onSubmit(widget.tipoVeiculo);
   }
 
   @override
@@ -34,15 +29,19 @@ class _TipoVeiculoFormState extends State<TipoVeiculoForm> {
           child: Column(
             children: <Widget>[
               TextFormField(
-                controller: _descricaoController,
+                // controller: _descricaoController,
+                initialValue: widget.tipoVeiculo.descricao,
+                onChanged: (value) => widget.tipoVeiculo.descricao = value,
                 decoration: InputDecoration(
                   labelText: 'Descrição',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                validator: (nome) {
-                  if (nome == null || nome.isEmpty || nome == '') {
+                validator: (descricao) {
+                  if (descricao == null ||
+                      descricao.isEmpty ||
+                      descricao == '') {
                     return 'Descrição é obrigatória.';
                   }
                   return null;
