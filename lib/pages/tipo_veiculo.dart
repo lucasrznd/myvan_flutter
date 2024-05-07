@@ -1,11 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:myvan_flutter/components/drawer/sidemenu.dart';
 import 'package:myvan_flutter/components/tipo_veiculo/tp_veiculo_form.dart';
 import 'package:myvan_flutter/components/tipo_veiculo/tp_veiculo_list.dart';
 import 'package:myvan_flutter/models/tipo_veiculo.dart';
+import 'package:myvan_flutter/repositories/tipo_veiculo_repository.dart';
 
 class TipoVeiculoPage extends StatefulWidget {
   const TipoVeiculoPage({super.key});
@@ -15,36 +13,57 @@ class TipoVeiculoPage extends StatefulWidget {
 }
 
 class _TipoVeiculoPageState extends State<TipoVeiculoPage> {
-  final List<TipoVeiculo> _tiposVeiculos = [];
+  late TipoVeiculo tipoVeiculo;
+  late Future<List<TipoVeiculo>> _tiposVeiculos;
+  late TipoVeiculoRepository repository = TipoVeiculoRepository();
 
-  void deleteTipoVeiculo(int codigo) {
-    setState(() {
-      _tiposVeiculos.removeWhere((mt) => mt.codigo == codigo);
-    });
+  @override
+  void initState() {
+    super.initState();
+    _tiposVeiculos = repository.selectAll();
   }
 
-  _salvarTipoVeiculo(String descricao) {
-    final novoTipoVeiculo =
-        TipoVeiculo(codigo: Random().nextInt(150), descricao: descricao);
+  Future<List<TipoVeiculo>> selectAll() async {
+    return repository.selectAll();
+  }
+
+  void _salvarTipoVeiculo(TipoVeiculo tipoVeiculo) {
+    repository.insert(tipoVeiculo);
 
     setState(() {
-      _tiposVeiculos.add(novoTipoVeiculo);
+      _tiposVeiculos = repository.selectAll();
     });
 
     Navigator.of(context).pop();
   }
 
-  _openFormModal(BuildContext context) {
+  void _editarTipoVeiculo(TipoVeiculo tipoVeiculo) {
+    setState(() {
+      _openFormModal(context, tipoVeiculo);
+    });
+  }
+
+  void _deleteTipoVeiculo(int codigo) async {
+    await repository.delete(codigo);
+
+    setState(() {
+      _tiposVeiculos = repository.selectAll();
+    });
+  }
+
+  _openFormModal(BuildContext context, TipoVeiculo tipoVeiculo) {
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return TipoVeiculoForm(_salvarTipoVeiculo);
+        return TipoVeiculoForm(_salvarTipoVeiculo, tipoVeiculo);
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    tipoVeiculo = TipoVeiculo();
+
     final appBar = AppBar(
       title: const Text('Tipos de Veiculos'),
       foregroundColor: Colors.white,
@@ -53,7 +72,7 @@ class _TipoVeiculoPageState extends State<TipoVeiculoPage> {
       actions: [
         IconButton(
           icon: const Icon(Icons.add),
-          onPressed: () => _openFormModal(context),
+          onPressed: () => _openFormModal(context, tipoVeiculo),
         ),
       ],
     );
@@ -73,14 +92,15 @@ class _TipoVeiculoPageState extends State<TipoVeiculoPage> {
               height: availableHeight * 0.75,
               child: TipoVeiculoList(
                 _tiposVeiculos,
-                deleteTipoVeiculo,
+                _editarTipoVeiculo,
+                _deleteTipoVeiculo,
               ),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _openFormModal(context),
+        onPressed: () => _openFormModal(context, tipoVeiculo),
         backgroundColor: Colors.blue.shade300,
         foregroundColor: Colors.white,
         child: const Icon(Icons.add),

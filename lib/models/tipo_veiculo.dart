@@ -1,10 +1,13 @@
 class TipoVeiculo {
-  final int codigo;
-  final String descricao;
+  int? codigo;
+  String descricao;
 
-  TipoVeiculo({
-    required this.codigo,
-    required this.descricao
-  });
-  
+  TipoVeiculo({this.codigo, this.descricao = ''});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'codigo': codigo,
+      'descricao': descricao,
+    };
+  }
 }
