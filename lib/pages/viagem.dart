@@ -24,13 +24,13 @@ class _ViagemPageState extends State<ViagemPage> {
   }
 
   void salvarViagem(BuildContext context, veiculo, motorista, DateTime data,
-      mtipoViagem, String nomeViagem) {
+      TipoViagem tipoViagem, String nomeViagem) {
     final novaViagem = Viagem(
       codigo: Random().nextInt(150),
       veiculo: veiculo,
       motorista: motorista,
       data: data,
-      tipoViagem: TipoViagem.IDA,
+      tipoViagem: tipoViagem,
       nomeViagem: nomeViagem,
     );
 
@@ -39,6 +39,23 @@ class _ViagemPageState extends State<ViagemPage> {
     });
 
     Navigator.of(context).pop();
+
+    // Mostra um diálogo informando que a viagem foi salva
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Viagem Salva'),
+        content: const Text('A viagem foi salva com sucesso!'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   void openFormModal(BuildContext context) {

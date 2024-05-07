@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:myvan_flutter/models/enums/tipo_viagem.dart';
@@ -6,8 +7,8 @@ import 'package:myvan_flutter/models/tipo_veiculo.dart';
 import 'package:myvan_flutter/models/veiculo.dart';
 
 class ViagemForm extends StatefulWidget {
-  final void Function(Veiculo, Motorista, DateTime, TipoViagem, String)
-      onSubmit;
+  final void Function(Veiculo veiculo, Motorista motorista, DateTime data,
+      TipoViagem tipoViagem, String nomeViagem) onSubmit;
 
   const ViagemForm(this.onSubmit, {Key? key}) : super(key: key);
 
@@ -23,30 +24,28 @@ class _ViagemFormState extends State<ViagemForm> {
   final _nomeviagemController = TextEditingController();
   DateTime? _selectedDate;
 
-  _submitForm() {
-    final veiculo = _veiculoController.text;
-    final motorista = _motoristaController.text;
-    final tipoViagem = _tipoviagemController.text;
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      final veiculo = _veiculoController.text;
+      final motorista = _motoristaController.text;
+      final tipoViagem = _tipoviagemController.text;
+      final nomeViagem = _nomeviagemController.text;
 
-    if (veiculo.isEmpty ||
-        motorista.isEmpty ||
-        _selectedDate == null ||
-        tipoViagem.isEmpty) {
-      return;
+      widget.onSubmit(
+        Veiculo(
+            codigo: 01,
+            capacidadePassageiros: 23,
+            cor: 'Preta',
+            placa: 'BRA19A2',
+            tipoVeiculo: TipoVeiculo(codigo: 02, descricao: 'descricao')),
+        Motorista(codigo: 03, nome: 'Sergio', telefone: '43999990000'),
+        _selectedDate!,
+        TipoViagem.IDA, // Aqui você usa uma constante do enum
+        nomeViagem,
+      );
+
+      Navigator.of(context).pop();
     }
-
-    widget.onSubmit(
-      Veiculo(
-          codigo: 01,
-          capacidadePassageiros: 23,
-          cor: 'Preta',
-          placa: 'BRA19A2',
-          tipoVeiculo: TipoVeiculo(codigo: 02, descricao: 'descricao')),
-      Motorista(codigo: 03, nome: 'Sergio', telefone: '43999990000'),
-      _selectedDate!,
-      TipoViagem.IDA, // Aqui você usa uma constante do enum
-      '', // Supondo que este campo será preenchido posteriormente
-    );
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -172,11 +171,7 @@ class _ViagemFormState extends State<ViagemForm> {
                       fontFamily: 'Poppins',
                     ),
                   ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _submitForm();
-                    }
-                  },
+                  onPressed: _submitForm,
                 ),
               ],
             ),
