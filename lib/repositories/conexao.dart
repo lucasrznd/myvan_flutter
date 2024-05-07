@@ -3,17 +3,13 @@ import 'package:sqflite/sqflite.dart';
 
 class Conexao {
   static const _dbname = "myvan.db";
-  static const _sqlScript =
-      'CREATE TABLE MOTORISTA(codigo INTEGER PRIMARY KEY AUTOINCREMENT,nome TEXT, telefone TEXT)';
-
-  static const table = 'motorista';
-  static const columnCodigo = 'codigo';
-  static const columnNome = 'nome';
-  static const columnTelefone = 'telefone';
+  static const _sqlMotorista =
+      'CREATE TABLE MOTORISTA(codigo INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, telefone TEXT)';
+  static const _sqlTipoVeiculo =
+      'CREATE TABLE TIPO_VEICULO(codigo INTEGER PRIMARY KEY AUTOINCREMENT, descricao TEXT)';
 
   Conexao._privateConstructor();
   static final Conexao instance = Conexao._privateConstructor();
-  // tem somente uma referência ao banco de dados - com safenull
   static Database? _database;
 
   Future<Database> get database async {
@@ -21,20 +17,13 @@ class Conexao {
   }
 
   Future<Database> initDB() async {
-    return openDatabase(join(await getDatabasesPath(), _dbname),
-        onCreate: (db, version) {
-      return db.execute(_sqlScript);
-    }, version: 1);
-  }
-
-  Future<Database> getDatabase() async {
-    // instancia o db na primeira vez que for acessado
-    return openDatabase(
-      join(await getDatabasesPath(), _dbname),
-      onCreate: (db, version) {
-        return db.execute(_sqlScript);
-      },
-      version: 1,
-    );
+    final dbPath = await getDatabasesPath();
+    final database = await openDatabase(join(dbPath, _dbname), version: 1,
+        onCreate: (db, version) async {
+      await db.execute(_sqlMotorista);
+      await db.execute(_sqlTipoVeiculo);
+    });
+    _database = database;
+    return database;
   }
 }
