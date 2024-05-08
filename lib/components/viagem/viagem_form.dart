@@ -29,10 +29,20 @@ class _ViagemFormState extends State<ViagemForm> {
   final _nomeviagemController = TextEditingController();
   DateTime? _selectedDate;
 
+  final List<String> motoristas = [
+    'Sergio',
+    'João',
+    'Maria',
+    'Pedro'
+  ]; // Exemplos de motoristas
+
+  final List<String> veiculos = [
+    'Van',
+    'Ônibus',
+  ]; // Exemplos de veículos
+
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      final veiculo = _veiculoController.text;
-      final motorista = _motoristaController.text;
       final tipoViagem = _tipoviagemController.text;
       final nomeViagem = _nomeviagemController.text;
 
@@ -41,10 +51,13 @@ class _ViagemFormState extends State<ViagemForm> {
           codigo: 01,
           capacidadePassageiros: 23,
           cor: 'Preta',
-          placa: 'BRA19A2',
+          placa: _veiculoController.text,
           tipoVeiculo: TipoVeiculo(codigo: 02, descricao: 'descricao'),
         ),
-        Motorista(codigo: 03, nome: 'Sergio', telefone: '43999990000'),
+        Motorista(
+            codigo: 03,
+            nome: _motoristaController.text,
+            telefone: '43999990000'),
         _selectedDate!,
         TipoViagem.IDA,
         nomeViagem,
@@ -152,6 +165,12 @@ class _ViagemFormState extends State<ViagemForm> {
                     }
                     return null;
                   },
+                  onChanged: (value) {
+                    setState(() {});
+                  },
+                  onTap: () {
+                    showAutocomplete(context, motoristas, _motoristaController);
+                  },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -167,6 +186,12 @@ class _ViagemFormState extends State<ViagemForm> {
                       return 'Veículo é obrigatório.';
                     }
                     return null;
+                  },
+                  onChanged: (value) {
+                    setState(() {});
+                  },
+                  onTap: () {
+                    showAutocomplete(context, veiculos, _veiculoController);
                   },
                 ),
                 const SizedBox(height: 20),
@@ -194,6 +219,28 @@ class _ViagemFormState extends State<ViagemForm> {
           ),
         ),
       ),
+    );
+  }
+
+  void showAutocomplete(BuildContext context, List<String> options,
+      TextEditingController controller) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Column(
+            children: options.map((option) {
+              return ListTile(
+                title: Text(option),
+                onTap: () {
+                  controller.text = option;
+                  Navigator.pop(context);
+                },
+              );
+            }).toList(),
+          ),
+        );
+      },
     );
   }
 }
