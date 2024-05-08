@@ -152,6 +152,7 @@ class _ViagemFormState extends State<ViagemForm> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
+                  readOnly: true,
                   controller: _motoristaController,
                   decoration: InputDecoration(
                     labelText: 'Motorista',
@@ -174,6 +175,7 @@ class _ViagemFormState extends State<ViagemForm> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
+                  readOnly: true,
                   controller: _veiculoController,
                   decoration: InputDecoration(
                     labelText: 'Veículo',
