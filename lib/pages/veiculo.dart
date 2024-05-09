@@ -1,11 +1,11 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:myvan_flutter/components/drawer/sidemenu.dart';
 import 'package:myvan_flutter/components/veiculo/veiculo_form.dart';
 import 'package:myvan_flutter/components/veiculo/veiculo_list.dart';
 import 'package:myvan_flutter/models/tipo_veiculo.dart';
 import 'package:myvan_flutter/models/veiculo.dart';
+import 'package:myvan_flutter/repositories/tipo_veiculo_repository.dart';
+import 'package:myvan_flutter/repositories/veiculo_repository.dart';
 
 class VeiculoPage extends StatefulWidget {
   const VeiculoPage({super.key});
@@ -15,49 +15,77 @@ class VeiculoPage extends StatefulWidget {
 }
 
 class _VeiculoPageState extends State<VeiculoPage> {
-  final List<Veiculo> _veiculos = [];
+  late Veiculo veiculo;
+  late Future<List<Veiculo>> _veiculos;
+  late Future<List<TipoVeiculo>> _tiposVeiculos;
 
-  void deleteVeiculo(int codigo) {
-    setState(() {
-      _veiculos.removeWhere((v) => v.codigo == codigo);
-    });
+  @override
+  void initState() {
+    super.initState();
+    _veiculos = listarVeiculos();
+    _tiposVeiculos = listarTiposVeiculos();
   }
 
-  _salvarVeiculo(String descricao) {
-    final novoVeiculo = Veiculo(
-        codigo: Random().nextInt(150),
-        tipoVeiculo: TipoVeiculo(codigo: 1, descricao: 'tst'),
-        cor: 'Branca',
-        placa: 'SJG-121',
-        capacidadePassageiros: 16);
+  Future<List<Veiculo>> listarVeiculos() async {
+    VeiculoRepository repository = VeiculoRepository();
+    List<Veiculo> veiculos = await repository.selectAll();
+    return veiculos;
+  }
+
+  Future<List<TipoVeiculo>> listarTiposVeiculos() async {
+    TipoVeiculoRepository tipoVeiculoRepository = TipoVeiculoRepository();
+    List<TipoVeiculo> tiposVeiculos = await tipoVeiculoRepository.selectAll();
+    return tiposVeiculos;
+  }
+
+  _salvarVeiculo(Veiculo veiculo) {
+    VeiculoRepository repository = VeiculoRepository();
+    repository.insert(veiculo);
 
     setState(() {
-      _veiculos.add(novoVeiculo);
+      _veiculos = repository.selectAll();
     });
 
     Navigator.of(context).pop();
   }
 
-  _openFormModal(BuildContext context) {
+  _editarVeiculo(Veiculo veiculo) {
+    setState(() {
+      _openFormModal(context, veiculo);
+    });
+  }
+
+  void deleteVeiculo(int codigo) {
+    VeiculoRepository repository = VeiculoRepository();
+    repository.delete(codigo);
+
+    setState(() {
+      _veiculos = repository.selectAll();
+    });
+  }
+
+  _openFormModal(BuildContext context, Veiculo veiculo) {
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return VeiculoForm(_salvarVeiculo);
+        return VeiculoForm(_salvarVeiculo, veiculo, _tiposVeiculos);
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    veiculo = Veiculo();
+
     final appBar = AppBar(
-      title: const Text('Veiculos'),
+      title: const Text('Veículos'),
       foregroundColor: Colors.white,
       backgroundColor: Colors.blue.shade300,
       centerTitle: true,
       actions: [
         IconButton(
           icon: const Icon(Icons.add),
-          onPressed: () => _openFormModal(context),
+          onPressed: () => _openFormModal(context, veiculo),
         ),
       ],
     );
@@ -77,14 +105,16 @@ class _VeiculoPageState extends State<VeiculoPage> {
               height: availableHeight * 0.75,
               child: VeiculoList(
                 _veiculos,
+                _editarVeiculo,
                 deleteVeiculo,
+                listarTiposVeiculos,
               ),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _openFormModal(context),
+        onPressed: () => _openFormModal(context, veiculo),
         backgroundColor: Colors.blue.shade300,
         foregroundColor: Colors.white,
         child: const Icon(Icons.add),

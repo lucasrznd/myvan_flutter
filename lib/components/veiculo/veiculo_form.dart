@@ -2,11 +2,16 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:myvan_flutter/components/dropdown.dart';
+import 'package:myvan_flutter/models/tipo_veiculo.dart';
+import 'package:myvan_flutter/models/veiculo.dart';
 
 class VeiculoForm extends StatefulWidget {
-  final void Function(String) onSubmit;
+  final void Function(Veiculo) onSubmit;
+  final Veiculo _veiculo;
+  final Future<List<TipoVeiculo>> _tiposVeiculos;
 
-  const VeiculoForm(this.onSubmit, {super.key});
+  const VeiculoForm(this.onSubmit, this._veiculo, this._tiposVeiculos,
+      {super.key});
 
   @override
   State<VeiculoForm> createState() => _VeiculoFormState();
@@ -14,25 +19,16 @@ class VeiculoForm extends StatefulWidget {
 
 class _VeiculoFormState extends State<VeiculoForm> {
   final _formKey = GlobalKey<FormState>();
-  String _tipoVeiculoSelecionado = "Van";
-  final _placaController = TextEditingController();
-  final _corController = TextEditingController();
-  final _capacidadePassageirosController = TextEditingController();
+  late TipoVeiculo _veiculoSelecionado;
 
   _submitForm() {
-    final tipoVeiculo = _tipoVeiculoSelecionado;
-
-    if (tipoVeiculo.isEmpty || tipoVeiculo.isEmpty) {
-      return;
-    }
-
-    widget.onSubmit(tipoVeiculo);
+    widget.onSubmit(widget._veiculo);
   }
 
   @override
   void initState() {
     super.initState();
-    _tipoVeiculoSelecionado = "Van";
+    _veiculoSelecionado = TipoVeiculo();
   }
 
   @override
@@ -49,13 +45,15 @@ class _VeiculoFormState extends State<VeiculoForm> {
                 children: [
                   Expanded(
                     child: DropdownPersonalizado(
-                      items: const ["Van", "Carro"],
+                      items: widget._tiposVeiculos,
                       hint: "Selecione uma opção",
                       initialValue:
-                          _tipoVeiculoSelecionado, // Always use initial value
+                          _veiculoSelecionado, // Always use initial value
                       onChanged: (newValue) {
                         setState(() {
-                          _tipoVeiculoSelecionado = newValue!;
+                          if (newValue != null) {
+                            widget._veiculo.tipoVeiculo = newValue.codigo!;
+                          }
                         });
                       },
                     ),
@@ -64,7 +62,8 @@ class _VeiculoFormState extends State<VeiculoForm> {
               ),
               const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
               TextFormField(
-                controller: _placaController,
+                initialValue: widget._veiculo.placa,
+                onChanged: (value) => widget._veiculo.placa = value,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -81,7 +80,8 @@ class _VeiculoFormState extends State<VeiculoForm> {
               ),
               const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
               TextFormField(
-                controller: _corController,
+                initialValue: widget._veiculo.cor,
+                onChanged: (value) => widget._veiculo.cor = value,
                 decoration: InputDecoration(
                   labelText: 'Cor',
                   border: OutlineInputBorder(
@@ -97,7 +97,13 @@ class _VeiculoFormState extends State<VeiculoForm> {
               ),
               const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
               TextFormField(
-                controller: _capacidadePassageirosController,
+                initialValue: widget._veiculo.capacidadePassageiros.toString(),
+                onChanged: (value) {
+                  final parsedValue = int.tryParse(value);
+                  if (parsedValue != null) {
+                    widget._veiculo.capacidadePassageiros = parsedValue;
+                  }
+                },
                 decoration: InputDecoration(
                   labelText: 'Capacidade de Passageiros',
                   border: OutlineInputBorder(
