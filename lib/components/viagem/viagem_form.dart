@@ -52,7 +52,7 @@ class _ViagemFormState extends State<ViagemForm> {
           capacidadePassageiros: 23,
           cor: 'Preta',
           placa: _veiculoController.text,
-          tipoVeiculo: TipoVeiculo(codigo: 02, descricao: 'descricao'),
+          tipoVeiculo: 2,
         ),
         Motorista(
             codigo: 03,
