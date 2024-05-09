@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:myvan_flutter/models/endereco.dart';
+import 'package:myvan_flutter/models/passageiro.dart';
 
 class PassageiroForm extends StatefulWidget {
-  final void Function(String, String, String, String, String, String) onSubmit;
+  final Passageiro _passageiro;
+  final Endereco _endereco;
+  final void Function(Passageiro, Endereco) onSubmit;
 
-  const PassageiroForm(this.onSubmit, {super.key});
+  const PassageiroForm(this.onSubmit, this._passageiro, this._endereco,
+      {super.key});
 
   @override
   State<PassageiroForm> createState() => _PassageiroFormState();
@@ -12,31 +17,9 @@ class PassageiroForm extends StatefulWidget {
 
 class _PassageiroFormState extends State<PassageiroForm> {
   final _formKey = GlobalKey<FormState>();
-  final _nomeController = TextEditingController();
-  final _telefoneController = TextEditingController();
-  final _ruaController = TextEditingController();
-  final _bairroController = TextEditingController();
-  final _numeroController = TextEditingController();
-  final _cidadeController = TextEditingController();
 
   _submitForm() {
-    final nome = _nomeController.text;
-    final telefone = _telefoneController.text;
-    final rua = _ruaController.text;
-    final bairro = _bairroController.text;
-    final numero = _numeroController.text;
-    final cidade = _cidadeController.text;
-
-    if (nome.isEmpty ||
-        telefone.isEmpty ||
-        rua.isEmpty ||
-        bairro.isEmpty ||
-        numero.isEmpty ||
-        cidade.isEmpty) {
-      return;
-    }
-
-    widget.onSubmit(nome, telefone, rua, bairro, numero, cidade);
+    widget.onSubmit(widget._passageiro, widget._endereco);
   }
 
   var maskFormatter = MaskTextInputFormatter(
@@ -55,7 +38,8 @@ class _PassageiroFormState extends State<PassageiroForm> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 TextFormField(
-                  controller: _nomeController,
+                  initialValue: widget._passageiro.nome,
+                  onChanged: (value) => widget._passageiro.nome = value,
                   decoration: InputDecoration(
                     labelText: 'Nome',
                     border: OutlineInputBorder(
@@ -71,7 +55,8 @@ class _PassageiroFormState extends State<PassageiroForm> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
-                  controller: _telefoneController,
+                  initialValue: widget._passageiro.telefone,
+                  onChanged: (value) => widget._passageiro.telefone = value,
                   keyboardType: TextInputType.phone,
                   inputFormatters: [maskFormatter],
                   decoration: InputDecoration(
@@ -91,7 +76,8 @@ class _PassageiroFormState extends State<PassageiroForm> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
-                  controller: _ruaController,
+                  initialValue: widget._endereco.rua,
+                  onChanged: (value) => widget._endereco.rua = value,
                   decoration: InputDecoration(
                     labelText: 'Rua',
                     border: OutlineInputBorder(
@@ -107,7 +93,28 @@ class _PassageiroFormState extends State<PassageiroForm> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
-                  controller: _numeroController,
+                  initialValue: widget._endereco.bairro,
+                  onChanged: (value) => widget._endereco.bairro = value,
+                  decoration: InputDecoration(
+                    labelText: 'Bairro',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  validator: (bairro) {
+                    if (bairro == null ||
+                        bairro.isEmpty ||
+                        bairro.trim() == '') {
+                      return 'Bairro é obrigatório.';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  initialValue: widget._endereco.numero.toString(),
+                  onChanged: (value) =>
+                      widget._endereco.numero = int.tryParse(value),
                   keyboardType: TextInputType.number,
                   maxLength: 5,
                   decoration: InputDecoration(
@@ -127,25 +134,8 @@ class _PassageiroFormState extends State<PassageiroForm> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
-                  controller: _bairroController,
-                  decoration: InputDecoration(
-                    labelText: 'Bairro',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  validator: (bairro) {
-                    if (bairro == null ||
-                        bairro.isEmpty ||
-                        bairro.trim() == '') {
-                      return 'Bairro é obrigatório.';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  controller: _cidadeController,
+                  initialValue: widget._endereco.cidade,
+                  onChanged: (value) => widget._endereco.cidade = value,
                   decoration: InputDecoration(
                     labelText: 'Cidade',
                     border: OutlineInputBorder(
