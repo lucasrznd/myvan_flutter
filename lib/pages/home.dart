@@ -7,7 +7,7 @@ import 'package:myvan_flutter/components/pagina_inicial/card_chamada.dart';
 import 'package:myvan_flutter/pages/viagem.dart';
 
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +16,12 @@ class Home extends StatelessWidget {
       appBar: const CustomAppBar(title: 'Home'),
       body: ListView(
         children: [
+          const Padding(padding: EdgeInsets.symmetric(vertical: 35)),
           SizedBox(
-            height: 200,
+            height: 115,
             child: Image.asset('assets/app/logo_myvan.png'),
           ),
+          const Padding(padding: EdgeInsets.symmetric(vertical: 20)),
           InkWell(
             onTap: () {
               Navigator.pushReplacement(
@@ -41,13 +43,13 @@ class Home extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ViagemPage(),
+                  builder: (context) => const ViagemPage(),
                 ),
               );
             },
-            child: Padding(
+            child: const Padding(
               padding: EdgeInsets.symmetric(horizontal: 12),
-              child: const CardExample(
+              child: CardExample(
                 texto: 'CHAMADA VOLTA',
               ),
             ),
