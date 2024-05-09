@@ -1,10 +1,11 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:myvan_flutter/components/drawer/sidemenu.dart';
 import 'package:myvan_flutter/components/passageiro/passageiro_form.dart';
 import 'package:myvan_flutter/components/passageiro/passageiro_list.dart';
 import 'package:myvan_flutter/models/endereco.dart';
 import 'package:myvan_flutter/models/passageiro.dart';
+import 'package:myvan_flutter/repositories/endereco_repository.dart';
+import 'package:myvan_flutter/repositories/passageiro_repository.dart';
 
 class PassageiroPage extends StatefulWidget {
   const PassageiroPage({super.key});
@@ -14,43 +15,83 @@ class PassageiroPage extends StatefulWidget {
 }
 
 class _PassageiroPageState extends State<PassageiroPage> {
-  List<Passageiro> passageiros = [];
+  late Passageiro _passageiro;
+  late Endereco _endereco;
+  late Future<List<Passageiro>> _passageiros;
 
-  void deletePassageiro(int codigo) {
-    setState(() {
-      passageiros.removeWhere((mt) => mt.codigo == codigo);
-    });
+  @override
+  void initState() {
+    super.initState();
+    _passageiros = listarPassageiros();
   }
 
-  void salvarPassageiro(BuildContext context, String nome, String telefone,
-      String rua, String bairro, String numero, String cidade) {
-    final novoPassageiro = Passageiro(
-      codigo: Random().nextInt(150),
-      nome: nome,
-      telefone: telefone,
-      endereco: Endereco(
-        codigo: Random().nextInt(150),
-        rua: rua,
-        bairro: bairro,
-        numero: int.parse(numero),
-        cidade: cidade,
-      ),
-    );
+  Future<List<Passageiro>> listarPassageiros() async {
+    PassageiroRepository repository = PassageiroRepository();
+    List<Passageiro> passageiros = await repository.selectAll();
+    return passageiros;
+  }
+
+  Future<List<Endereco>> _listarEnderecos() async {
+    EnderecoRepository repository = EnderecoRepository();
+    List<Endereco> enderecos = await repository.selectAll();
+    return enderecos;
+  }
+
+  Future<Endereco> _salvarEndereco(Endereco endereco) async {
+    EnderecoRepository repository = EnderecoRepository();
+    if (endereco.codigo == null) {
+      await repository.insert(endereco); // Espera a inserção ser concluída
+    } else {
+      await repository.update(endereco);
+      // Obtém o último endereço e espera a resolução do Future
+      Endereco ultimoEndereco = await repository.obterUltimo();
+
+      // Retorna o último endereço obtido
+      return ultimoEndereco;
+    }
+    return Endereco();
+  }
+
+  _salvarPassageiro(Passageiro passageiro, Endereco endereco) async {
+    Endereco ultimoEndereco = await _salvarEndereco(endereco);
+    PassageiroRepository repository = PassageiroRepository();
+
+    passageiro.endereco = ultimoEndereco.codigo;
+
+    repository.insert(passageiro);
 
     setState(() {
-      passageiros.add(novoPassageiro);
+      _passageiros = repository.selectAll();
     });
 
+    if (!mounted) return;
     Navigator.of(context).pop();
   }
 
-  void openFormModal(BuildContext context) {
+  _editarPassageiro(Passageiro passageiro, Endereco endereco) {
+    setState(() {
+      _endereco = endereco;
+      _openFormModal(context, passageiro, _endereco);
+    });
+  }
+
+  _deletePassageiro(int codigo) {
+    PassageiroRepository repository = PassageiroRepository();
+
+    repository.delete(codigo);
+
+    setState(() {
+      _passageiros = repository.selectAll();
+    });
+  }
+
+  _openFormModal(
+      BuildContext context, Passageiro passageiro, Endereco endereco) {
+    _endereco = endereco;
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return PassageiroForm((nome, telefone, rua, bairro, numero, cidade) =>
-            salvarPassageiro(
-                context, nome, telefone, rua, bairro, numero, cidade));
+        return PassageiroForm(_salvarPassageiro, passageiro, _endereco);
       },
     );
   }
@@ -65,7 +106,7 @@ class _PassageiroPageState extends State<PassageiroPage> {
       actions: [
         IconButton(
           icon: const Icon(Icons.add),
-          onPressed: () => openFormModal(context),
+          onPressed: () => _openFormModal(context, _passageiro, _endereco),
         ),
       ],
     );
@@ -84,15 +125,17 @@ class _PassageiroPageState extends State<PassageiroPage> {
             SizedBox(
               height: availableHeight * 0.75,
               child: PassageiroList(
-                passageiros,
-                deletePassageiro,
+                _passageiros,
+                _editarPassageiro,
+                _deletePassageiro,
+                _listarEnderecos,
               ),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => openFormModal(context),
+        onPressed: () => _openFormModal(context, _passageiro, _endereco),
         backgroundColor: Colors.blue.shade300,
         foregroundColor: Colors.white,
         child: const Icon(Icons.add),
