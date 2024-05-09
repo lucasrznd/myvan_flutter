@@ -50,7 +50,7 @@ class TipoVeiculoList extends StatelessWidget {
             return ListView.builder(
               itemCount: tiposVeiculos.length,
               itemBuilder: ((context, index) {
-                final tr = tiposVeiculos[index];
+                final tipoVeiculo = tiposVeiculos[index];
 
                 return Card(
                   elevation: 5,
@@ -62,25 +62,43 @@ class TipoVeiculoList extends StatelessWidget {
                     leading: CircleAvatar(
                       radius: 30,
                       child: Padding(
-                          padding: const EdgeInsets.all(6),
-                          child: FittedBox(
-                            child: Text(
-                              tr.descricao[0],
-                              style: const TextStyle(
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.bold,
-                              ),
+                        padding: const EdgeInsets.all(6),
+                        child: FittedBox(
+                          child: Text(
+                            tipoVeiculo.descricao[0],
+                            style: const TextStyle(
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w600,
                             ),
-                          )),
+                          ),
+                        ),
+                      ),
                     ),
                     title: Text(
-                      tr.descricao,
-                      style: const TextStyle(fontFamily: 'Poppins'),
+                      tipoVeiculo.descricao,
+                      style: const TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () => onRemove(tr.codigo!),
-                      color: Theme.of(context).colorScheme.error,
+                    trailing: SizedBox(
+                      width: 100,
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () => onEditing(tipoVeiculo),
+                            icon: const Icon(
+                              Icons.edit,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () => onRemove(tipoVeiculo.codigo!),
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );

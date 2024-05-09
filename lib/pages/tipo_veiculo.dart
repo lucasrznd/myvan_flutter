@@ -65,7 +65,7 @@ class _TipoVeiculoPageState extends State<TipoVeiculoPage> {
     tipoVeiculo = TipoVeiculo();
 
     final appBar = AppBar(
-      title: const Text('Tipos de Veiculos'),
+      title: const Text('Tipos de Veículos'),
       foregroundColor: Colors.white,
       backgroundColor: Colors.blue.shade300,
       centerTitle: true,
