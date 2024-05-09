@@ -4,7 +4,6 @@ import 'package:myvan_flutter/components/drawer/sidemenu.dart';
 import 'package:myvan_flutter/components/custom_app_bar.dart';
 import 'package:myvan_flutter/components/pagina_inicial/card_menor.dart';
 import 'package:myvan_flutter/components/pagina_inicial/card_chamada.dart';
-import 'package:myvan_flutter/models/passageiro.dart';
 import 'package:myvan_flutter/pages/viagem.dart';
 
 class Home extends StatelessWidget {
@@ -19,7 +18,7 @@ class Home extends StatelessWidget {
         children: [
           SizedBox(
             height: 200,
-            child: Image.asset('assets/app/icon.png'),
+            child: Image.asset('assets/app/logo_myvan.png'),
           ),
           InkWell(
             onTap: () {
@@ -67,8 +66,8 @@ class Home extends StatelessWidget {
                   );
                 },
                 child: const CardPequeno(
-                  titulo: 'Motoristas',
-                  imagem: 'assets/app/icone_motorista.png',
+                  titulo: 'Motorista',
+                  iconData: Icons.person_pin_circle_rounded,
                 ),
               ),
               const SizedBox(width: 20),
@@ -83,14 +82,14 @@ class Home extends StatelessWidget {
                 },
                 child: const CardPequeno(
                   titulo: 'Passageiros',
-                  imagem: 'assets/app/icone_passageiro.png',
+                  iconData: Icons.people_alt,
                 ),
               ),
               const SizedBox(width: 20),
               const CardPequeno(
                 titulo: 'Viagens',
-                imagem: 'assets/app/icone_viagens.png',
-              ),
+                iconData: Icons.assistant_direction_rounded,
+              )
             ],
           ),
         ],
