@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myvan_flutter/components/bottom_navigation/fab_tabs.dart';
+import 'package:myvan_flutter/pages/viagem.dart';
 
 class SideMenu extends StatefulWidget {
   const SideMenu({super.key});
@@ -124,6 +125,28 @@ class _SideMenuState extends State<SideMenu> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => FabTabs(selectedIndex: 4)))
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.directions_bus,
+              color: Colors.blue.shade300,
+            ),
+            title: const Text(
+              "Viagens",
+              style: TextStyle(
+                fontFamily: 'Poppins',
+                color: Color.fromARGB(255, 49, 49, 49),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ViagemPage(),
+                ),
+              );
             },
           )
         ],

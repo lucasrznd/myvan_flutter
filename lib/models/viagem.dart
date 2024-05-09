@@ -8,11 +8,13 @@ class Viagem {
   final Motorista motorista;
   final DateTime data;
   final TipoViagem tipoViagem;
+  final String nomeViagem;
 
   Viagem(
       {required this.codigo,
       required this.veiculo,
       required this.motorista,
       required this.data,
-      required this.tipoViagem});
+      required this.tipoViagem,
+      required this.nomeViagem});
 }

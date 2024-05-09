@@ -4,6 +4,7 @@ import 'package:myvan_flutter/pages/motorista.dart';
 import 'package:myvan_flutter/pages/passageiro.dart';
 import 'package:myvan_flutter/pages/tipo_veiculo.dart';
 import 'package:myvan_flutter/pages/veiculo.dart';
+import 'package:myvan_flutter/pages/viagem.dart';
 
 class FabTabs extends StatefulWidget {
   int selectedIndex = 0;
@@ -34,7 +35,7 @@ class _FabTabsState extends State<FabTabs> {
     const PassageiroPage(),
     const MotoristaPage(),
     const VeiculoPage(),
-    const TipoVeiculoPage()
+    const TipoVeiculoPage(),
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
