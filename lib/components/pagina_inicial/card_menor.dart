@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 
 class CardPequeno extends StatelessWidget {
   final String titulo;
-  final String imagem;
+  final IconData iconData;
 
-  const CardPequeno({required this.titulo, required this.imagem, super.key});
+  const CardPequeno({required this.titulo, required this.iconData, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +17,10 @@ class CardPequeno extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.asset(
-              imagem,
-              height: 50, // Defina a altura desejada para a imagem
+            Icon(
+              iconData,
+              color: Colors.white,
+              size: 50,
             ),
             const Padding(padding: EdgeInsets.symmetric(vertical: 3)),
             Text(

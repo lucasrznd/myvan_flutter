@@ -36,15 +36,16 @@ class CardExample extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   color: Colors.white,
-                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
                 ),
               ),
               leading: SizedBox(
-                width: 60, // Defina o tamanho desejado para o ícone
-                height: 60, // Defina o tamanho desejado para o ícone
-                child: Image.asset(
-                  'assets/app/icone_chamada_branco.png',
-                  fit: BoxFit.cover,
+                height: 90,
+                child: Icon(
+                  Icons.how_to_reg_outlined,
+                  color: const Color.fromARGB(255, 255, 255, 255),
+                  size: 50,
                 ),
               ),
             ),

@@ -129,7 +129,7 @@ class _SideMenuState extends State<SideMenu> {
           ),
           ListTile(
             leading: Icon(
-              Icons.directions_bus,
+              Icons.assistant_direction_rounded,
               color: Colors.blue.shade300,
             ),
             title: const Text(

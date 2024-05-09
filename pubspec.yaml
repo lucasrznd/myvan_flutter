@@ -187,6 +187,8 @@ Flutter:
     #color_dark: "#042a49"
     #icon_background_color_dark: "#eeeeee"
 
+
+
   # The android, ios and web parameters can be used to disable generating a splash screen on a given
   # platform.
   #android: false
