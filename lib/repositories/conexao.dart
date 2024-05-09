@@ -7,6 +7,8 @@ class Conexao {
       'CREATE TABLE MOTORISTA(codigo INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, telefone TEXT)';
   static const _sqlTipoVeiculo =
       'CREATE TABLE TIPO_VEICULO(codigo INTEGER PRIMARY KEY AUTOINCREMENT, descricao TEXT)';
+  static const _sqlVeiculo =
+      'CREATE TABLE VEICULO(codigo INTEGER PRIMARY KEY AUTOINCREMENT, tipo_veiculo_codigo INTEGER, placa TEXT, cor TEXT, capacidade_passageiros INTEGER, FOREIGN KEY (tipo_veiculo_codigo) REFERENCES TIPO_VEICULO(codigo))';
 
   Conexao._privateConstructor();
   static final Conexao instance = Conexao._privateConstructor();
@@ -22,6 +24,7 @@ class Conexao {
         onCreate: (db, version) async {
       await db.execute(_sqlMotorista);
       await db.execute(_sqlTipoVeiculo);
+      await db.execute(_sqlVeiculo);
     });
     _database = database;
     return database;
