@@ -1,15 +1,25 @@
 class Endereco {
-  final int codigo;
-  final String rua;
-  final String bairro;
-  final int numero;
-  final String cidade;
+  int? codigo;
+  String rua;
+  String bairro;
+  int? numero;
+  String cidade;
 
   Endereco({
-    required this.codigo,
-    required this.rua,
-    required this.bairro,
-    required this.numero,
-    required this.cidade,
+    this.codigo,
+    this.rua = '',
+    this.bairro = '',
+    this.numero,
+    this.cidade = '',
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'codigo': codigo,
+      'rua': rua,
+      'bairro': bairro,
+      'numero': numero,
+      'cidade': cidade
+    };
+  }
 }
