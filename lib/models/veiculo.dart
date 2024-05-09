@@ -1,16 +1,29 @@
-import 'package:myvan_flutter/models/tipo_veiculo.dart';
-
 class Veiculo {
-  final int codigo;
-  final TipoVeiculo tipoVeiculo;
-  final String placa;
-  final String cor;
-  final int capacidadePassageiros;
+  int? codigo;
+  int? tipoVeiculo;
+  String placa;
+  String cor;
+  int capacidadePassageiros;
 
   Veiculo(
-      {required this.codigo,
-      required this.tipoVeiculo,
-      required this.placa,
-      required this.cor,
-      required this.capacidadePassageiros});
+      {this.codigo,
+      this.tipoVeiculo,
+      this.placa = '',
+      this.cor = '',
+      this.capacidadePassageiros = 4});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'codigo': codigo,
+      'tipo_veiculo_codigo': tipoVeiculo,
+      'placa': placa,
+      'cor': cor,
+      'capacidade_passageiros': capacidadePassageiros,
+    };
+  }
+
+  @override
+  String toString() {
+    return 'Veiculo(codigo: $codigo, tipoVeiculo: $tipoVeiculo, placa: $placa, cor: $cor, capacidadePassageiros: $capacidadePassageiros)';
+  }
 }
