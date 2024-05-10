@@ -63,7 +63,7 @@ class Home extends StatelessWidget {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => FabTabs(selectedIndex: 2),
+                      builder: (context) => FabTabs(selectedIndex: 3),
                     ),
                   );
                 },
@@ -78,7 +78,7 @@ class Home extends StatelessWidget {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => FabTabs(selectedIndex: 1),
+                      builder: (context) => FabTabs(selectedIndex: 2),
                     ),
                   );
                 },
@@ -88,9 +88,19 @@ class Home extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 20),
-              const CardPequeno(
-                titulo: 'Viagens',
-                iconData: Icons.assistant_direction_rounded,
+              InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FabTabs(selectedIndex: 1),
+                    ),
+                  );
+                },
+                child: const CardPequeno(
+                  titulo: 'Viagens',
+                  iconData: Icons.assistant_direction_rounded,
+                ),
               )
             ],
           ),
