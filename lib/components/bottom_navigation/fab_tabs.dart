@@ -32,6 +32,7 @@ class _FabTabsState extends State<FabTabs> {
 
   final List<Widget> pages = [
     const Home(),
+    const ViagemPage(),
     const PassageiroPage(),
     const MotoristaPage(),
     const VeiculoPage(),
@@ -44,12 +45,14 @@ class _FabTabsState extends State<FabTabs> {
     Widget currentScreen = currentIndex == 0
         ? const Home()
         : currentIndex == 1
-            ? const PassageiroPage()
+            ? const ViagemPage()
             : currentIndex == 2
-                ? const MotoristaPage()
+                ? const PassageiroPage()
                 : currentIndex == 3
-                    ? const VeiculoPage()
-                    : const TipoVeiculoPage();
+                    ? const MotoristaPage()
+                    : currentIndex == 4
+                        ? const VeiculoPage()
+                        : const TipoVeiculoPage();
     return Scaffold(
       body: PageStorage(
         bucket: bucket,
