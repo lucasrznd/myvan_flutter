@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:myvan_flutter/components/motorista/dropdown.dart';
+import 'package:myvan_flutter/components/veiculo/dropdown.dart';
 import 'package:myvan_flutter/models/enums/tipo_viagem.dart';
 import 'package:myvan_flutter/models/motorista.dart';
 import 'package:myvan_flutter/models/veiculo.dart';
@@ -7,9 +9,13 @@ import 'package:myvan_flutter/models/viagem.dart';
 
 class ViagemForm extends StatefulWidget {
   final Viagem _viagem;
+  final Future<List<Motorista>> _motoristas;
+  final Future<List<Veiculo>> _veiculos;
   final void Function(Viagem) onSubmit;
 
-  const ViagemForm(this._viagem, this.onSubmit, {super.key});
+  const ViagemForm(
+      this._viagem, this._motoristas, this._veiculos, this.onSubmit,
+      {super.key});
 
   @override
   State<ViagemForm> createState() => _ViagemFormState();
@@ -17,63 +23,20 @@ class ViagemForm extends StatefulWidget {
 
 class _ViagemFormState extends State<ViagemForm> {
   final _formKey = GlobalKey<FormState>();
-  String _motoristaSelecionado = '';
+  late Motorista _motoristaSelecionado;
+  late Veiculo _veiculoSelecionado;
+  late List<TipoViagem> _tiposViagem;
 
-  String _formatarCampoMotorista() {
-    if (widget._viagem.motorista == null) {
-      return '';
-    }
-    return widget._viagem.motorista.toString();
+  @override
+  void initState() {
+    super.initState();
+    _motoristaSelecionado = Motorista();
+    _veiculoSelecionado = Veiculo();
+    _tiposViagem = [TipoViagem.ida, TipoViagem.volta];
   }
-
-  String _formatarCampoVeiculo() {
-    if (widget._viagem.veiculo == null) {
-      return '';
-    }
-    return widget._viagem.veiculo.toString();
-  }
-
-  final List<TipoViagem> tiposViagem = [TipoViagem.ida, TipoViagem.volta];
-
-  final List<Motorista> motoristas = [
-    Motorista(codigo: 1, nome: 'Sergio', telefone: '4399999999'),
-    Motorista(codigo: 2, nome: 'Lucas', telefone: '4399999999'),
-  ]; // Exemplos de motoristas
-
-  final List<Veiculo> veiculos = [
-    Veiculo(
-        codigo: 1,
-        tipoVeiculo: 2,
-        placa: 'AGJ-1212',
-        capacidadePassageiros: 16),
-    Veiculo(
-        codigo: 2,
-        tipoVeiculo: 1,
-        placa: 'ALF-1552',
-        capacidadePassageiros: 16),
-  ]; // Exemplos de veículos
 
   void _submitForm() {
-    widget._viagem.data ??= DateTime.now();
-
-    print(widget._viagem.toString());
     widget.onSubmit(widget._viagem);
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? pickedDate = await showDatePicker(
-      locale: const Locale('pt', 'BR'),
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-
-    if (pickedDate != null) {
-      setState(() {
-        widget._viagem.data = pickedDate;
-      });
-    }
   }
 
   @override
@@ -122,7 +85,7 @@ class _ViagemFormState extends State<ViagemForm> {
                     return null;
                   },
                   onTap: () {
-                    _autocompleteTipoViagem(context, tiposViagem);
+                    _autocompleteTipoViagem(context, _tiposViagem);
                   },
                 ),
                 const SizedBox(height: 10),
@@ -140,56 +103,45 @@ class _ViagemFormState extends State<ViagemForm> {
                     ),
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.calendar_today),
-                      onPressed: () => _selectDate(context),
+                      onPressed: () => _selecionarData(context),
                     ),
                   ),
-                  validator: (value) {
-                    if (widget._viagem.data == null) {
-                      return 'Data é obrigatória.';
-                    }
-                    return null;
-                  },
                 ),
                 const SizedBox(height: 10),
-                TextFormField(
-                  readOnly: true,
-                  controller:
-                      TextEditingController(text: _motoristaSelecionado),
-                  decoration: InputDecoration(
-                    labelText: 'Motorista',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Motorista é obrigatório.';
-                    }
-                    return null;
-                  },
-                  onTap: () {
-                    _autoCompleteMotoristas(context, motoristas);
-                  },
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: DropdownMotorista(
+                      items: widget._motoristas,
+                      hint: 'Selecione uma opção',
+                      initialValue: _motoristaSelecionado,
+                      onChanged: (newValue) {
+                        setState(() {
+                          if (newValue != null) {
+                            widget._viagem.motorista = newValue.codigo!;
+                          }
+                        });
+                      },
+                    ))
+                  ],
                 ),
                 const SizedBox(height: 10),
-                TextFormField(
-                  readOnly: true,
-                  initialValue: _formatarCampoVeiculo(),
-                  decoration: InputDecoration(
-                    labelText: 'Veículo',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Veículo é obrigatório.';
-                    }
-                    return null;
-                  },
-                  onTap: () {
-                    _autocompleteVeiculos(context, veiculos);
-                  },
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: DropdownVeiculo(
+                      items: widget._veiculos,
+                      hint: 'Selecione uma opção',
+                      initialValue: _veiculoSelecionado,
+                      onChanged: (newValue) {
+                        setState(() {
+                          if (newValue != null) {
+                            widget._viagem.veiculo = newValue.codigo!;
+                          }
+                        });
+                      },
+                    ))
+                  ],
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
@@ -202,7 +154,11 @@ class _ViagemFormState extends State<ViagemForm> {
                       ),
                     ),
                   ),
-                  onPressed: _submitForm,
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _submitForm();
+                    }
+                  },
                   child: const Text(
                     'Salvar',
                     style: TextStyle(
@@ -219,6 +175,22 @@ class _ViagemFormState extends State<ViagemForm> {
     );
   }
 
+  Future<void> _selecionarData(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      locale: const Locale('pt', 'BR'),
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        widget._viagem.data = pickedDate;
+      });
+    }
+  }
+
   void _autocompleteTipoViagem(
       BuildContext context, List<TipoViagem> tiposViagem) {
     showModalBottomSheet(
@@ -233,52 +205,6 @@ class _ViagemFormState extends State<ViagemForm> {
                   setState(() {
                     widget._viagem.tipoViagem = tipoViagem.descricao;
                   });
-                  Navigator.pop(context);
-                },
-              );
-            }).toList(),
-          ),
-        );
-      },
-    );
-  }
-
-  void _autoCompleteMotoristas(
-      BuildContext context, List<Motorista> motoristas) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return SingleChildScrollView(
-          child: Column(
-            children: motoristas.map((motorista) {
-              return ListTile(
-                title: Text(motorista.nome),
-                onTap: () {
-                  setState(() {
-                    _motoristaSelecionado = motorista.nome;
-                    widget._viagem.motorista = motorista.codigo;
-                  });
-                  Navigator.pop(context);
-                },
-              );
-            }).toList(),
-          ),
-        );
-      },
-    );
-  }
-
-  void _autocompleteVeiculos(BuildContext context, List<Veiculo> veiculos) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return SingleChildScrollView(
-          child: Column(
-            children: veiculos.map((veiculo) {
-              return ListTile(
-                title: Text(veiculo.placa),
-                onTap: () {
-                  widget._viagem.veiculo = veiculo.codigo;
                   Navigator.pop(context);
                 },
               );

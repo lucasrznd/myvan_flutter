@@ -1,10 +1,13 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:myvan_flutter/components/drawer/sidemenu.dart';
+import 'package:myvan_flutter/components/utils/modal_mensagens.dart';
 import 'package:myvan_flutter/components/viagem/viagem_form.dart';
 import 'package:myvan_flutter/components/viagem/viagem_list.dart';
-import 'package:myvan_flutter/models/enums/tipo_viagem.dart';
+import 'package:myvan_flutter/models/motorista.dart';
+import 'package:myvan_flutter/models/veiculo.dart';
 import 'package:myvan_flutter/models/viagem.dart';
+import 'package:myvan_flutter/repositories/motorista_repository.dart';
+import 'package:myvan_flutter/repositories/veiculo_repository.dart';
 
 class ViagemPage extends StatefulWidget {
   const ViagemPage({super.key});
@@ -15,7 +18,7 @@ class ViagemPage extends StatefulWidget {
 
 class _ViagemPageState extends State<ViagemPage> {
   late Viagem _viagem;
-  List<Viagem> viagens = [];
+  final List<Viagem> _viagens = [];
 
   @override
   void initState() {
@@ -23,14 +26,28 @@ class _ViagemPageState extends State<ViagemPage> {
     _viagem = Viagem();
   }
 
+  Future<List<Motorista>> _listarMotoristas() async {
+    MotoristaRepository repository = MotoristaRepository();
+    List<Motorista> motoristas = await repository.selectAll();
+    return motoristas;
+  }
+
+  Future<List<Veiculo>> _listarVeiculos() async {
+    VeiculoRepository repository = VeiculoRepository();
+    List<Veiculo> veiculos = await repository.selectAll();
+    return veiculos;
+  }
+
   void _salvarViagem(Viagem viagem) {
+    viagem.data ??= DateTime.now();
+
     setState(() {
-      viagens.add(viagem);
+      _viagens.add(viagem);
     });
 
     Navigator.of(context).pop();
 
-    modalSucesso();
+    ModalMensagem.modalSucesso(context, 'Viagem', 'a');
   }
 
   _editarViagem(Viagem viagem) {
@@ -42,7 +59,7 @@ class _ViagemPageState extends State<ViagemPage> {
 
   _deleteViagem(int codigo) {
     setState(() {
-      viagens.removeWhere((viagem) => viagem.codigo == codigo);
+      _viagens.removeWhere((viagem) => viagem.codigo == codigo);
     });
   }
 
@@ -50,25 +67,24 @@ class _ViagemPageState extends State<ViagemPage> {
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return ViagemForm(viagem, _salvarViagem);
+        return ViagemForm(
+            viagem, _listarMotoristas(), _listarVeiculos(), _salvarViagem);
       },
     );
   }
 
-  void modalSucesso() {
+  void modalSucesso(String objeto, String pronomeObliquo) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text(
-          'Viagem salva.',
-          style: TextStyle(
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.bold
-          ),
+        title: Text(
+          '$objeto salv$pronomeObliquo.',
+          style: const TextStyle(
+              fontFamily: 'Poppins', fontWeight: FontWeight.bold),
         ),
-        content: const Text(
-          'A viagem foi salva com sucesso!',
-          style: TextStyle(
+        content: Text(
+          '$objeto salv$pronomeObliquo com sucesso!',
+          style: const TextStyle(
             fontFamily: 'Poppins',
           ),
         ),
@@ -119,7 +135,7 @@ class _ViagemPageState extends State<ViagemPage> {
             SizedBox(
               height: availableHeight * 0.75,
               child: ViagemList(
-                viagens,
+                _viagens,
                 _editarViagem,
                 _deleteViagem,
               ),

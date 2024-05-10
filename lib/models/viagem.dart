@@ -1,7 +1,3 @@
-import 'package:myvan_flutter/models/enums/tipo_viagem.dart';
-import 'package:myvan_flutter/models/motorista.dart';
-import 'package:myvan_flutter/models/veiculo.dart';
-
 class Viagem {
   int? codigo;
   String nomeViagem;
