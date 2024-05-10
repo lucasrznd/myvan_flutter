@@ -9,12 +9,14 @@ import 'package:myvan_flutter/models/viagem.dart';
 
 class ViagemForm extends StatefulWidget {
   final Viagem _viagem;
+  final Motorista _motorista;
   final Future<List<Motorista>> _motoristas;
+  final Veiculo _veiculo;
   final Future<List<Veiculo>> _veiculos;
-  final void Function(Viagem) onSubmit;
+  final void Function(Viagem, Motorista, Veiculo) onSubmit;
 
-  const ViagemForm(
-      this._viagem, this._motoristas, this._veiculos, this.onSubmit,
+  const ViagemForm(this._viagem, this._motorista, this._motoristas,
+      this._veiculo, this._veiculos, this.onSubmit,
       {super.key});
 
   @override
@@ -23,20 +25,16 @@ class ViagemForm extends StatefulWidget {
 
 class _ViagemFormState extends State<ViagemForm> {
   final _formKey = GlobalKey<FormState>();
-  late Motorista _motoristaSelecionado;
-  late Veiculo _veiculoSelecionado;
   late List<TipoViagem> _tiposViagem;
 
   @override
   void initState() {
     super.initState();
-    _motoristaSelecionado = Motorista();
-    _veiculoSelecionado = Veiculo();
     _tiposViagem = [TipoViagem.ida, TipoViagem.volta];
   }
 
   void _submitForm() {
-    widget.onSubmit(widget._viagem);
+    widget.onSubmit(widget._viagem, widget._motorista, widget._veiculo);
   }
 
   @override
@@ -52,8 +50,8 @@ class _ViagemFormState extends State<ViagemForm> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 TextFormField(
-                  initialValue: widget._viagem.nomeViagem,
-                  onChanged: (value) => widget._viagem.nomeViagem = value,
+                  initialValue: widget._viagem.descricao,
+                  onChanged: (value) => widget._viagem.descricao = value,
                   decoration: InputDecoration(
                     labelText: 'Nome da Viagem',
                     border: OutlineInputBorder(
@@ -92,9 +90,10 @@ class _ViagemFormState extends State<ViagemForm> {
                 TextFormField(
                   readOnly: true,
                   controller: TextEditingController(
-                    text: widget._viagem.data == null
+                    text: widget._viagem.data == ''
                         ? ''
-                        : DateFormat('dd/MM/yyyy').format(widget._viagem.data!),
+                        : DateFormat('dd/MM/yyyy')
+                            .format(DateTime.parse(widget._viagem.data)),
                   ),
                   decoration: InputDecoration(
                     labelText: 'Data',
@@ -114,7 +113,7 @@ class _ViagemFormState extends State<ViagemForm> {
                         child: DropdownMotorista(
                       items: widget._motoristas,
                       hint: 'Selecione uma opção',
-                      initialValue: _motoristaSelecionado,
+                      initialValue: widget._motorista,
                       onChanged: (newValue) {
                         setState(() {
                           if (newValue != null) {
@@ -132,7 +131,7 @@ class _ViagemFormState extends State<ViagemForm> {
                         child: DropdownVeiculo(
                       items: widget._veiculos,
                       hint: 'Selecione uma opção',
-                      initialValue: _veiculoSelecionado,
+                      initialValue: widget._veiculo,
                       onChanged: (newValue) {
                         setState(() {
                           if (newValue != null) {
@@ -186,7 +185,7 @@ class _ViagemFormState extends State<ViagemForm> {
 
     if (pickedDate != null) {
       setState(() {
-        widget._viagem.data = pickedDate;
+        widget._viagem.data = pickedDate.toIso8601String();
       });
     }
   }

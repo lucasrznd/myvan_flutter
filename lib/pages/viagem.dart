@@ -3,11 +3,13 @@ import 'package:myvan_flutter/components/drawer/sidemenu.dart';
 import 'package:myvan_flutter/components/utils/modal_mensagens.dart';
 import 'package:myvan_flutter/components/viagem/viagem_form.dart';
 import 'package:myvan_flutter/components/viagem/viagem_list.dart';
+import 'package:myvan_flutter/models/enums/tipo_viagem.dart';
 import 'package:myvan_flutter/models/motorista.dart';
 import 'package:myvan_flutter/models/veiculo.dart';
 import 'package:myvan_flutter/models/viagem.dart';
 import 'package:myvan_flutter/repositories/motorista_repository.dart';
 import 'package:myvan_flutter/repositories/veiculo_repository.dart';
+import 'package:myvan_flutter/repositories/viagem_repository.dart';
 
 class ViagemPage extends StatefulWidget {
   const ViagemPage({super.key});
@@ -18,12 +20,23 @@ class ViagemPage extends StatefulWidget {
 
 class _ViagemPageState extends State<ViagemPage> {
   late Viagem _viagem;
-  final List<Viagem> _viagens = [];
+  late Future<List<Viagem>> _viagens;
+  late Motorista _motorista;
+  late Veiculo _veiculo;
 
   @override
   void initState() {
     super.initState();
     _viagem = Viagem();
+    _viagens = selectAll();
+    _motorista = Motorista();
+    _veiculo = Veiculo();
+  }
+
+  Future<List<Viagem>> selectAll() async {
+    ViagemRepository repository = ViagemRepository();
+    List<Viagem> viagens = await repository.selectAll();
+    return viagens;
   }
 
   Future<List<Motorista>> _listarMotoristas() async {
@@ -38,11 +51,46 @@ class _ViagemPageState extends State<ViagemPage> {
     return veiculos;
   }
 
-  void _salvarViagem(Viagem viagem) {
-    viagem.data ??= DateTime.now();
+  void _criarViagem(Viagem viagem) {
+    ViagemRepository repository = ViagemRepository();
+
+    if (viagem.data == '') {
+      viagem.data = DateTime.now().toIso8601String();
+    }
+
+    repository.insert(viagem);
+  }
+
+  void _criarViagemVolta(Viagem viagem) {
+    ViagemRepository repository = ViagemRepository();
+
+    Viagem viagemVolta = Viagem(
+        codigo: viagem.codigo,
+        descricao: viagem.descricao,
+        veiculo: viagem.veiculo,
+        motorista: viagem.motorista,
+        tipoViagem: viagem.tipoViagem,
+        data: viagem.data);
+
+    viagemVolta.codigo = null;
+    viagemVolta.tipoViagem = 'VOLTA';
+
+    repository.insert(viagemVolta);
+  }
+
+  void _salvarViagem(Viagem viagem, Motorista motorista, Veiculo veiculo) {
+    if (viagem.codigo == null &&
+        viagem.tipoViagem == TipoViagem.ida.descricao) {
+      _criarViagem(viagem);
+      _criarViagemVolta(viagem);
+    } else {
+      _criarViagem(viagem);
+    }
+
+    _viagem = Viagem();
 
     setState(() {
-      _viagens.add(viagem);
+      _viagens = selectAll();
     });
 
     Navigator.of(context).pop();
@@ -50,25 +98,32 @@ class _ViagemPageState extends State<ViagemPage> {
     ModalMensagem.modalSucesso(context, 'Viagem', 'a');
   }
 
-  _editarViagem(Viagem viagem) {
+  _editarViagem(Viagem viagem, Motorista motorista, Veiculo veiculo) {
     setState(() {
-      _viagem = viagem;
-      _openFormModal(context, _viagem);
+      _motorista = motorista;
+      _veiculo = veiculo;
+      _openFormModal(context, viagem, _motorista, _veiculo);
+    });
+    _motorista = Motorista();
+    _veiculo = Veiculo();
+  }
+
+  void _deleteViagem(int codigo) {
+    ViagemRepository repository = ViagemRepository();
+    repository.delete(codigo);
+
+    setState(() {
+      _viagens = selectAll();
     });
   }
 
-  _deleteViagem(int codigo) {
-    setState(() {
-      _viagens.removeWhere((viagem) => viagem.codigo == codigo);
-    });
-  }
-
-  void _openFormModal(BuildContext context, Viagem viagem) {
+  void _openFormModal(BuildContext context, Viagem viagem, Motorista motorista,
+      Veiculo veiculo) {
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return ViagemForm(
-            viagem, _listarMotoristas(), _listarVeiculos(), _salvarViagem);
+        return ViagemForm(viagem, motorista, _listarMotoristas(), veiculo,
+            _listarVeiculos(), _salvarViagem);
       },
     );
   }
@@ -116,7 +171,8 @@ class _ViagemPageState extends State<ViagemPage> {
       actions: [
         IconButton(
           icon: const Icon(Icons.add),
-          onPressed: () => _openFormModal(context, _viagem),
+          onPressed: () =>
+              _openFormModal(context, _viagem, _motorista, _veiculo),
         ),
       ],
     );
@@ -138,13 +194,15 @@ class _ViagemPageState extends State<ViagemPage> {
                 _viagens,
                 _editarViagem,
                 _deleteViagem,
+                _listarMotoristas,
+                _listarVeiculos,
               ),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _openFormModal(context, _viagem),
+        onPressed: () => _openFormModal(context, _viagem, _motorista, _veiculo),
         backgroundColor: Colors.blue.shade300,
         foregroundColor: Colors.white,
         child: const Icon(Icons.add),
