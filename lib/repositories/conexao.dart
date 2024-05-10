@@ -13,6 +13,8 @@ class Conexao {
       'CREATE TABLE PASSAGEIRO(codigo INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, telefone TEXT, endereco_codigo INTEGER)';
   static const _sqlEndereco =
       'CREATE TABLE ENDERECO(codigo INTEGER PRIMARY KEY AUTOINCREMENT, rua TEXT, bairro TEXT, numero INTEGER, cidade TEXT)';
+  static const _sqlViagem =
+      'CREATE TABLE VIAGEM(codigo INTEGER PRIMARY KEY AUTOINCREMENT, descricao TEXT, veiculo_codigo INTEGER, motorista_codigo INTEGER, data TEXT, tipo_viagem TEXT)';
 
   Conexao._privateConstructor();
   static final Conexao instance = Conexao._privateConstructor();
@@ -31,6 +33,7 @@ class Conexao {
       await db.execute(_sqlVeiculo);
       await db.execute(_sqlEndereco);
       await db.execute(_sqlPassageiro);
+      await db.execute(_sqlViagem);
     });
     _database = database;
     return database;
