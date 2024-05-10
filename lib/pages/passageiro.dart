@@ -22,6 +22,8 @@ class _PassageiroPageState extends State<PassageiroPage> {
   @override
   void initState() {
     super.initState();
+    _passageiro = Passageiro();
+    _endereco = Endereco();
     _passageiros = listarPassageiros();
   }
 
@@ -43,13 +45,12 @@ class _PassageiroPageState extends State<PassageiroPage> {
       await repository.insert(endereco); // Espera a inserção ser concluída
     } else {
       await repository.update(endereco);
-      // Obtém o último endereço e espera a resolução do Future
-      Endereco ultimoEndereco = await repository.obterUltimo();
-
-      // Retorna o último endereço obtido
-      return ultimoEndereco;
     }
-    return Endereco();
+    // Obtém o último endereço e espera a resolução do Future
+    Endereco ultimoEndereco = await repository.obterUltimo();
+
+    // Retorna o último endereço obtido
+    return ultimoEndereco;
   }
 
   _salvarPassageiro(Passageiro passageiro, Endereco endereco) async {
@@ -59,6 +60,9 @@ class _PassageiroPageState extends State<PassageiroPage> {
     passageiro.endereco = ultimoEndereco.codigo;
 
     repository.insert(passageiro);
+
+    _passageiro = Passageiro();
+    _endereco = Endereco();
 
     setState(() {
       _passageiros = repository.selectAll();
@@ -73,6 +77,7 @@ class _PassageiroPageState extends State<PassageiroPage> {
       _endereco = endereco;
       _openFormModal(context, passageiro, _endereco);
     });
+    _endereco = Endereco();
   }
 
   _deletePassageiro(int codigo) {
@@ -87,11 +92,10 @@ class _PassageiroPageState extends State<PassageiroPage> {
 
   _openFormModal(
       BuildContext context, Passageiro passageiro, Endereco endereco) {
-    _endereco = endereco;
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return PassageiroForm(_salvarPassageiro, passageiro, _endereco);
+        return PassageiroForm(_salvarPassageiro, passageiro, endereco);
       },
     );
   }

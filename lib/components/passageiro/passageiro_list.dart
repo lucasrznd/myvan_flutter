@@ -61,7 +61,7 @@ class PassageiroList extends StatelessWidget {
 
                   Endereco fetchEndereco() {
                     Endereco endereco = enderecos
-                        .firstWhere((end) => passageiro.endereco == end.codigo);
+                        .firstWhere((end) => end.codigo == passageiro.codigo);
                     return endereco;
                   }
 
@@ -99,7 +99,7 @@ class PassageiroList extends StatelessWidget {
                         ),
                       ),
                       trailing: SizedBox(
-                        width: 100,
+                        width: 150,
                         child: Row(
                           children: [
                             IconButton(

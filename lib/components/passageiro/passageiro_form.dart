@@ -25,6 +25,13 @@ class _PassageiroFormState extends State<PassageiroForm> {
   var maskFormatter = MaskTextInputFormatter(
       mask: '(##) # ####-####', filter: {"#": RegExp(r'[0-9]')});
 
+  String exibirNumeroEndereco() {
+    if (widget._endereco.numero == null) {
+      return '';
+    }
+    return widget._endereco.numero.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -112,7 +119,7 @@ class _PassageiroFormState extends State<PassageiroForm> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
-                  initialValue: widget._endereco.numero.toString(),
+                  initialValue: exibirNumeroEndereco(),
                   onChanged: (value) =>
                       widget._endereco.numero = int.tryParse(value),
                   keyboardType: TextInputType.number,
