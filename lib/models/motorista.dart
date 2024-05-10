@@ -12,4 +12,15 @@ class Motorista {
       'telefone': telefone,
     };
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Motorista &&
+          runtimeType == other.runtimeType &&
+          codigo == other.codigo &&
+          nome == other.nome;
+
+  @override
+  int get hashCode => codigo.hashCode ^ nome.hashCode;
 }
