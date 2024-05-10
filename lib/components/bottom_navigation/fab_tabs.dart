@@ -36,6 +36,7 @@ class _FabTabsState extends State<FabTabs> {
     const MotoristaPage(),
     const VeiculoPage(),
     const TipoVeiculoPage(),
+    const ViagemPage()
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
@@ -49,7 +50,12 @@ class _FabTabsState extends State<FabTabs> {
                 ? const MotoristaPage()
                 : currentIndex == 3
                     ? const VeiculoPage()
-                    : const TipoVeiculoPage();
+                    : currentIndex == 4
+                        ? const VeiculoPage()
+                        : currentIndex == 5
+                            ? const ViagemPage()
+                            : const TipoVeiculoPage();
+
     return Scaffold(
       body: PageStorage(
         bucket: bucket,
@@ -62,134 +68,96 @@ class _FabTabsState extends State<FabTabs> {
         child: SizedBox(
           height: 60,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment
+                .spaceEvenly, // Centraliza os elementos na linha
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MaterialButton(
-                    minWidth: 50,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = const Home();
-                        currentIndex = 0;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.home_filled,
+              MaterialButton(
+                minWidth: 50,
+                onPressed: () {
+                  setState(() {
+                    currentScreen = const Home();
+                    currentIndex = 0;
+                  });
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.home_filled,
+                      color: currentIndex == 0
+                          ? const Color.fromARGB(255, 196, 196, 196)
+                          : Colors.white,
+                    ),
+                    Text(
+                      "Home",
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 13,
                           color: currentIndex == 0
                               ? const Color.fromARGB(255, 196, 196, 196)
-                              : Colors.white,
-                        ),
-                        Text(
-                          "Home",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 13,
-                              color: currentIndex == 0
-                                  ? const Color.fromARGB(255, 196, 196, 196)
-                                  : Colors.white),
-                        )
-                      ],
+                              : Colors.white),
+                    )
+                  ],
+                ),
+              ),
+              MaterialButton(
+                minWidth: 50,
+                onPressed: () {
+                  setState(() {
+                    currentScreen = const PassageiroPage();
+                    currentIndex = 1;
+                  });
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.people_alt,
+                      color: currentIndex == 1
+                          ? const Color.fromARGB(255, 196, 196, 196)
+                          : Colors.white,
                     ),
-                  ),
-                  MaterialButton(
-                    minWidth: 50,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = const PassageiroPage();
-                        currentIndex = 1;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.people_alt,
+                    Text(
+                      "Passageiros",
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 13,
                           color: currentIndex == 1
                               ? const Color.fromARGB(255, 196, 196, 196)
-                              : Colors.white,
-                        ),
-                        Text(
-                          "Passageiros",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 13,
-                              color: currentIndex == 1
-                                  ? const Color.fromARGB(255, 196, 196, 196)
-                                  : Colors.white),
-                        )
-                      ],
-                    ),
-                  )
-                ],
+                              : Colors.white),
+                    )
+                  ],
+                ),
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MaterialButton(
-                    minWidth: 50,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = const MotoristaPage();
-                        currentIndex = 2;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.person_pin_circle_rounded,
-                          color: currentIndex == 2
-                              ? const Color.fromARGB(255, 196, 196, 196)
-                              : Colors.white,
-                        ),
-                        Text(
-                          "Motoristas",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 13,
-                              color: currentIndex == 2
-                                  ? const Color.fromARGB(255, 196, 196, 196)
-                                  : Colors.white),
-                        )
-                      ],
+              MaterialButton(
+                minWidth: 50,
+                onPressed: () {
+                  setState(() {
+                    currentScreen = const ViagemPage();
+                    currentIndex = 5;
+                  });
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.person_pin_circle_rounded,
+                      color: currentIndex == 5
+                          ? const Color.fromARGB(255, 196, 196, 196)
+                          : Colors.white,
                     ),
-                  ),
-                  MaterialButton(
-                    minWidth: 50,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = const VeiculoPage();
-                        currentIndex = 3;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.drive_eta,
-                          color: currentIndex == 3
+                    Text(
+                      "Viagens",
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 13,
+                          color: currentIndex == 5
                               ? const Color.fromARGB(255, 196, 196, 196)
-                              : Colors.white,
-                        ),
-                        Text(
-                          "Veículos",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 13,
-                              color: currentIndex == 3
-                                  ? const Color.fromARGB(255, 196, 196, 196)
-                                  : Colors.white),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              )
+                              : Colors.white),
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
         ),

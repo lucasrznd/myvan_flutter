@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:myvan_flutter/components/drawer/sidemenu.dart';
 import 'package:myvan_flutter/components/viagem/viagem_form.dart';
 import 'package:myvan_flutter/components/viagem/viagem_list.dart';
-import 'package:myvan_flutter/models/endereco.dart';
 import 'package:myvan_flutter/models/enums/tipo_viagem.dart';
 import 'package:myvan_flutter/models/viagem.dart';
 
@@ -40,7 +39,6 @@ class _ViagemPageState extends State<ViagemPage> {
 
     Navigator.of(context).pop();
 
-    // Mostra um diálogo informando que a viagem foi salva
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
