@@ -88,10 +88,20 @@ class Home extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 20),
-              const CardPequeno(
-                titulo: 'Viagens',
-                iconData: Icons.assistant_direction_rounded,
-              )
+              InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FabTabs(selectedIndex: 5),
+                    ),
+                  );
+                },
+                child: const CardPequeno(
+                  titulo: 'Viagens',
+                  iconData: Icons.assistant_direction_rounded,
+                ),
+              ),
             ],
           ),
         ],
