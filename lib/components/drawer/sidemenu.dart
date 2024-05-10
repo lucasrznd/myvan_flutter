@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:myvan_flutter/components/bottom_navigation/fab_tabs.dart';
-import 'package:myvan_flutter/pages/viagem.dart';
 
 class SideMenu extends StatefulWidget {
   const SideMenu({super.key});

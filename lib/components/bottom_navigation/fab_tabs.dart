@@ -67,131 +67,94 @@ class _FabTabsState extends State<FabTabs> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MaterialButton(
-                    minWidth: 50,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = const Home();
-                        currentIndex = 0;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.home_filled,
+              MaterialButton(
+                minWidth: 50,
+                onPressed: () {
+                  setState(() {
+                    currentScreen = const Home();
+                    currentIndex = 0;
+                  });
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.home_filled,
+                      color: currentIndex == 0
+                          ? const Color.fromARGB(255, 196, 196, 196)
+                          : Colors.white,
+                    ),
+                    Text(
+                      "Home",
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 13,
                           color: currentIndex == 0
                               ? const Color.fromARGB(255, 196, 196, 196)
-                              : Colors.white,
-                        ),
-                        Text(
-                          "Home",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 13,
-                              color: currentIndex == 0
-                                  ? const Color.fromARGB(255, 196, 196, 196)
-                                  : Colors.white),
-                        )
-                      ],
+                              : Colors.white),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(width: 20),
+              MaterialButton(
+                minWidth: 50,
+                onPressed: () {
+                  setState(() {
+                    currentScreen = const PassageiroPage();
+                    currentIndex = 1;
+                  });
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.assistant_direction_rounded,
+                      color: currentIndex == 1
+                          ? const Color.fromARGB(255, 196, 196, 196)
+                          : Colors.white,
                     ),
-                  ),
-                  MaterialButton(
-                    minWidth: 50,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = const PassageiroPage();
-                        currentIndex = 2;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.people_alt,
+                    Text(
+                      "Viagens",
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 13,
+                          color: currentIndex == 1
+                              ? const Color.fromARGB(255, 196, 196, 196)
+                              : Colors.white),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(width: 20),
+              MaterialButton(
+                minWidth: 50,
+                onPressed: () {
+                  setState(() {
+                    currentScreen = const MotoristaPage();
+                    currentIndex = 2;
+                  });
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.people_alt,
+                      color: currentIndex == 2
+                          ? const Color.fromARGB(255, 196, 196, 196)
+                          : Colors.white,
+                    ),
+                    Text(
+                      "Passageiros",
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 13,
                           color: currentIndex == 2
                               ? const Color.fromARGB(255, 196, 196, 196)
-                              : Colors.white,
-                        ),
-                        Text(
-                          "Passageiros",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 13,
-                              color: currentIndex == 2
-                                  ? const Color.fromARGB(255, 196, 196, 196)
-                                  : Colors.white),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MaterialButton(
-                    minWidth: 50,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = const MotoristaPage();
-                        currentIndex = 3;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.person_pin_circle_rounded,
-                          color: currentIndex == 3
-                              ? const Color.fromARGB(255, 196, 196, 196)
-                              : Colors.white,
-                        ),
-                        Text(
-                          "Motoristas",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 13,
-                              color: currentIndex == 3
-                                  ? const Color.fromARGB(255, 196, 196, 196)
-                                  : Colors.white),
-                        )
-                      ],
-                    ),
-                  ),
-                  MaterialButton(
-                    minWidth: 50,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = const VeiculoPage();
-                        currentIndex = 4;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.drive_eta,
-                          color: currentIndex == 4
-                              ? const Color.fromARGB(255, 196, 196, 196)
-                              : Colors.white,
-                        ),
-                        Text(
-                          "Veículos",
-                          style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 13,
-                              color: currentIndex == 4
-                                  ? const Color.fromARGB(255, 196, 196, 196)
-                                  : Colors.white),
-                        )
-                      ],
-                    ),
-                  )
-                ],
+                              : Colors.white),
+                    )
+                  ],
+                ),
               )
             ],
           ),
