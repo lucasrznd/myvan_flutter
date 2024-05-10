@@ -1,20 +1,22 @@
-import 'package:myvan_flutter/models/enums/tipo_viagem.dart';
-import 'package:myvan_flutter/models/motorista.dart';
-import 'package:myvan_flutter/models/veiculo.dart';
-
 class Viagem {
-  final int codigo;
-  final Veiculo veiculo;
-  final Motorista motorista;
-  final DateTime data;
-  final TipoViagem tipoViagem;
-  final String nomeViagem;
+  int? codigo;
+  String nomeViagem;
+  int? veiculo;
+  int? motorista;
+  DateTime? data;
+  String tipoViagem;
 
-  Viagem(
-      {required this.codigo,
-      required this.veiculo,
-      required this.motorista,
-      required this.data,
-      required this.tipoViagem,
-      required this.nomeViagem});
+  Viagem({
+    this.codigo,
+    this.nomeViagem = '',
+    this.veiculo,
+    this.motorista,
+    this.data,
+    this.tipoViagem = '',
+  });
+
+  @override
+  String toString() {
+    return 'Viagem(codigo: $codigo, nome: $nomeViagem, veiculo: $veiculo, motorista: $motorista, data: $data), tipoViagem: $tipoViagem';
+  }
 }
