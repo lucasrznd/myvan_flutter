@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myvan_flutter/models/endereco.dart';
 import 'package:myvan_flutter/models/passageiro.dart';
+import 'package:myvan_flutter/services/whatsapp_service.dart';
 
 class PassageiroList extends StatelessWidget {
   final Future<List<Passageiro>> _passageiros;
@@ -102,6 +103,14 @@ class PassageiroList extends StatelessWidget {
                         width: 150,
                         child: Row(
                           children: [
+                            IconButton(
+                              onPressed: () => WhatsappService.abrirConversa(
+                                  passageiro.telefone),
+                              icon: Image.asset(
+                                'assets/app/whatsapp-icon.png',
+                                width: 23,
+                              ),
+                            ),
                             IconButton(
                               onPressed: () =>
                                   onEditing(passageiro, fetchEndereco()),
