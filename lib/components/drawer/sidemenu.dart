@@ -133,22 +133,19 @@ class _SideMenuState extends State<SideMenu> {
               color: Colors.blue.shade300,
             ),
             title: const Text(
-              "Viagens",
+              "Tipos de Veículos",
               style: TextStyle(
-                fontFamily: 'Poppins',
-                color: Color.fromARGB(255, 49, 49, 49),
-                fontWeight: FontWeight.w600,
-              ),
+                  fontFamily: 'Poppins',
+                  color: Color.fromARGB(255, 49, 49, 49),
+                  fontWeight: FontWeight.w600),
             ),
-            onTap: () {
+            onTap: () => {
               Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ViagemPage(),
-                ),
-              );
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => FabTabs(selectedIndex: 5)))
             },
-          )
+          ),
         ],
       ),
     );
