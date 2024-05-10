@@ -104,7 +104,7 @@ class _FabTabsState extends State<FabTabs> {
                     onPressed: () {
                       setState(() {
                         currentScreen = const PassageiroPage();
-                        currentIndex = 1;
+                        currentIndex = 2;
                       });
                     },
                     child: Column(
@@ -112,7 +112,7 @@ class _FabTabsState extends State<FabTabs> {
                       children: [
                         Icon(
                           Icons.people_alt,
-                          color: currentIndex == 1
+                          color: currentIndex == 2
                               ? const Color.fromARGB(255, 196, 196, 196)
                               : Colors.white,
                         ),
@@ -121,7 +121,7 @@ class _FabTabsState extends State<FabTabs> {
                           style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 13,
-                              color: currentIndex == 1
+                              color: currentIndex == 2
                                   ? const Color.fromARGB(255, 196, 196, 196)
                                   : Colors.white),
                         )
@@ -138,7 +138,7 @@ class _FabTabsState extends State<FabTabs> {
                     onPressed: () {
                       setState(() {
                         currentScreen = const MotoristaPage();
-                        currentIndex = 2;
+                        currentIndex = 3;
                       });
                     },
                     child: Column(
@@ -146,7 +146,7 @@ class _FabTabsState extends State<FabTabs> {
                       children: [
                         Icon(
                           Icons.person_pin_circle_rounded,
-                          color: currentIndex == 2
+                          color: currentIndex == 3
                               ? const Color.fromARGB(255, 196, 196, 196)
                               : Colors.white,
                         ),
@@ -155,7 +155,7 @@ class _FabTabsState extends State<FabTabs> {
                           style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 13,
-                              color: currentIndex == 2
+                              color: currentIndex == 3
                                   ? const Color.fromARGB(255, 196, 196, 196)
                                   : Colors.white),
                         )
@@ -167,7 +167,7 @@ class _FabTabsState extends State<FabTabs> {
                     onPressed: () {
                       setState(() {
                         currentScreen = const VeiculoPage();
-                        currentIndex = 3;
+                        currentIndex = 4;
                       });
                     },
                     child: Column(
@@ -175,7 +175,7 @@ class _FabTabsState extends State<FabTabs> {
                       children: [
                         Icon(
                           Icons.drive_eta,
-                          color: currentIndex == 3
+                          color: currentIndex == 4
                               ? const Color.fromARGB(255, 196, 196, 196)
                               : Colors.white,
                         ),
@@ -184,7 +184,7 @@ class _FabTabsState extends State<FabTabs> {
                           style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 13,
-                              color: currentIndex == 3
+                              color: currentIndex == 4
                                   ? const Color.fromARGB(255, 196, 196, 196)
                                   : Colors.white),
                         )
