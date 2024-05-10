@@ -1,21 +1,15 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:myvan_flutter/models/enums/tipo_viagem.dart';
 import 'package:myvan_flutter/models/motorista.dart';
-import 'package:myvan_flutter/models/tipo_veiculo.dart';
 import 'package:myvan_flutter/models/veiculo.dart';
+import 'package:myvan_flutter/models/viagem.dart';
 
 class ViagemForm extends StatefulWidget {
-  final void Function(
-    Veiculo veiculo,
-    Motorista motorista,
-    DateTime data,
-    TipoViagem tipoViagem,
-    String nomeViagem,
-  ) onSubmit;
+  final Viagem _viagem;
+  final void Function(Viagem) onSubmit;
 
-  const ViagemForm(this.onSubmit, {Key? key}) : super(key: key);
+  const ViagemForm(this._viagem, this.onSubmit, {super.key});
 
   @override
   State<ViagemForm> createState() => _ViagemFormState();
@@ -23,52 +17,52 @@ class ViagemForm extends StatefulWidget {
 
 class _ViagemFormState extends State<ViagemForm> {
   final _formKey = GlobalKey<FormState>();
-  final _veiculoController = TextEditingController();
-  final _motoristaController = TextEditingController();
-  final _tipoviagemController = TextEditingController();
-  final _nomeviagemController = TextEditingController();
-  DateTime? _selectedDate;
+  String _motoristaSelecionado = '';
 
-  final List<String> motoristas = [
-    'Sergio',
-    'João',
-    'Maria',
-    'Pedro'
+  String _formatarCampoMotorista() {
+    if (widget._viagem.motorista == null) {
+      return '';
+    }
+    return widget._viagem.motorista.toString();
+  }
+
+  String _formatarCampoVeiculo() {
+    if (widget._viagem.veiculo == null) {
+      return '';
+    }
+    return widget._viagem.veiculo.toString();
+  }
+
+  final List<TipoViagem> tiposViagem = [TipoViagem.ida, TipoViagem.volta];
+
+  final List<Motorista> motoristas = [
+    Motorista(codigo: 1, nome: 'Sergio', telefone: '4399999999'),
+    Motorista(codigo: 2, nome: 'Lucas', telefone: '4399999999'),
   ]; // Exemplos de motoristas
 
-  final List<String> veiculos = [
-    'Van',
-    'Ônibus',
+  final List<Veiculo> veiculos = [
+    Veiculo(
+        codigo: 1,
+        tipoVeiculo: 2,
+        placa: 'AGJ-1212',
+        capacidadePassageiros: 16),
+    Veiculo(
+        codigo: 2,
+        tipoVeiculo: 1,
+        placa: 'ALF-1552',
+        capacidadePassageiros: 16),
   ]; // Exemplos de veículos
 
   void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      final tipoViagem = _tipoviagemController.text;
-      final nomeViagem = _nomeviagemController.text;
+    widget._viagem.data ??= DateTime.now();
 
-      widget.onSubmit(
-        Veiculo(
-          codigo: 01,
-          capacidadePassageiros: 23,
-          cor: 'Preta',
-          placa: _veiculoController.text,
-          tipoVeiculo: 2,
-        ),
-        Motorista(
-            codigo: 03,
-            nome: _motoristaController.text,
-            telefone: '43999990000'),
-        _selectedDate!,
-        TipoViagem.IDA,
-        nomeViagem,
-      );
-
-      Navigator.of(context).pop();
-    }
+    print(widget._viagem.toString());
+    widget.onSubmit(widget._viagem);
   }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
+      locale: const Locale('pt', 'BR'),
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
@@ -77,7 +71,7 @@ class _ViagemFormState extends State<ViagemForm> {
 
     if (pickedDate != null) {
       setState(() {
-        _selectedDate = pickedDate;
+        widget._viagem.data = pickedDate;
       });
     }
   }
@@ -95,7 +89,8 @@ class _ViagemFormState extends State<ViagemForm> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 TextFormField(
-                  controller: _nomeviagemController,
+                  initialValue: widget._viagem.nomeViagem,
+                  onChanged: (value) => widget._viagem.nomeViagem = value,
                   decoration: InputDecoration(
                     labelText: 'Nome da Viagem',
                     border: OutlineInputBorder(
@@ -111,7 +106,9 @@ class _ViagemFormState extends State<ViagemForm> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
-                  controller: _tipoviagemController,
+                  readOnly: true,
+                  controller:
+                      TextEditingController(text: widget._viagem.tipoViagem),
                   decoration: InputDecoration(
                     labelText: 'Tipo de Viagem',
                     border: OutlineInputBorder(
@@ -124,14 +121,17 @@ class _ViagemFormState extends State<ViagemForm> {
                     }
                     return null;
                   },
+                  onTap: () {
+                    _autocompleteTipoViagem(context, tiposViagem);
+                  },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
                   readOnly: true,
                   controller: TextEditingController(
-                    text: _selectedDate == null
+                    text: widget._viagem.data == null
                         ? ''
-                        : DateFormat('dd/MM/yyyy').format(_selectedDate!),
+                        : DateFormat('dd/MM/yyyy').format(widget._viagem.data!),
                   ),
                   decoration: InputDecoration(
                     labelText: 'Data',
@@ -139,12 +139,12 @@ class _ViagemFormState extends State<ViagemForm> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     suffixIcon: IconButton(
-                      icon: Icon(Icons.calendar_today),
+                      icon: const Icon(Icons.calendar_today),
                       onPressed: () => _selectDate(context),
                     ),
                   ),
                   validator: (value) {
-                    if (_selectedDate == null) {
+                    if (widget._viagem.data == null) {
                       return 'Data é obrigatória.';
                     }
                     return null;
@@ -153,7 +153,8 @@ class _ViagemFormState extends State<ViagemForm> {
                 const SizedBox(height: 10),
                 TextFormField(
                   readOnly: true,
-                  controller: _motoristaController,
+                  controller:
+                      TextEditingController(text: _motoristaSelecionado),
                   decoration: InputDecoration(
                     labelText: 'Motorista',
                     border: OutlineInputBorder(
@@ -166,17 +167,14 @@ class _ViagemFormState extends State<ViagemForm> {
                     }
                     return null;
                   },
-                  onChanged: (value) {
-                    setState(() {});
-                  },
                   onTap: () {
-                    showAutocomplete(context, motoristas, _motoristaController);
+                    _autoCompleteMotoristas(context, motoristas);
                   },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
                   readOnly: true,
-                  controller: _veiculoController,
+                  initialValue: _formatarCampoVeiculo(),
                   decoration: InputDecoration(
                     labelText: 'Veículo',
                     border: OutlineInputBorder(
@@ -189,11 +187,8 @@ class _ViagemFormState extends State<ViagemForm> {
                     }
                     return null;
                   },
-                  onChanged: (value) {
-                    setState(() {});
-                  },
                   onTap: () {
-                    showAutocomplete(context, veiculos, _veiculoController);
+                    _autocompleteVeiculos(context, veiculos);
                   },
                 ),
                 const SizedBox(height: 20),
@@ -207,6 +202,7 @@ class _ViagemFormState extends State<ViagemForm> {
                       ),
                     ),
                   ),
+                  onPressed: _submitForm,
                   child: const Text(
                     'Salvar',
                     style: TextStyle(
@@ -214,7 +210,6 @@ class _ViagemFormState extends State<ViagemForm> {
                       fontFamily: 'Poppins',
                     ),
                   ),
-                  onPressed: _submitForm,
                 ),
               ],
             ),
@@ -224,18 +219,66 @@ class _ViagemFormState extends State<ViagemForm> {
     );
   }
 
-  void showAutocomplete(BuildContext context, List<String> options,
-      TextEditingController controller) {
+  void _autocompleteTipoViagem(
+      BuildContext context, List<TipoViagem> tiposViagem) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
         return SingleChildScrollView(
           child: Column(
-            children: options.map((option) {
+            children: tiposViagem.map((tipoViagem) {
               return ListTile(
-                title: Text(option),
+                title: Text(tipoViagem.descricao),
                 onTap: () {
-                  controller.text = option;
+                  setState(() {
+                    widget._viagem.tipoViagem = tipoViagem.descricao;
+                  });
+                  Navigator.pop(context);
+                },
+              );
+            }).toList(),
+          ),
+        );
+      },
+    );
+  }
+
+  void _autoCompleteMotoristas(
+      BuildContext context, List<Motorista> motoristas) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Column(
+            children: motoristas.map((motorista) {
+              return ListTile(
+                title: Text(motorista.nome),
+                onTap: () {
+                  setState(() {
+                    _motoristaSelecionado = motorista.nome;
+                    widget._viagem.motorista = motorista.codigo;
+                  });
+                  Navigator.pop(context);
+                },
+              );
+            }).toList(),
+          ),
+        );
+      },
+    );
+  }
+
+  void _autocompleteVeiculos(BuildContext context, List<Veiculo> veiculos) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Column(
+            children: veiculos.map((veiculo) {
+              return ListTile(
+                title: Text(veiculo.placa),
+                onTap: () {
+                  widget._viagem.veiculo = veiculo.codigo;
                   Navigator.pop(context);
                 },
               );

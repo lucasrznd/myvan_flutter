@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:myvan_flutter/models/viagem.dart';
 
 class ViagemList extends StatelessWidget {
   final List<Viagem> viagens;
+  final void Function(Viagem) onEditing;
   final void Function(int) onRemove;
 
-  const ViagemList(this.viagens, this.onRemove, {Key? key}) : super(key: key);
+  const ViagemList(this.viagens, this.onEditing, this.onRemove, {super.key});
 
   @override
   Widget build(BuildContext context) {
+    DateFormat formatter = DateFormat('dd/MM/yyyy');
     return viagens.isEmpty
         ? LayoutBuilder(builder: (ctx, constraints) {
             return Column(
@@ -55,19 +58,46 @@ class ViagemList extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Nome da Viagem: ${viagem.nomeViagem}',
-                        style: Theme.of(context).textTheme.subtitle1,
+                        viagem.nomeViagem,
+                        style: const TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       Text(
-                        'Tipo de Viagem: ${viagem.tipoViagem}',
-                        style: Theme.of(context).textTheme.subtitle1,
+                        '${viagem.tipoViagem}, ${formatter.format(viagem.data!)}',
+                        style: const TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 15,
+                        ),
+                      ),
+                      Text(
+                        viagem.motorista.toString(),
+                        style: const TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 15,
+                        ),
                       ),
                     ],
                   ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () => onRemove(viagem.codigo),
-                    color: Theme.of(context).errorColor,
+                  trailing: SizedBox(
+                    width: 100,
+                    child: Row(
+                      children: [
+                        IconButton(
+                          onPressed: () => onEditing(viagem),
+                          icon: const Icon(
+                            Icons.edit,
+                            color: Colors.blue,
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () => onRemove(viagem.codigo!),
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
