@@ -7,8 +7,8 @@ import 'package:myvan_flutter/pages/veiculo.dart';
 import 'package:myvan_flutter/pages/viagem.dart';
 
 class FabTabs extends StatefulWidget {
-  int selectedIndex = 0;
-  FabTabs({required this.selectedIndex, super.key});
+  final int selectedIndex;
+  const FabTabs({required this.selectedIndex, super.key});
 
   @override
   State<FabTabs> createState() => _FabTabsState();
@@ -17,17 +17,16 @@ class FabTabs extends StatefulWidget {
 class _FabTabsState extends State<FabTabs> {
   int currentIndex = 0;
 
-  void onItemTapped(int index) {
-    setState(() {
-      widget.selectedIndex = index;
-      currentIndex = widget.selectedIndex;
-    });
-  }
-
   @override
   void initState() {
     onItemTapped(widget.selectedIndex);
     super.initState();
+  }
+
+  void onItemTapped(int index) {
+    setState(() {
+      currentIndex = widget.selectedIndex;
+    });
   }
 
   final List<Widget> pages = [
