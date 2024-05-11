@@ -4,7 +4,6 @@ import 'package:myvan_flutter/components/drawer/sidemenu.dart';
 import 'package:myvan_flutter/components/custom_app_bar.dart';
 import 'package:myvan_flutter/components/pagina_inicial/card_menor.dart';
 import 'package:myvan_flutter/components/pagina_inicial/card_chamada.dart';
-import 'package:myvan_flutter/pages/viagem.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -27,11 +26,11 @@ class Home extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const FabTabs(selectedIndex: 5),
+                  builder: (context) => const FabTabs(selectedIndex: 1),
                 ),
               );
             },
-            child: const CardExample(
+            child: const CardChamada(
               texto: 'CHAMADA IDA',
             ),
           ),
@@ -43,13 +42,13 @@ class Home extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const ViagemPage(),
+                  builder: (context) => const FabTabs(selectedIndex: 1),
                 ),
               );
             },
             child: const Padding(
               padding: EdgeInsets.symmetric(horizontal: 12),
-              child: CardExample(
+              child: CardChamada(
                 texto: 'CHAMADA VOLTA',
               ),
             ),

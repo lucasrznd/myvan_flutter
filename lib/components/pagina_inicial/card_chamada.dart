@@ -1,25 +1,8 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const CardChamada(texto: "Seu texto aqui"));
-
 class CardChamada extends StatelessWidget {
   final String texto;
   const CardChamada({required this.texto, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: CardExample(texto: texto),
-      ),
-    );
-  }
-}
-
-class CardExample extends StatelessWidget {
-  final String texto;
-  const CardExample({required this.texto, super.key});
 
   @override
   Widget build(BuildContext context) {
