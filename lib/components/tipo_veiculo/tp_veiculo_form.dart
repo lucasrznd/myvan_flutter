@@ -23,13 +23,15 @@ class _TipoVeiculoFormState extends State<TipoVeiculoForm> {
     return Card(
       elevation: 5,
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10)
+            .copyWith(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextFormField(
-                // controller: _descricaoController,
                 initialValue: widget.tipoVeiculo.descricao,
                 onChanged: (value) => widget.tipoVeiculo.descricao = value,
                 decoration: InputDecoration(

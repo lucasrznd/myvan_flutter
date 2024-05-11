@@ -93,6 +93,7 @@ class _PassageiroPageState extends State<PassageiroPage> {
   _openFormModal(
       BuildContext context, Passageiro passageiro, Endereco endereco) {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (_) {
         return PassageiroForm(_salvarPassageiro, passageiro, endereco);
@@ -120,6 +121,7 @@ class _PassageiroPageState extends State<PassageiroPage> {
         MediaQuery.of(context).padding.top;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       drawer: const SideMenu(),
       appBar: appBar,
       body: SingleChildScrollView(

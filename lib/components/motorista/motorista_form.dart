@@ -27,10 +27,13 @@ class _MotoristaFormState extends State<MotoristaForm> {
     return Card(
       elevation: 5,
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10)
+            .copyWith(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextFormField(
                 initialValue: widget.motorista.nome,
