@@ -3,14 +3,14 @@ class Veiculo {
   int? tipoVeiculo;
   String placa;
   String cor;
-  int capacidadePassageiros;
+  int? capacidadePassageiros;
 
   Veiculo(
       {this.codigo,
       this.tipoVeiculo,
       this.placa = '',
       this.cor = '',
-      this.capacidadePassageiros = 4});
+      this.capacidadePassageiros});
 
   Map<String, dynamic> toMap() {
     return {

@@ -1,16 +1,18 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:myvan_flutter/components/dropdown.dart';
+import 'package:myvan_flutter/components/tipo_veiculo/dropdown.dart';
 import 'package:myvan_flutter/models/tipo_veiculo.dart';
 import 'package:myvan_flutter/models/veiculo.dart';
 
 class VeiculoForm extends StatefulWidget {
-  final void Function(Veiculo) onSubmit;
+  final void Function(Veiculo, TipoVeiculo) onSubmit;
   final Veiculo _veiculo;
   final Future<List<TipoVeiculo>> _tiposVeiculos;
+  final TipoVeiculo _tipoVeiculo;
 
-  const VeiculoForm(this.onSubmit, this._veiculo, this._tiposVeiculos,
+  const VeiculoForm(
+      this.onSubmit, this._veiculo, this._tiposVeiculos, this._tipoVeiculo,
       {super.key});
 
   @override
@@ -19,16 +21,21 @@ class VeiculoForm extends StatefulWidget {
 
 class _VeiculoFormState extends State<VeiculoForm> {
   final _formKey = GlobalKey<FormState>();
-  late TipoVeiculo _veiculoSelecionado;
 
   _submitForm() {
-    widget.onSubmit(widget._veiculo);
+    widget.onSubmit(widget._veiculo, widget._tipoVeiculo);
   }
 
   @override
   void initState() {
     super.initState();
-    _veiculoSelecionado = TipoVeiculo();
+  }
+
+  String formatarCapacidadePassageiros() {
+    if (widget._veiculo.capacidadePassageiros == null) {
+      return '';
+    }
+    return widget._veiculo.capacidadePassageiros.toString();
   }
 
   @override
@@ -44,11 +51,11 @@ class _VeiculoFormState extends State<VeiculoForm> {
               Row(
                 children: [
                   Expanded(
-                    child: DropdownPersonalizado(
+                    child: DropdownTipoVeiculo(
                       items: widget._tiposVeiculos,
                       hint: "Selecione uma opção",
                       initialValue:
-                          _veiculoSelecionado, // Always use initial value
+                          widget._tipoVeiculo, // Always use initial value
                       onChanged: (newValue) {
                         setState(() {
                           if (newValue != null) {
@@ -97,7 +104,7 @@ class _VeiculoFormState extends State<VeiculoForm> {
               ),
               const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
               TextFormField(
-                initialValue: widget._veiculo.capacidadePassageiros.toString(),
+                initialValue: formatarCapacidadePassageiros(),
                 onChanged: (value) {
                   final parsedValue = int.tryParse(value);
                   if (parsedValue != null) {

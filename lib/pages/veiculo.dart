@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myvan_flutter/components/drawer/sidemenu.dart';
+import 'package:myvan_flutter/components/utils/modal_mensagens.dart';
 import 'package:myvan_flutter/components/veiculo/veiculo_form.dart';
 import 'package:myvan_flutter/components/veiculo/veiculo_list.dart';
 import 'package:myvan_flutter/models/tipo_veiculo.dart';
@@ -16,6 +17,7 @@ class VeiculoPage extends StatefulWidget {
 
 class _VeiculoPageState extends State<VeiculoPage> {
   late Veiculo veiculo;
+  late TipoVeiculo _tipoVeiculo;
   late Future<List<Veiculo>> _veiculos;
   late Future<List<TipoVeiculo>> _tiposVeiculos;
 
@@ -24,6 +26,7 @@ class _VeiculoPageState extends State<VeiculoPage> {
     super.initState();
     _veiculos = listarVeiculos();
     _tiposVeiculos = listarTiposVeiculos();
+    _tipoVeiculo = TipoVeiculo();
   }
 
   Future<List<Veiculo>> listarVeiculos() async {
@@ -38,7 +41,7 @@ class _VeiculoPageState extends State<VeiculoPage> {
     return tiposVeiculos;
   }
 
-  _salvarVeiculo(Veiculo veiculo) {
+  _salvarVeiculo(Veiculo veiculo, TipoVeiculo tipoVeiculo) {
     VeiculoRepository repository = VeiculoRepository();
     repository.insert(veiculo);
 
@@ -47,11 +50,13 @@ class _VeiculoPageState extends State<VeiculoPage> {
     });
 
     Navigator.of(context).pop();
+
+    ModalMensagem.modalSucesso(context, 'Veiculo', 'o');
   }
 
-  _editarVeiculo(Veiculo veiculo) {
+  _editarVeiculo(Veiculo veiculo, TipoVeiculo tipoVeiculo) {
     setState(() {
-      _openFormModal(context, veiculo);
+      _openFormModal(context, veiculo, tipoVeiculo);
     });
   }
 
@@ -64,11 +69,13 @@ class _VeiculoPageState extends State<VeiculoPage> {
     });
   }
 
-  _openFormModal(BuildContext context, Veiculo veiculo) {
+  _openFormModal(
+      BuildContext context, Veiculo veiculo, TipoVeiculo tipoVeiculo) {
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return VeiculoForm(_salvarVeiculo, veiculo, _tiposVeiculos);
+        return VeiculoForm(
+            _salvarVeiculo, veiculo, _tiposVeiculos, tipoVeiculo);
       },
     );
   }
@@ -85,7 +92,7 @@ class _VeiculoPageState extends State<VeiculoPage> {
       actions: [
         IconButton(
           icon: const Icon(Icons.add),
-          onPressed: () => _openFormModal(context, veiculo),
+          onPressed: () => _openFormModal(context, veiculo, _tipoVeiculo),
         ),
       ],
     );
@@ -114,7 +121,7 @@ class _VeiculoPageState extends State<VeiculoPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _openFormModal(context, veiculo),
+        onPressed: () => _openFormModal(context, veiculo, _tipoVeiculo),
         backgroundColor: Colors.blue.shade300,
         foregroundColor: Colors.white,
         child: const Icon(Icons.add),

@@ -10,4 +10,15 @@ class TipoVeiculo {
       'descricao': descricao,
     };
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TipoVeiculo &&
+          runtimeType == other.runtimeType &&
+          codigo == other.codigo &&
+          descricao == other.descricao;
+
+  @override
+  int get hashCode => codigo.hashCode ^ descricao.hashCode;
 }
