@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
         ),
         primaryColor: Colors.blue.shade300,
       ),
-      home: FabTabs(selectedIndex: 0),
+      home: const FabTabs(selectedIndex: 0),
     );
   }
 }

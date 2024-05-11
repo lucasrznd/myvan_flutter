@@ -1,25 +1,8 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const CardChamada(texto: "Seu texto aqui"));
-
 class CardChamada extends StatelessWidget {
   final String texto;
-  const CardChamada({Key? key, required this.texto}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: CardExample(texto: texto),
-      ),
-    );
-  }
-}
-
-class CardExample extends StatelessWidget {
-  final String texto;
-  const CardExample({Key? key, required this.texto}) : super(key: key);
+  const CardChamada({required this.texto, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,18 +16,18 @@ class CardExample extends StatelessWidget {
             child: ListTile(
               title: Text(
                 texto,
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'Poppins',
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 24,
                 ),
               ),
-              leading: SizedBox(
+              leading: const SizedBox(
                 height: 90,
                 child: Icon(
                   Icons.how_to_reg_outlined,
-                  color: const Color.fromARGB(255, 255, 255, 255),
+                  color: Color.fromARGB(255, 255, 255, 255),
                   size: 50,
                 ),
               ),

@@ -47,7 +47,7 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => FabTabs(selectedIndex: 0)))
+                      builder: (context) => const FabTabs(selectedIndex: 0)))
             },
           ),
           ListTile(
@@ -67,7 +67,7 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => FabTabs(selectedIndex: 1)))
+                      builder: (context) => const FabTabs(selectedIndex: 1)))
             },
           ),
           ListTile(
@@ -86,7 +86,7 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => FabTabs(selectedIndex: 2)))
+                      builder: (context) => const FabTabs(selectedIndex: 2)))
             },
           ),
           ListTile(
@@ -105,7 +105,7 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => FabTabs(selectedIndex: 3)))
+                      builder: (context) => const FabTabs(selectedIndex: 3)))
             },
           ),
           ListTile(
@@ -124,7 +124,7 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => FabTabs(selectedIndex: 4)))
+                      builder: (context) => const FabTabs(selectedIndex: 4)))
             },
           ),
           ListTile(
@@ -143,7 +143,7 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => FabTabs(selectedIndex: 5)))
+                      builder: (context) => const FabTabs(selectedIndex: 5)))
             },
           ),
         ],
