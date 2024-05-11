@@ -44,7 +44,7 @@ class _VeiculoFormState extends State<VeiculoForm> {
               Row(
                 children: [
                   Expanded(
-                    child: DropdownPersonalizado(
+                    child: DropdownTipoVeiculo(
                       items: widget._tiposVeiculos,
                       hint: "Selecione uma opção",
                       initialValue:

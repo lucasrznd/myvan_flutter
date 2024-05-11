@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myvan_flutter/models/tipo_veiculo.dart';
 
-class DropdownPersonalizado extends StatefulWidget {
+class DropdownTipoVeiculo extends StatefulWidget {
   final Future<List<TipoVeiculo>> items; // Lista de itens do menu suspenso
   final String hint; // Texto de sugestão
   final TipoVeiculo? value; // Valor selecionado atualmente (nullable)
@@ -9,7 +9,7 @@ class DropdownPersonalizado extends StatefulWidget {
       onChanged; // Função de callback para lidar com a mudança de seleção
   final TipoVeiculo initialValue; // Initial value for the dropdown
 
-  const DropdownPersonalizado(
+  const DropdownTipoVeiculo(
       {required this.items,
       required this.hint,
       this.value,
@@ -18,10 +18,10 @@ class DropdownPersonalizado extends StatefulWidget {
       super.key});
 
   @override
-  State<DropdownPersonalizado> createState() => _DropdownPersonalizadoState();
+  State<DropdownTipoVeiculo> createState() => _DropdownTipoVeiculoState();
 }
 
-class _DropdownPersonalizadoState extends State<DropdownPersonalizado> {
+class _DropdownTipoVeiculoState extends State<DropdownTipoVeiculo> {
   TipoVeiculo? _selectedValue;
   late Future<List<TipoVeiculo>> _futureItems;
 
