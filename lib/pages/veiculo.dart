@@ -72,6 +72,7 @@ class _VeiculoPageState extends State<VeiculoPage> {
   _openFormModal(
       BuildContext context, Veiculo veiculo, TipoVeiculo tipoVeiculo) {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (_) {
         return VeiculoForm(
@@ -102,6 +103,7 @@ class _VeiculoPageState extends State<VeiculoPage> {
         MediaQuery.of(context).padding.top;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       drawer: const SideMenu(),
       appBar: appBar,
       body: SingleChildScrollView(

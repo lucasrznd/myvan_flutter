@@ -120,6 +120,7 @@ class _ViagemPageState extends State<ViagemPage> {
   void _openFormModal(BuildContext context, Viagem viagem, Motorista motorista,
       Veiculo veiculo) {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (_) {
         return ViagemForm(viagem, motorista, _listarMotoristas(), veiculo,
@@ -182,6 +183,7 @@ class _ViagemPageState extends State<ViagemPage> {
         MediaQuery.of(context).padding.top;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       drawer: const SideMenu(),
       appBar: appBar,
       body: SingleChildScrollView(

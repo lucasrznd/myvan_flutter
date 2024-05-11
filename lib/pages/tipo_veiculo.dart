@@ -53,6 +53,7 @@ class _TipoVeiculoPageState extends State<TipoVeiculoPage> {
 
   _openFormModal(BuildContext context, TipoVeiculo tipoVeiculo) {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (_) {
         return TipoVeiculoForm(_salvarTipoVeiculo, tipoVeiculo);
@@ -82,6 +83,7 @@ class _TipoVeiculoPageState extends State<TipoVeiculoPage> {
         MediaQuery.of(context).padding.top;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       drawer: const SideMenu(),
       appBar: appBar,
       body: SingleChildScrollView(

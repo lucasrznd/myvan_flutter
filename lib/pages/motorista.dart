@@ -52,6 +52,7 @@ class _MotoristaPageState extends State<MotoristaPage> {
 
   _openFormModal(BuildContext context, Motorista motorista) {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (_) {
         return MotoristaForm(_salvarMotorista, motorista);
@@ -81,6 +82,7 @@ class _MotoristaPageState extends State<MotoristaPage> {
         MediaQuery.of(context).padding.top;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       drawer: const SideMenu(),
       appBar: appBar,
       body: SingleChildScrollView(

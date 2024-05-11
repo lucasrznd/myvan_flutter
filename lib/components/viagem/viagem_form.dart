@@ -41,133 +41,136 @@ class _ViagemFormState extends State<ViagemForm> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                TextFormField(
-                  initialValue: widget._viagem.descricao,
-                  onChanged: (value) => widget._viagem.descricao = value,
-                  decoration: InputDecoration(
-                    labelText: 'Nome da Viagem',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Nome da Viagem é obrigatório.';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  readOnly: true,
-                  controller:
-                      TextEditingController(text: widget._viagem.tipoViagem),
-                  decoration: InputDecoration(
-                    labelText: 'Tipo de Viagem',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Tipo de Viagem é obrigatório.';
-                    }
-                    return null;
-                  },
-                  onTap: () {
-                    _autocompleteTipoViagem(context, _tiposViagem);
-                  },
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  readOnly: true,
-                  controller: TextEditingController(
-                    text: widget._viagem.data == ''
-                        ? ''
-                        : DateFormat('dd/MM/yyyy')
-                            .format(DateTime.parse(widget._viagem.data)),
-                  ),
-                  decoration: InputDecoration(
-                    labelText: 'Data',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.calendar_today),
-                      onPressed: () => _selecionarData(context),
-                    ),
+      child: Padding(
+        padding: const EdgeInsets.all(10)
+            .copyWith(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextFormField(
+                initialValue: widget._viagem.descricao,
+                onChanged: (value) => widget._viagem.descricao = value,
+                decoration: InputDecoration(
+                  labelText: 'Nome da Viagem',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                const SizedBox(height: 10),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                        child: DropdownMotorista(
-                      items: widget._motoristas,
-                      hint: 'Selecione uma opção',
-                      initialValue: widget._motorista,
-                      onChanged: (newValue) {
-                        setState(() {
-                          if (newValue != null) {
-                            widget._viagem.motorista = newValue.codigo!;
-                          }
-                        });
-                      },
-                    ))
-                  ],
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Nome da Viagem é obrigatório.';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                readOnly: true,
+                controller:
+                    TextEditingController(text: widget._viagem.tipoViagem),
+                decoration: InputDecoration(
+                  labelText: 'Tipo de Viagem',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
-                const SizedBox(height: 10),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                        child: DropdownVeiculo(
-                      items: widget._veiculos,
-                      hint: 'Selecione uma opção',
-                      initialValue: widget._veiculo,
-                      onChanged: (newValue) {
-                        setState(() {
-                          if (newValue != null) {
-                            widget._viagem.veiculo = newValue.codigo!;
-                          }
-                        });
-                      },
-                    ))
-                  ],
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Tipo de Viagem é obrigatório.';
+                  }
+                  return null;
+                },
+                onTap: () {
+                  _autocompleteTipoViagem(context, _tiposViagem);
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                readOnly: true,
+                controller: TextEditingController(
+                  text: widget._viagem.data == ''
+                      ? ''
+                      : DateFormat('dd/MM/yyyy')
+                          .format(DateTime.parse(widget._viagem.data)),
                 ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateColor.resolveWith((states) => Colors.blue),
-                    shape: MaterialStateProperty.resolveWith(
-                      (states) => RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                decoration: InputDecoration(
+                  labelText: 'Data',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.calendar_today),
+                    onPressed: () => _selecionarData(context),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                      child: DropdownMotorista(
+                    items: widget._motoristas,
+                    hint: 'Selecione uma opção',
+                    initialValue: widget._motorista,
+                    onChanged: (newValue) {
+                      setState(() {
+                        if (newValue != null) {
+                          widget._viagem.motorista = newValue.codigo!;
+                        }
+                      });
+                    },
+                  ))
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                      child: DropdownVeiculo(
+                    items: widget._veiculos,
+                    hint: 'Selecione uma opção',
+                    initialValue: widget._veiculo,
+                    onChanged: (newValue) {
+                      setState(() {
+                        if (newValue != null) {
+                          widget._viagem.veiculo = newValue.codigo!;
+                        }
+                      });
+                    },
+                  ))
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => Colors.blue),
+                      shape: MaterialStateProperty.resolveWith(
+                        (states) => RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
                     ),
-                  ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _submitForm();
-                    }
-                  },
-                  child: const Text(
-                    'Salvar',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Poppins',
+                    child: const Text(
+                      'Salvar',
+                      style:
+                          TextStyle(color: Colors.white, fontFamily: 'Poppins'),
                     ),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _submitForm();
+                      }
+                    },
                   ),
-                ),
-              ],
-            ),
+                ],
+              )
+            ],
           ),
         ),
       ),
