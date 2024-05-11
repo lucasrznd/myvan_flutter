@@ -4,7 +4,7 @@ import 'package:myvan_flutter/models/veiculo.dart';
 
 class VeiculoList extends StatelessWidget {
   final Future<List<Veiculo>> _veiculos;
-  final void Function(Veiculo) onEditing;
+  final void Function(Veiculo, TipoVeiculo) onEditing;
   final void Function(int) onRemove;
   final Future<List<TipoVeiculo>> Function() _listarTiposVeiculos;
 
@@ -101,7 +101,8 @@ class VeiculoList extends StatelessWidget {
                       child: Row(
                         children: [
                           IconButton(
-                              onPressed: () => onEditing(veiculo),
+                              onPressed: () =>
+                                  onEditing(veiculo, fetchTiposVeiculos()),
                               icon: const Icon(
                                 Icons.edit,
                                 color: Colors.blue,
