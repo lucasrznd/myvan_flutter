@@ -62,16 +62,27 @@ class MotoristaList extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(6),
                         child: FittedBox(
-                          child: Text(motorista.nome[0]),
+                          child: Text(
+                            motorista.nome[0],
+                            style: const TextStyle(
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w600),
+                          ),
                         ),
                       ),
                     ),
-                    title: Text(
+                    title: Text(  
                       motorista.nome,
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: const TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     subtitle: Text(
                       motorista.telefone,
+                      style: const TextStyle(
+                        fontFamily: 'Poppins',
+                      ),
                     ),
                     trailing: SizedBox(
                       width: 100,
