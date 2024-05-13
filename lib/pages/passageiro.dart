@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myvan_flutter/components/drawer/sidemenu.dart';
 import 'package:myvan_flutter/components/passageiro/passageiro_form.dart';
 import 'package:myvan_flutter/components/passageiro/passageiro_list.dart';
+import 'package:myvan_flutter/components/utils/modal_mensagens.dart';
 import 'package:myvan_flutter/models/endereco.dart';
 import 'package:myvan_flutter/models/passageiro.dart';
 import 'package:myvan_flutter/repositories/endereco_repository.dart';
@@ -70,6 +71,8 @@ class _PassageiroPageState extends State<PassageiroPage> {
 
     if (!mounted) return;
     Navigator.of(context).pop();
+
+    ModalMensagem.modalSucesso(context, 'Passageiro', 'o');
   }
 
   _editarPassageiro(Passageiro passageiro, Endereco endereco) {
@@ -80,14 +83,19 @@ class _PassageiroPageState extends State<PassageiroPage> {
     _endereco = Endereco();
   }
 
-  _deletePassageiro(int codigo) {
+  void _deletePassageiro(int codigo) async {
     PassageiroRepository repository = PassageiroRepository();
 
-    repository.delete(codigo);
+    bool opcao =
+        await ModalMensagem.modalConfirmDelete(context, 'Passageiro', 'o');
 
-    setState(() {
-      _passageiros = repository.selectAll();
-    });
+    if (opcao) {
+      await repository.delete(codigo);
+
+      setState(() {
+        _passageiros = repository.selectAll();
+      });
+    }
   }
 
   _openFormModal(

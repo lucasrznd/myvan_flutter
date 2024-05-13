@@ -60,13 +60,19 @@ class _VeiculoPageState extends State<VeiculoPage> {
     });
   }
 
-  void deleteVeiculo(int codigo) {
+  void deleteVeiculo(int codigo) async {
     VeiculoRepository repository = VeiculoRepository();
-    repository.delete(codigo);
 
-    setState(() {
-      _veiculos = repository.selectAll();
-    });
+    bool opcao =
+        await ModalMensagem.modalConfirmDelete(context, 'Veículo', 'o');
+
+    if (opcao) {
+      repository.delete(codigo);
+      
+      setState(() {
+        _veiculos = repository.selectAll();
+      });
+    }
   }
 
   _openFormModal(
