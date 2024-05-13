@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myvan_flutter/components/drawer/sidemenu.dart';
 import 'package:myvan_flutter/components/motorista/motorista_form.dart';
 import 'package:myvan_flutter/components/motorista/motorista_list.dart';
+import 'package:myvan_flutter/components/utils/modal_mensagens.dart';
 import 'package:myvan_flutter/models/motorista.dart';
 import 'package:myvan_flutter/repositories/motorista_repository.dart';
 
@@ -35,6 +36,8 @@ class _MotoristaPageState extends State<MotoristaPage> {
     });
 
     Navigator.of(context).pop();
+
+    ModalMensagem.modalSucesso(context, 'Motorista', 'o');
   }
 
   _editarMotorista(Motorista motorista) {

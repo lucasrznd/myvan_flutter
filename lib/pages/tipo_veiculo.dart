@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myvan_flutter/components/drawer/sidemenu.dart';
 import 'package:myvan_flutter/components/tipo_veiculo/tp_veiculo_form.dart';
 import 'package:myvan_flutter/components/tipo_veiculo/tp_veiculo_list.dart';
+import 'package:myvan_flutter/components/utils/modal_mensagens.dart';
 import 'package:myvan_flutter/models/tipo_veiculo.dart';
 import 'package:myvan_flutter/repositories/tipo_veiculo_repository.dart';
 
@@ -35,6 +36,8 @@ class _TipoVeiculoPageState extends State<TipoVeiculoPage> {
     });
 
     Navigator.of(context).pop();
+
+    ModalMensagem.modalSucesso(context, 'Tipo de Veículo', 'o');
   }
 
   void _editarTipoVeiculo(TipoVeiculo tipoVeiculo) {
