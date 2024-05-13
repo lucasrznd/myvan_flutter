@@ -52,6 +52,25 @@ class _SideMenuState extends State<SideMenu> {
           ),
           ListTile(
             leading: Icon(
+              Icons.how_to_reg_outlined,
+              color: Colors.blue.shade300,
+            ),
+            title: const Text(
+              "Chamadas",
+              style: TextStyle(
+                  fontFamily: 'Poppins',
+                  color: Color.fromARGB(255, 49, 49, 49),
+                  fontWeight: FontWeight.w600),
+            ),
+            onTap: () => {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const FabTabs(selectedIndex: 1)))
+            },
+          ),
+          ListTile(
+            leading: Icon(
               Icons.assistant_direction_rounded,
               color: Colors.blue.shade300,
             ),
@@ -67,7 +86,7 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const FabTabs(selectedIndex: 1)))
+                      builder: (context) => const FabTabs(selectedIndex: 2)))
             },
           ),
           ListTile(
@@ -86,7 +105,7 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const FabTabs(selectedIndex: 2)))
+                      builder: (context) => const FabTabs(selectedIndex: 3)))
             },
           ),
           ListTile(
@@ -105,7 +124,7 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const FabTabs(selectedIndex: 3)))
+                      builder: (context) => const FabTabs(selectedIndex: 4)))
             },
           ),
           ListTile(
@@ -124,7 +143,7 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const FabTabs(selectedIndex: 4)))
+                      builder: (context) => const FabTabs(selectedIndex: 5)))
             },
           ),
           ListTile(
@@ -143,7 +162,7 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const FabTabs(selectedIndex: 5)))
+                      builder: (context) => const FabTabs(selectedIndex: 6)))
             },
           ),
         ],
