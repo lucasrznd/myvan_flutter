@@ -47,10 +47,16 @@ class _MotoristaPageState extends State<MotoristaPage> {
   }
 
   _deleteMotorista(int codigo) async {
-    await repository.delete(codigo);
-    setState(() {
-      motoristas = selectAll();
-    });
+    bool opcao =
+        await ModalMensagem.modalConfirmDelete(context, 'Motorista', 'o');
+
+    if (opcao) {
+      await repository.delete(codigo);
+
+      setState(() {
+        motoristas = selectAll();
+      });
+    }
   }
 
   _openFormModal(BuildContext context, Motorista motorista) {

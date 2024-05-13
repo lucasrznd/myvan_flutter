@@ -108,13 +108,18 @@ class _ViagemPageState extends State<ViagemPage> {
     _veiculo = Veiculo();
   }
 
-  void _deleteViagem(int codigo) {
+  void _deleteViagem(int codigo) async {
     ViagemRepository repository = ViagemRepository();
-    repository.delete(codigo);
 
-    setState(() {
-      _viagens = selectAll();
-    });
+    var opcao = await ModalMensagem.modalConfirmDelete(context, 'Viagem', 'a');
+
+    if (opcao) {
+      await repository.delete(codigo);
+
+      setState(() {
+        _viagens = selectAll();
+      });
+    }
   }
 
   void _openFormModal(BuildContext context, Viagem viagem, Motorista motorista,

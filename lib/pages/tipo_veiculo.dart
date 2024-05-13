@@ -47,11 +47,16 @@ class _TipoVeiculoPageState extends State<TipoVeiculoPage> {
   }
 
   void _deleteTipoVeiculo(int codigo) async {
-    await repository.delete(codigo);
+    bool opcao =
+        await ModalMensagem.modalConfirmDelete(context, 'Tipo de Veículo', 'o');
 
-    setState(() {
-      _tiposVeiculos = repository.selectAll();
-    });
+    if (opcao) {
+      await repository.delete(codigo);
+
+      setState(() {
+        _tiposVeiculos = repository.selectAll();
+      });
+    }
   }
 
   _openFormModal(BuildContext context, TipoVeiculo tipoVeiculo) {

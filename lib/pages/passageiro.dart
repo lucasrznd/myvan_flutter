@@ -83,14 +83,19 @@ class _PassageiroPageState extends State<PassageiroPage> {
     _endereco = Endereco();
   }
 
-  _deletePassageiro(int codigo) {
+  void _deletePassageiro(int codigo) async {
     PassageiroRepository repository = PassageiroRepository();
 
-    repository.delete(codigo);
+    bool opcao =
+        await ModalMensagem.modalConfirmDelete(context, 'Passageiro', 'o');
 
-    setState(() {
-      _passageiros = repository.selectAll();
-    });
+    if (opcao) {
+      await repository.delete(codigo);
+
+      setState(() {
+        _passageiros = repository.selectAll();
+      });
+    }
   }
 
   _openFormModal(
