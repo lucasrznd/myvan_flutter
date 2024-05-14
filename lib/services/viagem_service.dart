@@ -7,6 +7,26 @@ class ViagemService {
   final ViagemRepository viagemRepository = ViagemRepository();
   final ChamadaService chamadaService = ChamadaService();
 
+  Future<List<Viagem>> selectAll() {
+    return viagemRepository.selectAll();
+  }
+
+  void importarDaUltimaViagem() async {
+    Viagem viagem = await obterUltimaViagem(TipoViagem.ida.descricao);
+
+    if (viagem.codigo != 0) {
+      Viagem novaViagem = Viagem(
+          codigo: null,
+          descricao: viagem.descricao,
+          tipoViagem: viagem.tipoViagem,
+          data: DateTime.now().toIso8601String(),
+          motorista: viagem.motorista,
+          veiculo: viagem.veiculo);
+
+      salvarViagem(novaViagem);
+    }
+  }
+
   void criarViagemIda(Viagem viagem) {
     if (viagem.data == '') {
       viagem.data = DateTime.now().toIso8601String();
@@ -40,5 +60,10 @@ class ViagemService {
     } else {
       criarViagemIda(viagem);
     }
+  }
+
+  Future<Viagem> obterUltimaViagem(String tipoViagem) async {
+    Viagem viagem = await viagemRepository.obterUltimaViagem(tipoViagem);
+    return viagem;
   }
 }
