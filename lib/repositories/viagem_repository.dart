@@ -55,8 +55,8 @@ class ViagemRepository {
           descricao: maps[0]['descricao'],
           tipoViagem: maps[0]['tipo_viagem'],
           data: maps[0]['data'],
-          veiculo: maps[0]['veiculo'],
-          motorista: maps[0]['motorista'],
+          veiculo: maps[0]['veiculo_codigo'],
+          motorista: maps[0]['motorista_codigo'],
         );
       } else {
         return Viagem(
