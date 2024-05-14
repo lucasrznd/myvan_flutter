@@ -1,33 +1,97 @@
 import 'package:flutter/material.dart';
 import 'package:myvan_flutter/components/chamada/chamada_form.dart';
 import 'package:myvan_flutter/components/chamada/chamada_list.dart';
+import 'package:myvan_flutter/components/chamada/dropdown.dart';
 import 'package:myvan_flutter/components/drawer/sidemenu.dart';
 import 'package:myvan_flutter/components/utils/modal_mensagens.dart';
 import 'package:myvan_flutter/models/chamada_passageiro.dart';
+import 'package:myvan_flutter/models/enums/tipo_viagem.dart';
 import 'package:myvan_flutter/models/passageiro.dart';
 import 'package:myvan_flutter/models/viagem.dart';
+import 'package:myvan_flutter/repositories/chamada_repository.dart';
 import 'package:myvan_flutter/repositories/passageiro_repository.dart';
 import 'package:myvan_flutter/repositories/viagem_repository.dart';
 
 class ChamadaPage extends StatefulWidget {
-  const ChamadaPage({super.key});
+  final TipoViagem tipoViagem;
+  const ChamadaPage(this.tipoViagem, {super.key});
 
   @override
   State<ChamadaPage> createState() => _ChamadaPageState();
 }
 
 class _ChamadaPageState extends State<ChamadaPage> {
-  late Future<List<ChamadaPassageiro>> _chamadas;
+  late List<ChamadaPassageiro> _chamadas;
   late ChamadaPassageiro _chamada;
   late Future<List<Viagem>> _viagens;
   late Future<List<Passageiro>> _passageiros;
+  late TipoViagem _tipoViagem;
+  late String _tipoBusca;
+  bool light = true;
 
   @override
   void initState() {
     super.initState();
-    _chamadas = Future.value([]);
+    _chamadas = [];
     _viagens = _listarViagens();
     _passageiros = _listarPassageiros();
+    _tipoBusca = 'Todos';
+    _tipoViagem = widget.tipoViagem;
+    _initializeChamadas();
+  }
+
+  void _initializeChamadas() async {
+    List<ChamadaPassageiro> chamadas = await selectAll();
+    setState(() {
+      _chamadas = chamadas;
+    });
+  }
+
+  void tipoDeBusca() async {
+    List<ChamadaPassageiro> chamadas;
+
+    if (_tipoBusca == 'Todos') {
+      chamadas = await selectAll();
+    } else if (_tipoBusca == 'Presentes') {
+      chamadas = await listarPresentes();
+    } else {
+      chamadas = await listarAusentes();
+    }
+
+    setState(() {
+      _chamadas = chamadas;
+    });
+  }
+
+  void listarChamadas() async {
+    ChamadaRepository repository = ChamadaRepository();
+    List<ChamadaPassageiro> chamadas =
+        await repository.selectAllHoje(_tipoViagem.descricao);
+    _chamadas = chamadas;
+  }
+
+  Future<List<ChamadaPassageiro>> selectAll() async {
+    ChamadaRepository repository = ChamadaRepository();
+
+    List<ChamadaPassageiro> chamadas =
+        await repository.selectAllHoje(_tipoViagem.descricao);
+    return chamadas;
+  }
+
+  Future<List<ChamadaPassageiro>> listarPresentes() async {
+    ChamadaRepository repository = ChamadaRepository();
+
+    List<ChamadaPassageiro> chamadas =
+        await repository.listarPresentesHoje(_tipoViagem.descricao);
+    return chamadas;
+  }
+
+  Future<List<ChamadaPassageiro>> listarAusentes() async {
+    ChamadaRepository repository = ChamadaRepository();
+
+    List<ChamadaPassageiro> chamadas =
+        await repository.listarAusentesHoje(_tipoViagem.descricao);
+    return chamadas;
   }
 
   Future<List<Viagem>> _listarViagens() async {
@@ -45,18 +109,21 @@ class _ChamadaPageState extends State<ChamadaPage> {
   }
 
   _salvarChamada(ChamadaPassageiro chamada) {
-    print(chamada.codigo);
-    print(chamada.viagem);
-    print(chamada.passageiro);
-    print(chamada.statusChamada);
+    ChamadaRepository repository = ChamadaRepository();
 
-    // setState(() {
-    //   motoristas = selectAll();
-    // });
+    if (chamada.codigo == null) {
+      repository.insert(chamada);
 
-    Navigator.of(context).pop();
+      setState(() {
+        listarChamadas();
+      });
 
-    ModalMensagem.modalSucesso(context, 'Chamada', 'a');
+      Navigator.of(context).pop();
+
+      ModalMensagem.modalSucesso(context, 'Chamada', 'a');
+    } else {
+      repository.update(chamada);
+    }
   }
 
   _editarChamada(ChamadaPassageiro chamada) {
@@ -66,15 +133,17 @@ class _ChamadaPageState extends State<ChamadaPage> {
   }
 
   _deleteMotorista(int codigo) async {
+    ChamadaRepository repository = ChamadaRepository();
+
     bool opcao =
-        await ModalMensagem.modalConfirmDelete(context, 'Motorista', 'o');
+        await ModalMensagem.modalConfirmDelete(context, 'Passageiro', 'o');
 
     if (opcao) {
-      // await repository.delete(codigo);
+      await repository.delete(codigo);
 
-      // setState(() {
-      //   motoristas = selectAll();
-      // });
+      setState(() {
+        listarChamadas();
+      });
     }
   }
 
@@ -117,24 +186,85 @@ class _ChamadaPageState extends State<ChamadaPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  children: <Widget>[
+                    SizedBox(
+                      width: 150,
+                      child: ListTile(
+                        title: const Text('Ida',
+                            style: TextStyle(fontFamily: 'Poppins')),
+                        leading: Radio<TipoViagem>(
+                          value: TipoViagem.ida,
+                          groupValue: _tipoViagem,
+                          activeColor: MaterialStateColor.resolveWith(
+                              (states) => Colors.blue.shade300),
+                          onChanged: (TipoViagem? value) {
+                            setState(() {
+                              _tipoViagem = value!;
+                              listarChamadas();
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 150,
+                      child: ListTile(
+                        title: const Text(
+                          'Volta',
+                          style: TextStyle(fontFamily: 'Poppins'),
+                        ),
+                        leading: Radio<TipoViagem>(
+                          value: TipoViagem.volta,
+                          groupValue: _tipoViagem,
+                          activeColor: MaterialStateColor.resolveWith(
+                              (states) => Colors.blue.shade300),
+                          onChanged: (TipoViagem? value) {
+                            setState(() {
+                              _tipoViagem = value!;
+                              tipoDeBusca();
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  width: 200,
+                  height: 60,
+                  child: ChamadaDropdown(
+                    items: const ['Todos', 'Presentes', 'Ausentes'],
+                    hint: 'Selecione uma opção',
+                    onChanged: (value) {
+                      setState(() {
+                        _tipoBusca = value!;
+                      });
+                      tipoDeBusca();
+                    },
+                    initialValue: _tipoBusca,
+                  ),
+                ),
+              ],
+            ),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
             SizedBox(
               height: availableHeight * 0.6,
               child: ChamadaList(
                 _chamadas,
-                _editarChamada,
+                _salvarChamada,
                 _deleteMotorista,
+                _listarViagens,
+                _listarPassageiros,
               ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _openFormModal(context, _chamada),
-        backgroundColor: Colors.blue.shade300,
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
