@@ -7,12 +7,12 @@ import 'package:myvan_flutter/services/whatsapp_service.dart';
 
 class ChamadaList extends StatefulWidget {
   final List<ChamadaPassageiro> _chamadas;
-  final void Function(ChamadaPassageiro) onSubmit;
-  final void Function(int) onRemove;
+  final void Function(ChamadaPassageiro) salvar;
+  final void Function(int) delete;
   final Future<List<Viagem>> Function() _listarViagens;
   final Future<List<Passageiro>> Function() _listarPassageiros;
 
-  const ChamadaList(this._chamadas, this.onSubmit, this.onRemove,
+  const ChamadaList(this._chamadas, this.salvar, this.delete,
       this._listarViagens, this._listarPassageiros,
       {super.key});
 
@@ -121,7 +121,7 @@ class _ChamadaListState extends State<ChamadaList> {
                                 } else {
                                   chamada.statusChamada = 0;
                                 }
-                                widget.onSubmit(chamada);
+                                widget.salvar(chamada);
                               }
                             });
                           },
@@ -156,7 +156,7 @@ class _ChamadaListState extends State<ChamadaList> {
                           ),
                           IconButton(
                             icon: const Icon(Icons.delete),
-                            onPressed: () => widget.onRemove(chamada.codigo!),
+                            onPressed: () => widget.delete(chamada.codigo!),
                             color: Theme.of(context).colorScheme.error,
                           ),
                         ],
