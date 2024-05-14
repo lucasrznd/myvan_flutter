@@ -86,7 +86,7 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const FabTabs(selectedIndex: 2)))
+                      builder: (context) => const FabTabs(selectedIndex: 3)))
             },
           ),
           ListTile(
@@ -105,7 +105,7 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const FabTabs(selectedIndex: 3)))
+                      builder: (context) => const FabTabs(selectedIndex: 4)))
             },
           ),
           ListTile(
@@ -124,7 +124,7 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const FabTabs(selectedIndex: 4)))
+                      builder: (context) => const FabTabs(selectedIndex: 5)))
             },
           ),
           ListTile(
@@ -143,7 +143,7 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const FabTabs(selectedIndex: 5)))
+                      builder: (context) => const FabTabs(selectedIndex: 6)))
             },
           ),
           ListTile(
@@ -162,7 +162,7 @@ class _SideMenuState extends State<SideMenu> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const FabTabs(selectedIndex: 6)))
+                      builder: (context) => const FabTabs(selectedIndex: 7)))
             },
           ),
         ],

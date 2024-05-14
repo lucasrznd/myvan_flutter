@@ -42,7 +42,7 @@ class Home extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const FabTabs(selectedIndex: 1),
+                  builder: (context) => const FabTabs(selectedIndex: 2),
                 ),
               );
             },
@@ -62,7 +62,7 @@ class Home extends StatelessWidget {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const FabTabs(selectedIndex: 3),
+                      builder: (context) => const FabTabs(selectedIndex: 5),
                     ),
                   );
                 },
@@ -77,7 +77,7 @@ class Home extends StatelessWidget {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const FabTabs(selectedIndex: 2),
+                      builder: (context) => const FabTabs(selectedIndex: 4),
                     ),
                   );
                 },
@@ -92,7 +92,7 @@ class Home extends StatelessWidget {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const FabTabs(selectedIndex: 1),
+                      builder: (context) => const FabTabs(selectedIndex: 3),
                     ),
                   );
                 },
