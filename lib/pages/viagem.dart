@@ -3,13 +3,13 @@ import 'package:myvan_flutter/components/drawer/sidemenu.dart';
 import 'package:myvan_flutter/components/utils/modal_mensagens.dart';
 import 'package:myvan_flutter/components/viagem/viagem_form.dart';
 import 'package:myvan_flutter/components/viagem/viagem_list.dart';
-import 'package:myvan_flutter/models/enums/tipo_viagem.dart';
 import 'package:myvan_flutter/models/motorista.dart';
 import 'package:myvan_flutter/models/veiculo.dart';
 import 'package:myvan_flutter/models/viagem.dart';
 import 'package:myvan_flutter/repositories/motorista_repository.dart';
 import 'package:myvan_flutter/repositories/veiculo_repository.dart';
 import 'package:myvan_flutter/repositories/viagem_repository.dart';
+import 'package:myvan_flutter/services/viagem_service.dart';
 
 class ViagemPage extends StatefulWidget {
   const ViagemPage({super.key});
@@ -51,41 +51,9 @@ class _ViagemPageState extends State<ViagemPage> {
     return veiculos;
   }
 
-  void _criarViagem(Viagem viagem) {
-    ViagemRepository repository = ViagemRepository();
-
-    if (viagem.data == '') {
-      viagem.data = DateTime.now().toIso8601String();
-    }
-
-    repository.insert(viagem);
-  }
-
-  void _criarViagemVolta(Viagem viagem) {
-    ViagemRepository repository = ViagemRepository();
-
-    Viagem viagemVolta = Viagem(
-        codigo: viagem.codigo,
-        descricao: viagem.descricao,
-        veiculo: viagem.veiculo,
-        motorista: viagem.motorista,
-        tipoViagem: viagem.tipoViagem,
-        data: viagem.data);
-
-    viagemVolta.codigo = null;
-    viagemVolta.tipoViagem = 'VOLTA';
-
-    repository.insert(viagemVolta);
-  }
-
   void _salvarViagem(Viagem viagem, Motorista motorista, Veiculo veiculo) {
-    if (viagem.codigo == null &&
-        viagem.tipoViagem == TipoViagem.ida.descricao) {
-      _criarViagem(viagem);
-      _criarViagemVolta(viagem);
-    } else {
-      _criarViagem(viagem);
-    }
+    ViagemService service = ViagemService();
+    service.salvarViagem(viagem);
 
     _viagem = Viagem();
 

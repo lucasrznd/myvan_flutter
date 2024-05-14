@@ -40,4 +40,41 @@ class ViagemRepository {
       whereArgs: [codigo],
     );
   }
+
+  Future<Viagem> obterUltimaViagem(String tipoViagem) async {
+    try {
+      final db = await _db;
+
+      List<Map<String, dynamic>> maps = await db.rawQuery(
+          '''SELECT * FROM viagem WHERE viagem.tipo_viagem = ? ORDER BY codigo DESC LIMIT 1''',
+          [tipoViagem]);
+
+      if (maps.isNotEmpty) {
+        return Viagem(
+          codigo: maps[0]['codigo'],
+          descricao: maps[0]['descricao'],
+          tipoViagem: maps[0]['tipo_viagem'],
+          data: maps[0]['data'],
+          veiculo: maps[0]['veiculo'],
+          motorista: maps[0]['motorista'],
+        );
+      } else {
+        return Viagem(
+            codigo: 0,
+            descricao: '',
+            tipoViagem: '',
+            data: '',
+            veiculo: 0,
+            motorista: 0);
+      }
+    } catch (e) {
+      return Viagem(
+          codigo: 0,
+          descricao: '',
+          tipoViagem: '',
+          data: '',
+          veiculo: 0,
+          motorista: 0);
+    }
+  }
 }
