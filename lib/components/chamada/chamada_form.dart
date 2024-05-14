@@ -25,6 +25,9 @@ class _ChamadaFormState extends State<ChamadaForm> {
     widget._onSubmit(widget._chamada);
   }
 
+  bool _statusChamadaToBool() =>
+      widget._chamada.statusChamada == 0 ? false : true;
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -100,14 +103,17 @@ class _ChamadaFormState extends State<ChamadaForm> {
               ),
               const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
               Row(
-                mainAxisAlignment: MainAxisAlignment
-                    .center, // Centraliza os elementos horizontalmente
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Checkbox(
-                    value: widget._chamada.statusChamada,
+                    value: _statusChamadaToBool(),
                     onChanged: (bool? value) {
                       setState(() {
-                        widget._chamada.statusChamada = value!;
+                        if (value!) {
+                          widget._chamada.statusChamada = 1;
+                          return;
+                        }
+                        widget._chamada.statusChamada = 0;
                       });
                     },
                     activeColor: Colors.blue.shade300,

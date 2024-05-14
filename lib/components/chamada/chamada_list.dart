@@ -1,28 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:myvan_flutter/models/chamada_passageiro.dart';
+import 'package:myvan_flutter/models/passageiro.dart';
+import 'package:myvan_flutter/models/viagem.dart';
+import 'package:myvan_flutter/services/whatsapp_service.dart';
 
-class ChamadaList extends StatelessWidget {
-  final Future<List<ChamadaPassageiro>> _chamadas;
-  final void Function(ChamadaPassageiro) onEditing;
-  final void Function(int) onRemove;
+class ChamadaList extends StatefulWidget {
+  final List<ChamadaPassageiro> _chamadas;
+  final void Function(ChamadaPassageiro) salvar;
+  final void Function(int) delete;
+  final Future<List<Viagem>> Function() _listarViagens;
+  final Future<List<Passageiro>> Function() _listarPassageiros;
 
-  const ChamadaList(this._chamadas, this.onEditing, this.onRemove, {super.key});
+  const ChamadaList(this._chamadas, this.salvar, this.delete,
+      this._listarViagens, this._listarPassageiros,
+      {super.key});
+
+  @override
+  State<ChamadaList> createState() => _ChamadaListState();
+}
+
+class _ChamadaListState extends State<ChamadaList> {
+  late Future<List<dynamic>> _future;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = Future.wait([
+      widget._listarViagens(),
+      widget._listarPassageiros(),
+    ]);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<ChamadaPassageiro>>(
-      future: _chamadas,
-      builder: (context, snapshot) {
+    return FutureBuilder<List<dynamic>>(
+      future: _future,
+      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // Se a Future ainda estiver esperando, exiba um indicador de progresso
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          // Se ocorrer um erro, exiba uma mensagem de erro
           return Center(child: Text('Erro: ${snapshot.error}'));
         } else {
-          // Se a Future for concluída com sucesso, exiba os dados
-          List<ChamadaPassageiro> chamadas = snapshot.data!;
-          if (chamadas.isEmpty) {
+          List<Viagem> viagens = snapshot.data![0];
+          List<Passageiro> passageiros = snapshot.data![1];
+
+          if (widget._chamadas.isEmpty) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -46,9 +69,37 @@ class ChamadaList extends StatelessWidget {
             );
           } else {
             return ListView.builder(
-              itemCount: chamadas.length,
+              itemCount: widget._chamadas.length,
               itemBuilder: ((context, index) {
-                final chamada = chamadas[index];
+                final chamada = widget._chamadas[index];
+
+                Viagem fetchViagem() {
+                  Viagem viagem = viagens
+                      .firstWhere((viagem) => chamada.viagem == viagem.codigo);
+                  return viagem;
+                }
+
+                obterData() {
+                  DateTime data = DateTime.parse(fetchViagem().data);
+                  return data;
+                }
+
+                Passageiro fetchPassageiro() {
+                  Passageiro passageiro = passageiros.firstWhere(
+                      (passageiro) => chamada.passageiro == passageiro.codigo);
+                  return passageiro;
+                }
+
+                String formatarStatus() {
+                  if (chamada.statusChamada == 1) {
+                    return 'Presente';
+                  }
+                  return 'Ausente';
+                }
+
+                bool statusChamadaToBool() =>
+                    chamada.statusChamada == 0 ? false : true;
+
                 return Card(
                   elevation: 5,
                   margin: const EdgeInsets.symmetric(
@@ -60,25 +111,33 @@ class ChamadaList extends StatelessWidget {
                       radius: 30,
                       child: Padding(
                         padding: const EdgeInsets.all(6),
-                        child: FittedBox(
-                          child: Text(
-                            chamada.viagem.toString(),
-                            style: const TextStyle(
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w600),
-                          ),
+                        child: Checkbox(
+                          value: statusChamadaToBool(),
+                          onChanged: (bool? value) {
+                            setState(() {
+                              if (value != null) {
+                                if (value) {
+                                  chamada.statusChamada = 1;
+                                } else {
+                                  chamada.statusChamada = 0;
+                                }
+                                widget.salvar(chamada);
+                              }
+                            });
+                          },
+                          activeColor: Colors.blue.shade300,
                         ),
                       ),
                     ),
                     title: Text(
-                      chamada.passageiro.toString(),
+                      fetchPassageiro().nome,
                       style: const TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     subtitle: Text(
-                      chamada.statusChamada.toString(),
+                      '${formatarStatus()} - ${fetchViagem().tipoViagem} - ${DateFormat('dd/MM/yyyy').format(obterData())}',
                       style: const TextStyle(
                         fontFamily: 'Poppins',
                       ),
@@ -88,14 +147,16 @@ class ChamadaList extends StatelessWidget {
                       child: Row(
                         children: [
                           IconButton(
-                              onPressed: () => onEditing(chamada),
-                              icon: const Icon(
-                                Icons.edit,
-                                color: Colors.blue,
-                              )),
+                            onPressed: () => WhatsappService.abrirConversa(
+                                fetchPassageiro().telefone),
+                            icon: Image.asset(
+                              'assets/app/whatsapp-icon.png',
+                              width: 23,
+                            ),
+                          ),
                           IconButton(
                             icon: const Icon(Icons.delete),
-                            onPressed: () => onRemove(chamada.codigo!),
+                            onPressed: () => widget.delete(chamada.codigo!),
                             color: Theme.of(context).colorScheme.error,
                           ),
                         ],

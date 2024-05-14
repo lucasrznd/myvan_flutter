@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myvan_flutter/models/enums/tipo_viagem.dart';
 import 'package:myvan_flutter/pages/chamada.dart';
 import 'package:myvan_flutter/pages/home.dart';
 import 'package:myvan_flutter/pages/motorista.dart';
@@ -32,7 +33,8 @@ class _FabTabsState extends State<FabTabs> {
 
   final List<Widget> pages = [
     const Home(),
-    const ChamadaPage(),
+    const ChamadaPage(TipoViagem.ida),
+    const ChamadaPage(TipoViagem.volta),
     const ViagemPage(),
     const PassageiroPage(),
     const MotoristaPage(),
@@ -46,16 +48,18 @@ class _FabTabsState extends State<FabTabs> {
     Widget currentScreen = currentIndex == 0
         ? const Home()
         : currentIndex == 1
-            ? const ChamadaPage()
+            ? const ChamadaPage(TipoViagem.ida)
             : currentIndex == 2
-                ? const ViagemPage()
+                ? const ChamadaPage(TipoViagem.volta)
                 : currentIndex == 3
-                    ? const PassageiroPage()
+                    ? const ViagemPage()
                     : currentIndex == 4
-                        ? const MotoristaPage()
+                        ? const PassageiroPage()
                         : currentIndex == 5
-                            ? const VeiculoPage()
-                            : const TipoVeiculoPage();
+                            ? const MotoristaPage()
+                            : currentIndex == 6
+                                ? const VeiculoPage()
+                                : const TipoVeiculoPage();
     return Scaffold(
       body: PageStorage(
         bucket: bucket,
@@ -105,7 +109,7 @@ class _FabTabsState extends State<FabTabs> {
                 onPressed: () {
                   setState(() {
                     currentScreen = const PassageiroPage();
-                    currentIndex = 2;
+                    currentIndex = 3;
                   });
                 },
                 child: Column(
@@ -113,7 +117,7 @@ class _FabTabsState extends State<FabTabs> {
                   children: [
                     Icon(
                       Icons.assistant_direction_rounded,
-                      color: currentIndex == 2
+                      color: currentIndex == 3
                           ? const Color.fromARGB(255, 196, 196, 196)
                           : Colors.white,
                     ),
@@ -122,7 +126,7 @@ class _FabTabsState extends State<FabTabs> {
                       style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: 13,
-                          color: currentIndex == 2
+                          color: currentIndex == 3
                               ? const Color.fromARGB(255, 196, 196, 196)
                               : Colors.white),
                     )
@@ -135,7 +139,7 @@ class _FabTabsState extends State<FabTabs> {
                 onPressed: () {
                   setState(() {
                     currentScreen = const MotoristaPage();
-                    currentIndex = 3;
+                    currentIndex = 4;
                   });
                 },
                 child: Column(
@@ -143,7 +147,7 @@ class _FabTabsState extends State<FabTabs> {
                   children: [
                     Icon(
                       Icons.people_alt,
-                      color: currentIndex == 3
+                      color: currentIndex == 4
                           ? const Color.fromARGB(255, 196, 196, 196)
                           : Colors.white,
                     ),
@@ -152,7 +156,7 @@ class _FabTabsState extends State<FabTabs> {
                       style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: 13,
-                          color: currentIndex == 3
+                          color: currentIndex == 4
                               ? const Color.fromARGB(255, 196, 196, 196)
                               : Colors.white),
                     )
