@@ -31,8 +31,17 @@ class ChamadaRepository {
 
   Future<List<ChamadaPassageiro>> selectAll() async {
     final db = await _db;
-    final List<Map<String, dynamic>> maps =
-        await db.query('chamada_passageiro');
+
+    // Obter a data atual sem considerar o horário
+    String dataAtual = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+    final List<Map<String, dynamic>> maps = await db.rawQuery('''
+    SELECT chamada_passageiro.*, viagem.data
+    FROM chamada_passageiro
+    INNER JOIN viagem ON chamada_passageiro.viagem_codigo = viagem.codigo
+    WHERE date(viagem.data) = ? 
+  ''', [dataAtual]);
+
     return List.generate(maps.length, (i) {
       return ChamadaPassageiro(
         codigo: maps[i]['codigo'],
