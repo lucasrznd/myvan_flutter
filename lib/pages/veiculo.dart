@@ -5,8 +5,8 @@ import 'package:myvan_flutter/components/veiculo/veiculo_form.dart';
 import 'package:myvan_flutter/components/veiculo/veiculo_list.dart';
 import 'package:myvan_flutter/models/tipo_veiculo.dart';
 import 'package:myvan_flutter/models/veiculo.dart';
-import 'package:myvan_flutter/repositories/tipo_veiculo_repository.dart';
-import 'package:myvan_flutter/repositories/veiculo_repository.dart';
+import 'package:myvan_flutter/services/tipo_veiculo_service.dart';
+import 'package:myvan_flutter/services/veiculo_service.dart';
 
 class VeiculoPage extends StatefulWidget {
   const VeiculoPage({super.key});
@@ -16,37 +16,37 @@ class VeiculoPage extends StatefulWidget {
 }
 
 class _VeiculoPageState extends State<VeiculoPage> {
-  late Veiculo veiculo;
+  late Veiculo _veiculo;
   late TipoVeiculo _tipoVeiculo;
   late Future<List<Veiculo>> _veiculos;
   late Future<List<TipoVeiculo>> _tiposVeiculos;
 
+  late VeiculoService _service;
+  late TipoVeiculoService _tipoVeiculoService;
+
   @override
   void initState() {
     super.initState();
+    _service = VeiculoService();
+    _tipoVeiculoService = TipoVeiculoService();
     _veiculos = listarVeiculos();
-    _tiposVeiculos = listarTiposVeiculos();
+    _tiposVeiculos = _listarTiposVeiculos();
     _tipoVeiculo = TipoVeiculo();
   }
 
-  Future<List<Veiculo>> listarVeiculos() async {
-    VeiculoRepository repository = VeiculoRepository();
-    List<Veiculo> veiculos = await repository.selectAll();
-    return veiculos;
+  Future<List<Veiculo>> listarVeiculos() {
+    return _service.selectAll();
   }
 
-  Future<List<TipoVeiculo>> listarTiposVeiculos() async {
-    TipoVeiculoRepository tipoVeiculoRepository = TipoVeiculoRepository();
-    List<TipoVeiculo> tiposVeiculos = await tipoVeiculoRepository.selectAll();
-    return tiposVeiculos;
+  Future<List<TipoVeiculo>> _listarTiposVeiculos() {
+    return _tipoVeiculoService.selectAll();
   }
 
   _salvarVeiculo(Veiculo veiculo, TipoVeiculo tipoVeiculo) {
-    VeiculoRepository repository = VeiculoRepository();
-    repository.insert(veiculo);
+    _service.insert(veiculo);
 
     setState(() {
-      _veiculos = repository.selectAll();
+      _veiculos = listarVeiculos();
     });
 
     Navigator.of(context).pop();
@@ -61,16 +61,14 @@ class _VeiculoPageState extends State<VeiculoPage> {
   }
 
   void deleteVeiculo(int codigo) async {
-    VeiculoRepository repository = VeiculoRepository();
-
     bool opcao =
         await ModalMensagem.modalConfirmDelete(context, 'Veículo', 'o');
 
     if (opcao) {
-      repository.delete(codigo);
-      
+      _service.delete(codigo);
+
       setState(() {
-        _veiculos = repository.selectAll();
+        _veiculos = listarVeiculos();
       });
     }
   }
@@ -89,7 +87,7 @@ class _VeiculoPageState extends State<VeiculoPage> {
 
   @override
   Widget build(BuildContext context) {
-    veiculo = Veiculo();
+    _veiculo = Veiculo();
 
     final appBar = AppBar(
       title: const Text('Veículos'),
@@ -99,7 +97,7 @@ class _VeiculoPageState extends State<VeiculoPage> {
       actions: [
         IconButton(
           icon: const Icon(Icons.add),
-          onPressed: () => _openFormModal(context, veiculo, _tipoVeiculo),
+          onPressed: () => _openFormModal(context, _veiculo, _tipoVeiculo),
         ),
       ],
     );
@@ -122,14 +120,14 @@ class _VeiculoPageState extends State<VeiculoPage> {
                 _veiculos,
                 _editarVeiculo,
                 deleteVeiculo,
-                listarTiposVeiculos,
+                _listarTiposVeiculos,
               ),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _openFormModal(context, veiculo, _tipoVeiculo),
+        onPressed: () => _openFormModal(context, _veiculo, _tipoVeiculo),
         backgroundColor: Colors.blue.shade300,
         foregroundColor: Colors.white,
         child: const Icon(Icons.add),
