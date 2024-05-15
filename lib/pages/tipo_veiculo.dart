@@ -4,7 +4,7 @@ import 'package:myvan_flutter/components/tipo_veiculo/tp_veiculo_form.dart';
 import 'package:myvan_flutter/components/tipo_veiculo/tp_veiculo_list.dart';
 import 'package:myvan_flutter/components/utils/modal_mensagens.dart';
 import 'package:myvan_flutter/models/tipo_veiculo.dart';
-import 'package:myvan_flutter/repositories/tipo_veiculo_repository.dart';
+import 'package:myvan_flutter/services/tipo_veiculo_service.dart';
 
 class TipoVeiculoPage extends StatefulWidget {
   const TipoVeiculoPage({super.key});
@@ -16,23 +16,24 @@ class TipoVeiculoPage extends StatefulWidget {
 class _TipoVeiculoPageState extends State<TipoVeiculoPage> {
   late TipoVeiculo tipoVeiculo;
   late Future<List<TipoVeiculo>> _tiposVeiculos;
-  late TipoVeiculoRepository repository = TipoVeiculoRepository();
+  late TipoVeiculoService service;
 
   @override
   void initState() {
     super.initState();
-    _tiposVeiculos = repository.selectAll();
+    service = TipoVeiculoService();
+    _tiposVeiculos = selectAll();
   }
 
-  Future<List<TipoVeiculo>> selectAll() async {
-    return repository.selectAll();
+  Future<List<TipoVeiculo>> selectAll() {
+    return service.selectAll();
   }
 
   void _salvarTipoVeiculo(TipoVeiculo tipoVeiculo) {
-    repository.insert(tipoVeiculo);
+    service.insert(tipoVeiculo);
 
     setState(() {
-      _tiposVeiculos = repository.selectAll();
+      _tiposVeiculos = selectAll();
     });
 
     Navigator.of(context).pop();
@@ -51,10 +52,10 @@ class _TipoVeiculoPageState extends State<TipoVeiculoPage> {
         await ModalMensagem.modalConfirmDelete(context, 'Tipo de Veículo', 'o');
 
     if (opcao) {
-      await repository.delete(codigo);
+      await service.delete(codigo);
 
       setState(() {
-        _tiposVeiculos = repository.selectAll();
+        _tiposVeiculos = selectAll();
       });
     }
   }

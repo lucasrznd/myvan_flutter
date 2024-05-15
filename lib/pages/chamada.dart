@@ -8,9 +8,8 @@ import 'package:myvan_flutter/models/chamada_passageiro.dart';
 import 'package:myvan_flutter/models/enums/tipo_viagem.dart';
 import 'package:myvan_flutter/models/passageiro.dart';
 import 'package:myvan_flutter/models/viagem.dart';
-import 'package:myvan_flutter/repositories/passageiro_repository.dart';
-import 'package:myvan_flutter/repositories/viagem_repository.dart';
 import 'package:myvan_flutter/services/chamada_service.dart';
+import 'package:myvan_flutter/services/passageiro_service.dart';
 import 'package:myvan_flutter/services/viagem_service.dart';
 
 class ChamadaPage extends StatefulWidget {
@@ -24,16 +23,22 @@ class ChamadaPage extends StatefulWidget {
 class _ChamadaPageState extends State<ChamadaPage> {
   late List<ChamadaPassageiro> _chamadas;
   late ChamadaPassageiro _chamada;
+  late TipoViagem _tipoViagem;
   late Future<List<Viagem>> _viagens;
   late Future<List<Passageiro>> _passageiros;
-  late TipoViagem _tipoViagem;
   late String _tipoBusca;
-  final ChamadaService service = ChamadaService();
-  bool light = true;
+
+  late ChamadaService service;
+  late ViagemService viagemService;
+  late PassageiroService passageiroService;
 
   @override
   void initState() {
     super.initState();
+    service = ChamadaService();
+    viagemService = ViagemService();
+    passageiroService = PassageiroService();
+    
     _chamadas = [];
     _viagens = _listarViagens();
     _passageiros = _listarPassageiros();
@@ -69,60 +74,39 @@ class _ChamadaPageState extends State<ChamadaPage> {
     });
   }
 
-  void listarChamadas() async {
-    List<ChamadaPassageiro> chamadas = await selectAllHoje();
-    _chamadas = chamadas;
-  }
-
   Future<List<ChamadaPassageiro>> selectAllHoje() async {
-    List<ChamadaPassageiro> chamadas = await service.selectAllHoje(_tipoViagem);
-    return chamadas;
+    return await service.selectAllHoje(_tipoViagem);
   }
 
   Future<List<ChamadaPassageiro>> selectAll() async {
-    List<ChamadaPassageiro> chamadas = await service.selectAll();
-    return chamadas;
+    return await service.selectAll();
   }
 
   Future<List<ChamadaPassageiro>> listarPresentes() async {
-    List<ChamadaPassageiro> chamadas =
-        await service.listarPresentes(_tipoViagem);
-    return chamadas;
+    return await service.listarPresentes(_tipoViagem);
   }
 
   Future<List<ChamadaPassageiro>> listarAusentes() async {
-    List<ChamadaPassageiro> chamadas =
-        await service.listarAusentes(_tipoViagem);
-    return chamadas;
+    return await service.listarAusentes(_tipoViagem);
   }
 
   Future<List<Viagem>> _listarViagens() async {
-    ViagemRepository repository = ViagemRepository();
-
-    List<Viagem> viagens = await repository.selectAll();
-    return viagens;
+    return await viagemService.selectAll();
   }
 
   Future<List<Passageiro>> _listarPassageiros() async {
-    PassageiroRepository repository = PassageiroRepository();
-
-    List<Passageiro> passageiros = await repository.selectAll();
-    return passageiros;
+    return await passageiroService.selectAll();
   }
 
-  void importarDaUltimaViagem() async {
-    ViagemService service = ViagemService();
-
-    service.importarDaUltimaViagem();
+  void importarDaUltimaViagem() {
+    return viagemService.importarDaUltimaViagem();
   }
 
   _salvarChamada(ChamadaPassageiro chamada) {
     bool insert = service.insert(chamada);
 
     if (insert) {
-      setState(() {
-        listarChamadas();
-      });
+      _initializeChamadas();
 
       Navigator.of(context).pop();
 
@@ -143,9 +127,7 @@ class _ChamadaPageState extends State<ChamadaPage> {
     if (opcao) {
       service.delete(codigo);
 
-      setState(() {
-        listarChamadas();
-      });
+      _initializeChamadas();
     }
   }
 
@@ -160,17 +142,15 @@ class _ChamadaPageState extends State<ChamadaPage> {
   }
 
   void mostrarModal(BuildContext context) async {
-    ViagemService viagemService = ViagemService();
     List<Viagem> viagens = await viagemService.selectAll();
 
     if (viagens.isNotEmpty) {
       List<ChamadaPassageiro> chamadas = await selectAll();
 
       if (chamadas.isEmpty) {
-        BuildContext dialogContext = context;
-
         showDialog(
-          context: dialogContext,
+          // ignore: use_build_context_synchronously
+          context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text(
@@ -201,9 +181,7 @@ class _ChamadaPageState extends State<ChamadaPage> {
                   onPressed: () {
                     Navigator.of(context).pop();
                     importarDaUltimaViagem();
-                    setState(() {
-                      listarChamadas();
-                    });
+                    _initializeChamadas();
                   },
                   style: ButtonStyle(
                       foregroundColor: MaterialStateColor.resolveWith(
@@ -266,10 +244,12 @@ class _ChamadaPageState extends State<ChamadaPage> {
                           activeColor: MaterialStateColor.resolveWith(
                               (states) => Colors.blue.shade300),
                           onChanged: (TipoViagem? value) {
-                            setState(() {
-                              _tipoViagem = value!;
-                              listarChamadas();
-                            });
+                            setState(
+                              () {
+                                _tipoViagem = value!;
+                              },
+                            );
+                            _initializeChamadas();
                           },
                         ),
                       ),

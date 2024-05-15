@@ -6,9 +6,8 @@ import 'package:myvan_flutter/components/viagem/viagem_list.dart';
 import 'package:myvan_flutter/models/motorista.dart';
 import 'package:myvan_flutter/models/veiculo.dart';
 import 'package:myvan_flutter/models/viagem.dart';
-import 'package:myvan_flutter/repositories/motorista_repository.dart';
-import 'package:myvan_flutter/repositories/veiculo_repository.dart';
-import 'package:myvan_flutter/repositories/viagem_repository.dart';
+import 'package:myvan_flutter/services/motorista_service.dart';
+import 'package:myvan_flutter/services/veiculo_service.dart';
 import 'package:myvan_flutter/services/viagem_service.dart';
 
 class ViagemPage extends StatefulWidget {
@@ -24,38 +23,34 @@ class _ViagemPageState extends State<ViagemPage> {
   late Motorista _motorista;
   late Veiculo _veiculo;
 
+  late ViagemService _service;
+
   @override
   void initState() {
     super.initState();
+    _service = ViagemService();
     _viagem = Viagem();
     _viagens = selectAll();
     _motorista = Motorista();
     _veiculo = Veiculo();
   }
 
-  Future<List<Viagem>> selectAll() async {
-    ViagemRepository repository = ViagemRepository();
-    List<Viagem> viagens = await repository.selectAll();
-    return viagens;
+  Future<List<Viagem>> selectAll() {
+    return _service.selectAll();
   }
 
-  Future<List<Motorista>> _listarMotoristas() async {
-    MotoristaRepository repository = MotoristaRepository();
-    List<Motorista> motoristas = await repository.selectAll();
-    return motoristas;
+  Future<List<Motorista>> _listarMotoristas() {
+    MotoristaService service = MotoristaService();
+    return service.selectAll();
   }
 
-  Future<List<Veiculo>> _listarVeiculos() async {
-    VeiculoRepository repository = VeiculoRepository();
-    List<Veiculo> veiculos = await repository.selectAll();
-    return veiculos;
+  Future<List<Veiculo>> _listarVeiculos() {
+    VeiculoService service = VeiculoService();
+    return service.selectAll();
   }
 
   void _salvarViagem(Viagem viagem, Motorista motorista, Veiculo veiculo) {
-    ViagemService service = ViagemService();
-    service.salvarViagem(viagem);
-
-    _viagem = Viagem();
+    _service.insert(viagem);
 
     setState(() {
       _viagens = selectAll();
@@ -77,12 +72,10 @@ class _ViagemPageState extends State<ViagemPage> {
   }
 
   void _deleteViagem(int codigo) async {
-    ViagemRepository repository = ViagemRepository();
-
     var opcao = await ModalMensagem.modalConfirmDelete(context, 'Viagem', 'a');
 
     if (opcao) {
-      await repository.delete(codigo);
+      await _service.delete(codigo);
 
       setState(() {
         _viagens = selectAll();
@@ -99,39 +92,6 @@ class _ViagemPageState extends State<ViagemPage> {
         return ViagemForm(viagem, motorista, _listarMotoristas(), veiculo,
             _listarVeiculos(), _salvarViagem);
       },
-    );
-  }
-
-  void modalSucesso(String objeto, String pronomeObliquo) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Text(
-          '$objeto salv$pronomeObliquo.',
-          style: const TextStyle(
-              fontFamily: 'Poppins', fontWeight: FontWeight.bold),
-        ),
-        content: Text(
-          '$objeto salv$pronomeObliquo com sucesso!',
-          style: const TextStyle(
-            fontFamily: 'Poppins',
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text(
-              'OK',
-              style: TextStyle(
-                fontFamily: 'Poppins',
-                color: Colors.blue.shade300,
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 

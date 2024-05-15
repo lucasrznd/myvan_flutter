@@ -15,6 +15,14 @@ class Viagem {
     this.tipoViagem = '',
   });
 
+  Viagem fromViagem(Viagem viagem) {
+    return Viagem(
+        descricao: viagem.descricao,
+        veiculo: viagem.veiculo,
+        motorista: viagem.motorista,
+        data: viagem.data);
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'codigo': codigo,

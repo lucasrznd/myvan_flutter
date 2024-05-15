@@ -4,11 +4,16 @@ import 'package:myvan_flutter/repositories/viagem_repository.dart';
 import 'package:myvan_flutter/services/chamada_service.dart';
 
 class ViagemService {
-  final ViagemRepository viagemRepository = ViagemRepository();
+  final ViagemRepository repository = ViagemRepository();
   final ChamadaService chamadaService = ChamadaService();
 
   Future<List<Viagem>> selectAll() {
-    return viagemRepository.selectAll();
+    return repository.selectAll();
+  }
+
+  Future<Viagem> obterUltimaViagem(String tipoViagem) async {
+    Viagem viagem = await repository.obterUltimaViagem(tipoViagem);
+    return viagem;
   }
 
   void importarDaUltimaViagem() async {
@@ -23,7 +28,7 @@ class ViagemService {
           motorista: viagem.motorista,
           veiculo: viagem.veiculo);
 
-      salvarViagem(novaViagem);
+      insert(novaViagem);
     }
   }
 
@@ -32,25 +37,17 @@ class ViagemService {
       viagem.data = DateTime.now().toIso8601String();
     }
 
-    viagemRepository.insert(viagem);
+    repository.insert(viagem);
   }
 
   void criarViagemVolta(Viagem viagem) {
-    Viagem viagemVolta = Viagem(
-        codigo: viagem.codigo,
-        descricao: viagem.descricao,
-        veiculo: viagem.veiculo,
-        motorista: viagem.motorista,
-        tipoViagem: viagem.tipoViagem,
-        data: viagem.data);
+    Viagem viagemVolta = Viagem().fromViagem(viagem);
+    viagemVolta.tipoViagem = TipoViagem.volta.descricao;
 
-    viagemVolta.codigo = null;
-    viagemVolta.tipoViagem = 'VOLTA';
-
-    viagemRepository.insert(viagemVolta);
+    repository.insert(viagemVolta);
   }
 
-  void salvarViagem(Viagem viagem) {
+  void insert(Viagem viagem) {
     if (viagem.codigo == null &&
         viagem.tipoViagem == TipoViagem.ida.descricao) {
       criarViagemIda(viagem);
@@ -62,8 +59,11 @@ class ViagemService {
     }
   }
 
-  Future<Viagem> obterUltimaViagem(String tipoViagem) async {
-    Viagem viagem = await viagemRepository.obterUltimaViagem(tipoViagem);
-    return viagem;
+  Future<void> update(Viagem viagem) {
+    return repository.update(viagem);
+  }
+
+  Future<void> delete(int codigo) {
+    return repository.delete(codigo);
   }
 }
