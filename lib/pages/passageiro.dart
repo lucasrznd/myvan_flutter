@@ -5,8 +5,8 @@ import 'package:myvan_flutter/components/passageiro/passageiro_list.dart';
 import 'package:myvan_flutter/components/utils/modal_mensagens.dart';
 import 'package:myvan_flutter/models/endereco.dart';
 import 'package:myvan_flutter/models/passageiro.dart';
-import 'package:myvan_flutter/repositories/endereco_repository.dart';
-import 'package:myvan_flutter/repositories/passageiro_repository.dart';
+import 'package:myvan_flutter/services/endereco_service.dart';
+import 'package:myvan_flutter/services/passageiro_service.dart';
 
 class PassageiroPage extends StatefulWidget {
   const PassageiroPage({super.key});
@@ -20,53 +20,32 @@ class _PassageiroPageState extends State<PassageiroPage> {
   late Endereco _endereco;
   late Future<List<Passageiro>> _passageiros;
 
+  late PassageiroService _service;
+  late EnderecoService _enderecoService;
+
   @override
   void initState() {
     super.initState();
+    _service = PassageiroService();
+    _enderecoService = EnderecoService();
     _passageiro = Passageiro();
     _endereco = Endereco();
-    _passageiros = listarPassageiros();
+    _passageiros = _listarPassageiros();
   }
 
-  Future<List<Passageiro>> listarPassageiros() async {
-    PassageiroRepository repository = PassageiroRepository();
-    List<Passageiro> passageiros = await repository.selectAll();
-    return passageiros;
+  Future<List<Passageiro>> _listarPassageiros() {
+    return _service.selectAll();
   }
 
-  Future<List<Endereco>> _listarEnderecos() async {
-    EnderecoRepository repository = EnderecoRepository();
-    List<Endereco> enderecos = await repository.selectAll();
-    return enderecos;
-  }
-
-  Future<Endereco> _salvarEndereco(Endereco endereco) async {
-    EnderecoRepository repository = EnderecoRepository();
-    if (endereco.codigo == null) {
-      await repository.insert(endereco); // Espera a inserção ser concluída
-    } else {
-      await repository.update(endereco);
-    }
-    // Obtém o último endereço e espera a resolução do Future
-    Endereco ultimoEndereco = await repository.obterUltimo();
-
-    // Retorna o último endereço obtido
-    return ultimoEndereco;
+  Future<List<Endereco>> _listarEnderecos() {
+    return _enderecoService.selectAll();
   }
 
   _salvarPassageiro(Passageiro passageiro, Endereco endereco) async {
-    Endereco ultimoEndereco = await _salvarEndereco(endereco);
-    PassageiroRepository repository = PassageiroRepository();
-
-    passageiro.endereco = ultimoEndereco.codigo;
-
-    repository.insert(passageiro);
-
-    _passageiro = Passageiro();
-    _endereco = Endereco();
+    await _service.insert(passageiro, endereco);
 
     setState(() {
-      _passageiros = repository.selectAll();
+      _passageiros = _listarPassageiros();
     });
 
     if (!mounted) return;
@@ -84,16 +63,14 @@ class _PassageiroPageState extends State<PassageiroPage> {
   }
 
   void _deletePassageiro(int codigo) async {
-    PassageiroRepository repository = PassageiroRepository();
-
     bool opcao =
         await ModalMensagem.modalConfirmDelete(context, 'Passageiro', 'o');
 
     if (opcao) {
-      await repository.delete(codigo);
+      await _service.delete(codigo);
 
       setState(() {
-        _passageiros = repository.selectAll();
+        _passageiros = _listarPassageiros();
       });
     }
   }
