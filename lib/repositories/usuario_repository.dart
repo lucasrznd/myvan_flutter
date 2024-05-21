@@ -16,6 +16,16 @@ class UsuarioRepository {
     }
   }
 
+  Future<bool> getByNomeUsuario(String nomeUsuario) async {
+    final db = await _db;
+    var result = await db
+        .rawQuery("SELECT * FROM USUARIO WHERE nome_usuario = '$nomeUsuario'");
+    if (result.isNotEmpty) {
+      return true;
+    }
+    return false;
+  }
+
   Future<void> insert(Usuario usuario) async {
     final db = await _db;
     await db.insert('usuario', usuario.toMap(),

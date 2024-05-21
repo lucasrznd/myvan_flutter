@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:myvan_flutter/components/bottom_navigation/fab_tabs.dart';
+import 'package:myvan_flutter/auth/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -58,7 +58,8 @@ class MyApp extends StatelessWidget {
         ),
         primaryColor: Colors.blue.shade300,
       ),
-      home: const FabTabs(selectedIndex: 0),
+      home: const LoginPage(),
+      // const FabTabs(selectedIndex: 0),
     );
   }
 }
