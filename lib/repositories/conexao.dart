@@ -3,6 +3,8 @@ import 'package:sqflite/sqflite.dart';
 
 class Conexao {
   static const _dbname = "myvan.db";
+  static const _sqlUsuario =
+      'CREATE TABLE USUARIO(codigo INTEGER PRIMARY KEY, nome_usuario TEXT, senha TEXT)';
   static const _sqlMotorista =
       'CREATE TABLE MOTORISTA(codigo INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, telefone TEXT)';
   static const _sqlTipoVeiculo =
@@ -37,6 +39,7 @@ class Conexao {
       await db.execute(_sqlPassageiro);
       await db.execute(_sqlViagem);
       await db.execute(_sqlChamada);
+      await db.execute(_sqlUsuario);
     });
     _database = database;
     return database;
