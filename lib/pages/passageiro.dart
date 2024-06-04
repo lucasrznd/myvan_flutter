@@ -44,6 +44,8 @@ class _PassageiroPageState extends State<PassageiroPage> {
   _salvarPassageiro(Passageiro passageiro, Endereco endereco) async {
     await _service.insert(passageiro, endereco);
 
+    _passageiro = Passageiro();
+    _endereco = Endereco();
     setState(() {
       _passageiros = _listarPassageiros();
     });
